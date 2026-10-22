@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Frenchfries777 Hub</title>
+<meta name="description" content="Frenchfries777의 게임, 교육, 도구 사이트를 한곳에서 만나는 허브예요.">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#08090d; --panel:#10131b; --line:#222837; --text:#eef0f5; --dim:#8a93a6; --fry:#ffc93c; --fry2:#ff8a3d; }
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0; background:var(--bg); color:var(--text);}
+  body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif; font-size:16px; line-height:1.6; min-height:100vh; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  html{background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(255,201,60,.10), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(255,77,94,.08), transparent 60%), radial-gradient(ellipse 800px 600px at -10% 90%, rgba(31,74,165,.12), transparent 60%); background-attachment:fixed;}
+  .wrap{max-width:1440px; margin:0 auto; padding:0 clamp(22px,4vw,56px);}
+  header{display:flex; align-items:center; padding:26px 0 0; gap:8px;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Oswald',sans-serif; font-weight:600; font-size:20px; letter-spacing:.04em; color:var(--text); text-decoration:none;}
+  .logo img{width:34px; height:34px; border-radius:9px;}
+  .logo b{color:var(--fry); font-weight:700;}
+  .swr{margin:0 auto 0 20px;}
+  .sw{display:inline-flex; padding:3px; border-radius:99px; border:1px solid var(--line); background:var(--panel);}
+  .sw a{font-family:'Oswald',sans-serif; font-weight:600; font-size:13.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--dim); text-decoration:none; padding:4px 13px; border-radius:99px; transition:color .15s,background .15s;}
+  .sw a:hover{color:var(--text);}
+  .sw a.on{background:linear-gradient(90deg,var(--fry),var(--fry2)); color:#1c1405;}
+  @media(max-width:520px){ header{flex-wrap:wrap;} .swr{order:3; flex:1 0 100%; margin:14px 0 0;} }
+  .hero{padding:58px 0 30px;}
+  .eyebrow{display:inline-block; font-size:13px; font-weight:700; letter-spacing:.14em; color:var(--fry); text-transform:uppercase;}
+  .hero h1{font-family:'Oswald','Noto Sans KR',sans-serif; font-weight:700; font-size:clamp(46px,10.5vw,176px); line-height:1.02; margin:10px 0 0; text-transform:uppercase; letter-spacing:.01em; text-shadow:0 4px 30px rgba(0,0,0,.6);}
+  .hero h1 span{background:linear-gradient(90deg,var(--fry),var(--fry2)); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:none;}
+  .hero-lg{order:2; flex:0 0 auto; width:clamp(140px,17vw,240px); height:auto; filter:drop-shadow(0 18px 50px rgba(255,150,40,.28)); transform:rotate(4deg);}
+  @media(max-width:640px){ .hero{flex-direction:column; align-items:flex-start; gap:12px;} .hero-lg{order:-1; width:92px; transform:none;} .hero h1{font-size:clamp(38px,12.5vw,70px);} }
+  .hero h1 span{background:linear-gradient(90deg,var(--fry),var(--fry2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero p{color:var(--dim); font-size:18px; margin:16px 0 0; max-width:52ch;}
+  footer{margin:44px 0 30px; color:var(--dim); font-size:13.5px; display:flex; flex-wrap:wrap; gap:6px 14px;}
+  footer a{color:var(--dim);}
+  .sw{background:rgba(16,19,27,.8); backdrop-filter:blur(8px);}
+  .bg{position:fixed; inset:0; z-index:0; background:#000; overflow:hidden;}
+  .bg .s{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.6s ease;}
+  .bg .s.on{opacity:1; animation:kb 9s linear forwards;}
+  @keyframes kb{from{transform:scale(1)}to{transform:scale(1.08)}}
+  @media(prefers-reduced-motion:reduce){.bg .s.on{animation:none}}
+  .bg::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(8,9,13,.78) 0%,rgba(8,9,13,.45) 55%,rgba(8,9,13,.2) 100%), linear-gradient(0deg,rgba(8,9,13,.8),rgba(8,9,13,0) 40%);}
+  .page{position:relative; z-index:1; min-height:100vh; min-height:100svh; display:flex; flex-direction:column;}
+  .page .wrap{width:100%; flex:1; display:flex; flex-direction:column;}
+  .hero{flex:1; display:flex; flex-direction:column; justify-content:center; padding:40px 0;}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; letter-spacing:.1em; color:#dfe4ef; font-weight:500; text-shadow:0 1px 8px rgba(0,0,0,.8);}
+  .hero h1{font-family:'Oswald','Noto Sans KR',sans-serif; font-weight:700; font-size:clamp(40px,9.5vw,128px); line-height:1.02; margin:12px 0 0; text-transform:uppercase; letter-spacing:.01em; text-shadow:0 4px 30px rgba(0,0,0,.65);}
+  .hero p{margin:20px 0 0; max-width:34em; font-size:clamp(16px,1.8vw,20px); color:#dfe4ef; text-shadow:0 1px 10px rgba(0,0,0,.85);}
+  footer{margin:0; padding:0 0 22px; color:#cfd5e3; font-size:13.5px; display:flex; flex-wrap:wrap; gap:6px 14px; text-shadow:0 1px 8px rgba(0,0,0,.9);} footer a{color:#cfd5e3;}
+  @media(max-width:700px){ .bg::after{background:linear-gradient(180deg,rgba(8,9,13,.55),rgba(8,9,13,.6));} }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><img class="s" src="img/beaconfall.webp" alt=""><img class="s" src="img/stickseum.webp" alt=""><img class="s" src="img/planetsearch.webp" alt=""><img class="s" src="img/crown-envoy.webp" alt=""><img class="s" src="img/blocks.webp" alt=""><img class="s" src="img/isleport.webp" alt=""><img class="s" src="img/proverb.webp" alt=""><img class="s" src="img/sheet.webp" alt=""><img class="s" src="img/balance.webp" alt=""><img class="s" src="img/slides.webp" alt=""><img class="s" src="img/speedcode.webp" alt=""><img class="s" src="img/lab.webp" alt=""></div>
+<div class="page"><div class="wrap">
+  <header><a class="logo" href="./"><img src="logo.svg" alt=""><span>FRENCHFRIES<b>777</b></span></a><div class="swr"><span class="sw"><a class="on" href="./" aria-current="page">Hub</a><a href="https://frenchfries777mc.github.io/games/">Games</a><a href="https://frenchfries777mc.github.io/educations/">Educations</a><a href="https://frenchfries777mc.github.io/tools/">Tools</a></span></div></header>
+  <section class="hero"><span class="mono">BY FRENCHFRIES777 · WITH CLAUDE AI</span><h1>Frenchfries777</h1>
+    <p>Frenchfries777은 Claude AI와 함께 만드는 사이트 모음이에요. 브라우저에서 바로 하는 게임, 놀면서 배우는 교육 게임, 직접 쓰려고 만든 도구가 있어요. 계정은 하나만 만들면 되고 설치는 필요 없어요.</p>
+  </section>
+  <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
+</div></div>
+<script>
+(function(){var im=document.querySelectorAll('.bg .s'),i=0;if(!im.length)return;im[0].classList.add('on');
+setInterval(function(){im[i].classList.remove('on');i=(i+1)%im.length;im[i].classList.add('on');},5000);})();
+</script>
+</body>
+</html>
