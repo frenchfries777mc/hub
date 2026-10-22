@@ -47,7 +47,7 @@
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; letter-spacing:.1em; color:#dfe4ef; font-weight:500; text-shadow:0 1px 8px rgba(0,0,0,.8);}
   .hero h1{font-family:'Oswald','Noto Sans KR',sans-serif; font-weight:700; font-size:clamp(40px,9.5vw,128px); line-height:1.02; margin:12px 0 0; text-transform:uppercase; letter-spacing:.01em; text-shadow:0 4px 30px rgba(0,0,0,.65);}
   .hero p{margin:20px 0 0; max-width:34em; font-size:clamp(16px,1.8vw,20px); color:#dfe4ef; text-shadow:0 1px 10px rgba(0,0,0,.85);}
-  footer{margin:auto 0 0; padding:40px 0 22px; color:#cfd5e3; font-size:13.5px; display:flex; flex-wrap:wrap; gap:6px 14px; text-shadow:0 1px 8px rgba(0,0,0,.9);} footer a{color:#cfd5e3;}
+  footer{margin:0; padding:20px 0 22px; color:#cfd5e3; font-size:13.5px; display:flex; flex-wrap:wrap; gap:6px 14px; text-shadow:0 1px 8px rgba(0,0,0,.9);} footer a{color:#cfd5e3;}
   @media(max-width:700px){ .bg::after{background:linear-gradient(180deg,rgba(8,9,13,.55),rgba(8,9,13,.6));} }
   header{gap:8px;} header .right{flex:0 0 auto; display:flex; align-items:center;} header nav{white-space:nowrap;} header .right nav a{color:#fff!important; opacity:.92; text-decoration:none; font-size:15px; margin-left:18px; text-shadow:0 1px 8px rgba(0,0,0,.8);} header nav a:hover{color:#fff;}
   .swr{display:flex; align-items:center; gap:8px;} .srx-btn{background:rgba(16,19,27,.8); backdrop-filter:blur(8px); color:var(--text); border:1px solid var(--line); border-radius:99px; width:38px; height:38px; display:inline-grid; place-items:center; cursor:pointer; font-size:15px; flex:0 0 auto;} .srx-btn:hover{border-color:var(--fry);}
@@ -63,18 +63,94 @@
   .auth button.alt{background:rgba(16,19,27,.72); backdrop-filter:blur(8px); color:var(--text); border-color:rgba(255,255,255,.3);}
   @media(max-width:960px){ header nav{display:none;} }
   @media(max-width:520px){ .tb{margin-left:8px;} .cc-dd{position:fixed; left:12px; right:12px; top:70px; width:auto;} }
+  :root{--sec:48px; --gap:22px; --fs-sh:28px; --fs-h3:17px; --panel:#10131b;}
+  .onl{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; margin-top:18px; font-size:14.5px; color:var(--dim);} .onl:empty{display:none;} .onl>b{color:var(--text);}
+  .wi{margin:0 0 56px;} .wi-sub{color:var(--dim); margin:-6px 0 12px;}
+  .wi-go{display:flex; align-items:center; gap:16px; padding:18px 22px; border-radius:16px; background:var(--panel); border:1px solid var(--line); color:var(--text); text-decoration:none; transition:border-color .15s, transform .15s;} .wi-go:hover{border-color:var(--fry); transform:translateY(-2px);}
+  .wi-ic{font-size:30px;} .wi-gt{display:flex; flex-direction:column; flex:1; min-width:0;} .wi-gt b{font-family:'Oswald',sans-serif; font-size:21px; letter-spacing:.03em;} .wi-gt span{color:var(--dim); font-size:14px;} .wi-ar{color:var(--fry); font-weight:800; white-space:nowrap;}
+  .sh{font-family:'Oswald','Noto Sans KR',sans-serif; font-size:30px; letter-spacing:.02em; margin:56px 0 6px; text-transform:uppercase;}
+  .sp{color:var(--dim); margin:0 0 16px; font-size:15px;}
+  .cm-f{display:flex; flex-wrap:wrap; gap:6px;} .cm-f button{padding:5px 11px; font-size:13px;}
+  .nws{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px;}
+  .nw{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; display:flex; flex-direction:column;}
+  .nw.g1{border-top:3px solid #3fe0c5;} .nw.g2{border-top:3px solid #d4af4f;} .nw.g3{border-top:3px solid #f2c75a;}
+  .nh{display:flex; justify-content:space-between; gap:8px; font-size:13px;} .ng{font-weight:800;} .nw.g1 .ng{color:#3fe0c5;} .nw.g2 .ng{color:#f2dc94;} .nw.g3 .ng{color:#f3e4b0;}
+  .nw h3{margin:6px 0 6px; font-size:17px; line-height:1.35;}
+  .nw ul{margin:0; padding-left:18px; color:#b7bfcf; font-size:14px; flex:1;} .nw li{margin:3px 0;}
+  .nmore{color:var(--dim); font-size:13px; margin-top:4px;}
+  .fbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 14px; font-size:14px; color:var(--dim);}
+  .fbar:empty{display:none;}
+  .fchip{background:var(--panel); border:1px solid var(--line); color:inherit; border-radius:999px; padding:6px 12px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; position:relative;}
+  .fchip.on{border-color:var(--fry); color:var(--fry);}
+  .fchip .fnb{font-style:normal; background:#e5484d; color:#fff; border-radius:999px; font-size:11px; padding:1px 6px; margin-left:6px;}
+  .fmsg{flex-basis:100%; color:var(--fry); font-weight:700;} .fmsg a{color:var(--fry); cursor:pointer; margin-left:8px; text-decoration:underline;}
+  .nnew{background:#e5484d; color:#fff; border-radius:6px; font-size:11px; font-weight:800; padding:1px 6px; margin-left:6px;}
+  .nl{margin-top:10px; color:var(--fry); font-size:14px; font-weight:700; text-decoration:none;} .nl:hover{text-decoration:underline;}
+  .cm-pick{display:inline-flex; align-items:center; gap:4px; margin:0; cursor:pointer; white-space:nowrap;} .cm-sp{flex:1;}
+  .cm-send .cm-pick{padding:8px 12px; font-size:17px;}
+  .cm-pv{display:flex; flex-wrap:wrap; gap:8px;} .cm-pv:empty{display:none;}
+  .cm-pi{position:relative; width:84px; height:84px; border-radius:10px; overflow:hidden; border:1px solid var(--line);} .cm-pi img{width:100%; height:100%; object-fit:cover; display:block;}
+  .cm-pi button{position:absolute; top:3px; right:3px; width:22px; height:22px; border-radius:50%; border:0; background:rgba(0,0,0,.7); color:#fff; font-size:15px; line-height:1; cursor:pointer; padding:0;}
+  .cm-gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:8px; margin-top:10px;}
+  .cm-gal.n1{grid-template-columns:1fr;} .cm-gal.n2,.cm-gal.n4{grid-template-columns:repeat(2,1fr);} .cm-gal.n3{grid-template-columns:repeat(3,1fr);} .cm-gal.n1 img{aspect-ratio:auto; max-height:560px; object-fit:contain;} .cm-gal.n2 img,.cm-gal.n3 img,.cm-gal.n4 img{aspect-ratio:1; height:auto;}
+  .cm-gal img{width:100%; max-height:420px; object-fit:cover; border-radius:10px; display:block; border:1px solid var(--line); background:#0b0d13;}
+  .cm-cimg img{display:block; width:240px; max-width:100%; height:auto; object-fit:contain; max-height:260px; border-radius:9px; margin-top:6px;} .cm-bub.only .cm-cimg img{margin-top:0;} .cm-bub.only{padding:5px;}
+  .nw.g0{border-top:3px solid var(--fry,#ffc93c);} .nw.g0 .ng{color:var(--fry,#ffc93c);}
+  #annBar:empty{display:none;} #annBar{display:flex; flex-direction:column; gap:8px; margin:6px 0 4px;}
+  .ann{display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; padding:11px 40px 11px 14px; border-radius:12px; position:relative; font-size:15px; border:1px solid rgba(255,196,61,.35); background:linear-gradient(135deg,rgba(255,201,60,.14),rgba(255,138,61,.10));}
+  .ann.ev{border-color:rgba(125,255,155,.35); background:linear-gradient(135deg,rgba(125,255,155,.12),rgba(63,224,197,.08));}
+  .ann .ak{font-weight:800; white-space:nowrap;} .ann .ab{flex:1; min-width:160px; word-break:break-word;} .ann .al{color:var(--fry); font-weight:700; text-decoration:none; white-space:nowrap;} .ann .ae{color:var(--dim); font-size:13px; white-space:nowrap;}
+  .ann .ax{position:absolute; top:6px; right:8px; background:none; border:0; color:var(--dim); font-size:20px; cursor:pointer; line-height:1;} .ann .ax:hover{color:#fff;}
+  .cm-like.on{color:#1a1206; background:linear-gradient(135deg,var(--fry),var(--fry2)); border-color:transparent;}
+  .cm-x.cm-rp{font-size:13px; opacity:.55;} .cm-x.cm-rp:hover{opacity:1;} .cm-msg .cm-x.cm-rp{font-size:12px;}
+  .cm-ann h4,.cm-reps h4,.cm-pa h4{margin:16px 0 4px; font-size:14px; color:var(--dim);} .cm-ann .cm-w input{margin-top:6px;}
+  .hn-bg{position:fixed; inset:0; z-index:2147482300; background:rgba(5,6,10,.72); display:none; align-items:center; justify-content:center; padding:16px;}
+  .hn-b{width:100%; max-width:560px; max-height:calc(100vh - 32px); overflow-y:auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-sizing:border-box; overscroll-behavior:contain;}
+  .hn-h{display:flex; justify-content:space-between; align-items:center; font-size:19px; margin-bottom:6px;} .hn-x{background:none; border:0; color:var(--dim); font-size:24px; cursor:pointer; line-height:1;}
+  .hn-n{border-top:1px solid var(--line); padding:12px 0 6px;} .hn-n h3{margin:4px 0 6px; font-size:16.5px;} .hn-n ul{margin:0; padding-left:18px; color:#b7bfcf; font-size:14.5px;} .hn-n li{margin:3px 0;}
+  #hubNotesBtn{margin-left:6px; font-size:inherit;}
+  .rk-g{display:grid; grid-template-columns:1fr; gap:14px;} .rk-c{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px 18px;}
+  .rk-c h3{margin:0 0 4px; font-size:18px;} .rk-n{color:var(--dim); font-size:13px; margin:0 0 10px;} .rk-f{margin:6px 0 10px; display:flex; flex-wrap:wrap; gap:6px;} .rk-f button{padding:6px 12px; font-size:13.5px;}
+  .wk{display:grid; grid-template-columns:28px 1fr auto; gap:4px 10px; align-items:center; padding:9px 4px; border-top:1px solid var(--line);} .wk:first-child{border-top:0;}
+  .wk .no{font-family:'Oswald',sans-serif; font-size:22px; color:var(--dim); text-align:center;} .wk:first-child .no{color:var(--fry);}
+  .wk .gn{font-weight:800; font-size:15.5px;} .wk .pc{font-weight:800; white-space:nowrap;} .wk .pc small{display:block; text-align:right; font-weight:600; font-size:12px; color:var(--dim);} .wk .pc small.up{color:#7dff9b;} .wk .pc small.dn{color:#ff9b7a;}
+  .wk .bar{grid-column:2 / 4; height:7px; border-radius:4px; background:#1b2030; overflow:hidden;} .wk .bar u{display:block; height:100%; border-radius:4px; background:linear-gradient(90deg,var(--fry),var(--fry2));}
+  .wk.g1 .gn{color:#3fe0c5;} .wk.g2 .gn{color:#f2dc94;} .wk.g3 .gn{color:#f3e4b0;}
+  .rkt{width:100%; border-collapse:collapse; font-size:14.5px;} .rkt th{color:var(--dim); font-size:12.5px; font-weight:700; text-align:right; padding:4px 6px;} .rkt th:nth-child(2){text-align:left;}
+  .rkt td{padding:7px 6px; border-top:1px solid var(--line); text-align:right; white-space:nowrap;} .rkt td:nth-child(2){text-align:left; max-width:160px; overflow:hidden; text-overflow:ellipsis;} .rkt td:first-child{font-weight:800; color:var(--dim); width:34px;}
+  .rkt tr.t1 td:first-child{color:#ffd36b;} .rkt tr.t2 td:first-child{color:#d8dee9;} .rkt tr.t3 td:first-child{color:#e0a36b;} .rkt tr.me td{background:rgba(255,196,61,.10);} .rkt .pt{font-weight:800; color:var(--fry);}
+  .rk-me{margin-top:8px; font-size:13.5px; color:var(--dim);}
+  .sh{font-size:var(--fs-sh); margin:var(--sec) 0 8px; display:flex; align-items:center; gap:12px;}
+  .sh::before{content:''; width:5px; height:1.05em; border-radius:2px; background:linear-gradient(180deg,var(--fry),var(--fry2)); flex:0 0 auto;}
+  .wi{margin-bottom:var(--sec);}
+  .ui{position:relative; z-index:1; background:rgba(8,9,13,.9); backdrop-filter:blur(10px); border-top:1px solid rgba(255,255,255,.12); padding:clamp(8px,2vw,24px) 0 0; margin-top:-1px;}
+  .ui .wrap{padding-bottom:10px;} .ui .two{display:grid; grid-template-columns:1fr 1fr; gap:var(--gap);} @media(max-width:760px){ .ui .two{grid-template-columns:1fr;} }
+  .ui .wi{margin-bottom:var(--sec);} .ui .rk,.ui .news{margin-bottom:var(--sec);}
+  #annBar{margin-top:14px;} .hero .onl{margin-top:18px;}
+  .cm-f button{background:var(--panel); color:var(--dim); border:1px solid var(--line); border-radius:99px; padding:6px 14px; font:inherit; font-size:14px; cursor:pointer;} .cm-f button.on{border-color:var(--fry); color:var(--fry);}
 </style>
 </head>
 <body data-root="https://frenchfries777mc.github.io/games/" data-hub="">
 <div class="bg" aria-hidden="true"><img class="s" src="img/beaconfall.webp" alt=""><img class="s" src="img/stickseum.webp" alt=""><img class="s" src="img/planetsearch.webp" alt=""><img class="s" src="img/crown-envoy.webp" alt=""><img class="s" src="img/blocks.webp" alt=""><img class="s" src="img/isleport.webp" alt=""><img class="s" src="img/proverb.webp" alt=""><img class="s" src="img/sheet.webp" alt=""><img class="s" src="img/balance.webp" alt=""><img class="s" src="img/slides.webp" alt=""><img class="s" src="img/speedcode.webp" alt=""><img class="s" src="img/lab.webp" alt=""></div>
 <div class="page"><div class="wrap">
   <header><a class="logo" href="./"><img src="logo.svg" alt=""><span>FRENCHFRIES<b>777</b></span></a><div class="swr"><span class="sw" data-notr><a class="on" href="./" aria-current="page">Hub</a><a href="https://frenchfries777mc.github.io/games/">Games</a><a href="https://frenchfries777mc.github.io/educations/">Educations</a><a href="https://frenchfries777mc.github.io/tools/">Tools</a></span><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button></div><div class="right"><nav><a href="wiki/">위키</a><a href="community/">커뮤니티</a><a href="lounge/">라운지</a><a href="settings/">설정</a></nav><div class="tb"><span class="cchip"><button type="button" class="cc-b" id="coinChip" title="Hub Coin" aria-haspopup="true"><span aria-hidden="true">🪙</span><b id="coinChipN" data-notr>0</b></button><div class="cc-dd" id="coinDd" hidden><div class="coinbar" id="coinBar"></div></div></span><span data-ff-account data-ff-nohub></span></div></div></header>
+  <div id="annBar"></div>
   <section class="hero"><span class="mono">BY FRENCHFRIES777 · WITH CLAUDE AI</span><h1>Frenchfries777</h1>
     <p>Frenchfries777은 Claude AI와 함께 만드는 사이트 모음이에요. 브라우저에서 바로 하는 게임, 놀면서 배우는 교육 게임, 직접 쓰려고 만든 도구가 있어요. 계정은 하나만 만들면 되고 설치는 필요 없어요.</p>
     <div class="auth" id="heroAuth" hidden><button type="button" data-m="in">로그인</button><button type="button" class="alt" data-m="up">회원가입</button></div>
+    <div class="onl" id="onlineBar"></div>
   </section>
-  <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
+
 </div></div>
+  <div class="ui"><div class="wrap">
+    <div class="two">
+      <section class="wi" id="wiki"><h2 class="sh">공략 위키</h2><p class="wi-sub">누구나 읽을 수 있고, 로그인하면 고치거나 새 글을 쓸 수 있어요.</p><a class="wi-go" href="wiki/"><span class="wi-ic">📖</span><span class="wi-gt"><b>Frenchfries777 Wiki</b><span>Stickseum · Crown Envoy · Beaconfall · Isleport</span></span><span class="wi-ar">위키 열기 →</span></a></section>
+      <section class="wi" id="cmGo"><h2 class="sh">커뮤니티</h2><p class="wi-sub">게시판, 채팅, 친구 소식, 같이 하기, 갤러리, 피드백이 있어요.</p><a class="wi-go" href="community/"><span class="wi-ic">💬</span><span class="wi-gt"><b>Frenchfries777 Community</b><span>Board · Chat · Gallery · Feedback</span></span><span class="wi-ar">커뮤니티 열기 →</span></a></section>
+    </div>
+    <section class="rk" id="ranking"><h2 class="sh">랭킹</h2><div class="rk-g"><div class="rk-c"><h3>🏆 게임 랭킹</h3><div class="cm-f rk-f"><button data-g="crownenvoy" class="on">Crown Envoy</button><button data-g="stickseum">Stickseum</button><button data-g="beaconfall">Beaconfall</button><button data-g="isleport">Isleport</button></div><div id="rankList"></div></div></div></section>
+    <section class="news" id="news"><h2 class="sh">뉴스</h2><p class="sp">게임과 허브의 가장 최근 업데이트 6개예요. <a id="hubNotesBtn" class="nl" href="#hubnotes">허브 패치노트 →</a></p><div id="followBar" class="fbar"></div><div id="newsList" class="nws"></div></section>
+    <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
+  </div></div>
 <script>
 (function(){var im=document.querySelectorAll('.bg .s'),i=0;if(!im.length)return;im[0].classList.add('on');
 setInterval(function(){im[i].classList.remove('on');i=(i+1)%im.length;im[i].classList.add('on');},5000);})();
