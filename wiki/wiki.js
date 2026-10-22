@@ -4,7 +4,7 @@
    원문이 고쳐져서 해시가 달라지면 번역 대신 한국어 원문을 보여 줘요. 번역을 다시 만들면 h 를 새 원문으로 계산해요 (fnv 아래). */
 (function(){
 var LANGS=['ko','en','es','fr','de','ja','zh','pt','ru','tr','it','pl','ar','nw','gk','au','sg'], NAMES={ko:'한국어',en:'English',es:'Español',fr:'Français',de:'Deutsch',ja:'日本語',zh:"简体中文",pt:"Português (Brasil)",ru:"Русский",tr:"Türkçe",it:"Italiano",pl:"Polski",ar:"العربية",nw:"Newspeak",gk:"번역기 한국어",au:"Aurebesh",sg:"Standard Galactic",gk:"번역기 한국어"};
-var GAMES=[['stickseum','Stickseum'],['crownenvoy','Crown Envoy'],['beaconfall','Beaconfall'],['isleport','Isleport'],['tools','Tools'],['educations','Educations'],['hub','Hub']];
+var GAMES=[['stickseum','Stickseum'],['crownenvoy','Crown Envoy'],['beaconfall','Beaconfall'],['isleport','Isleport'],['tools','Tools'],['educations','Educations'],['account','Community & Account'],['hub','Hub']];
 var U={
  ko:{hub:'허브',sub:'누구나 읽을 수 있고, 로그인하면 문서를 고치거나 새로 쓸 수 있다.',search:'위키 검색',loading:'불러오는 중…',pages:'글 목록',toc:'목차',newp:'＋ 새 글',
   edit:'✏️ 고치기',hist:'🕘 기록',del:'삭제',delSure:'정말 삭제할까요?',empty:'아직 문서가 없다.',nf:'문서를 찾지 못했다.',edited:'{0} 수정',seed:'처음 쓴 글',
@@ -112,7 +112,8 @@ async function loadNames(ids){ ids=ids.filter(function(id,i){ return id&&!names[
   try{ var r=await sb.from('profiles').select('id,username,display_name').in('id',ids); ((r&&r.data)||[]).forEach(function(p){ names[p.id]=(p.display_name&&String(p.display_name).trim())||p.username||'???'; }); }catch(e){} }
 function who(id){ return id?(names[id]||'???'):t('seed'); }
 function login(){ try{ FFAuth.openLogin(); }catch(e){} }
-function gameName(g){ for(var i=0;i<GAMES.length;i++) if(GAMES[i][0]===g) return GAMES[i][1]; return g; }
+var SECN={ko:'커뮤니티·계정',en:'Community & Account',es:'Comunidad y cuenta',fr:'Communauté et compte',de:'Community & Konto',ja:'コミュニティ・アカウント',zh:'社区与账号',pt:'Comunidade e conta',ru:'Сообщество и аккаунт',tr:'Topluluk ve hesap',it:'Community e account',pl:'Społeczność i konto',ar:'المجتمع والحساب',gk:'커뮤니티·계정'};
+function gameName(g){ if(g==='account') return SECN[lang]||SECN.en; for(var i=0;i<GAMES.length;i++) if(GAMES[i][0]===g) return GAMES[i][1]; return g; }
 function curPage(){ return slug?all.filter(function(x){ return x.game===game&&x.slug===slug; })[0]||null:null; }
 
 /* ---- 주소: #main · #recent · #게임 · #게임/slug ---- */
@@ -129,7 +130,7 @@ function paintSide(){
   var S=$('#side'), logo=S.querySelector('.logo');
   var h='<div class="box"><h4>'+esc(t('nav'))+'</h4><a href="#main"'+(sp==='main'&&!query?' class="on"':'')+'>'+esc(t('main'))+'</a><a href="#recent"'+(sp==='recent'&&!query?' class="on"':'')+'>'+esc(t('recent'))+'</a><button type="button" data-rand="1">'+esc(t('random'))+'</button><a href="../">← '+esc(t('hub'))+'</a></div>';
   h+='<div class="box"><h4>'+esc(t('doc'))+'</h4>'+GAMES.map(function(g){ var ps=pagesOf(g[0]), op=opened[g[0]]!=null?opened[g[0]]:(!sp&&g[0]===game);
-    return '<details class="g-'+g[0]+'" data-g="'+g[0]+'"'+(op?' open':'')+'><summary>'+esc(g[1])+'<span class="n">'+ps.length+'</span></summary><div class="sub">'+
+    return '<details class="g-'+g[0]+'" data-g="'+g[0]+'"'+(op?' open':'')+'><summary>'+esc(gameName(g[0]))+'<span class="n">'+ps.length+'</span></summary><div class="sub">'+
       '<a class="idx'+(!sp&&!slug&&g[0]===game&&!query?' on':'')+'" href="#'+g[0]+'">'+esc(t('idx'))+'</a>'+
       ps.map(function(p){ return '<a href="#'+g[0]+'/'+esc(p.slug)+'"'+(!sp&&g[0]===game&&p.slug===slug&&!query?' class="on"':'')+'>'+esc(titleOf(p))+'</a>'; }).join('')+
       '<button type="button" class="new" data-new="'+g[0]+'">'+esc(t('newp'))+'</button></div></details>'; }).join('')+'</div>';
@@ -147,7 +148,7 @@ function paintTabs(kind){
   $('#tabsL').innerHTML=L; $('#tabsR').innerHTML=R;
 }
 var TI='https://frenchfries777mc.github.io/tools/icons/ai/';
-var ICO={'hub/lounge':['img/lounge/patchnotes.svg','img/lounge/gallery.svg','img/lounge/music.svg','img/lounge/prototypes.svg','img/lounge/github.svg','img/lounge/ai.svg'],'hub/music-room':['img/lounge/music.svg'],'tools/ff777-models':[TI+'tarius.svg',TI+'lectus.svg',TI+'premus.svg']};
+var ICO={'account/lounge':['img/lounge/patchnotes.svg','img/lounge/gallery.svg','img/lounge/music.svg','img/lounge/prototypes.svg','img/lounge/github.svg','img/lounge/ai.svg'],'account/music-room':['img/lounge/music.svg'],'tools/ff777-models':[TI+'tarius.svg',TI+'lectus.svg',TI+'premus.svg']};
 function icoStrip(g,s){ var a=ICO[g+'/'+s]; return a?'<div class="ico">'+a.map(function(u){ return '<img src="'+u+'" alt="" width="56" height="56" loading="lazy">'; }).join('')+'</div>':''; }
 function head(title,cls){ return '<div class="ph"><h1>'+esc(title)+'</h1><span class="lg"></span></div>'; }
 function putLang(){ var s=$('#page .lg'); if(s&&langSel) s.appendChild(langSel); }
@@ -185,7 +186,7 @@ async function paint(){
 function paintMain(){
   var A=$('#page'); setHash(); paintTabs('main'); A.className='page';
   A.innerHTML=head(t('mainT'))+'<div class="txt"><p>'+esc(t('mainIntro'))+'</p>'+
-    GAMES.map(function(g){ var ps=pagesOf(g[0]); return '<h3 class="g-'+g[0]+'"><span><a href="#'+g[0]+'" style="color:var(--g);text-decoration:none">'+esc(g[1])+'</a></span><span class="se">'+esc(t('count',ps.length))+'</span></h3>'+(ps.length?table(ps):'<div class="e">'+esc(t('empty'))+'</div>'); }).join('')+'</div>';
+    GAMES.map(function(g){ var ps=pagesOf(g[0]); return '<h3 class="g-'+g[0]+'"><span><a href="#'+g[0]+'" style="color:var(--g);text-decoration:none">'+esc(gameName(g[0]))+'</a></span><span class="se">'+esc(t('count',ps.length))+'</span></h3>'+(ps.length?table(ps):'<div class="e">'+esc(t('empty'))+'</div>'); }).join('')+'</div>';
   putLang();
 }
 function paintGame(){
