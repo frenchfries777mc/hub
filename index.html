@@ -128,6 +128,12 @@
   .ui .wi{margin-bottom:var(--sec);} .ui .rk,.ui .news{margin-bottom:var(--sec);}
   #annBar{margin-top:14px;} .hero .onl{margin-top:18px;}
   .cm-f button{background:var(--panel); color:var(--dim); border:1px solid var(--line); border-radius:99px; padding:6px 14px; font:inherit; font-size:14px; cursor:pointer;} .cm-f button.on{border-color:var(--fry); color:var(--fry);}
+  .wrap{max-width:none; padding:0 clamp(22px,5vw,110px);}
+  .ui .two{gap:clamp(22px,2.4vw,44px);}
+  .dock{margin-top:auto; padding:0 0 clamp(18px,3vh,36px);} .dock .two{display:grid; grid-template-columns:1fr 1fr; gap:clamp(16px,2vw,32px);} @media(max-width:760px){ .dock .two{grid-template-columns:1fr;} }
+  .dock .wi{margin:0;} .dock .sh{margin:0 0 6px; font-size:clamp(20px,1.8vw,26px); text-shadow:0 2px 8px rgba(0,0,0,.8);} .dock .wi-sub{margin:0 0 10px; color:#dfe4ef; text-shadow:0 1px 8px rgba(0,0,0,.9); font-size:14.5px;}
+  .dock .wi-go{background:rgba(10,12,18,.78); backdrop-filter:blur(10px);}
+  .hero{padding-bottom:clamp(20px,3vh,40px);}
 </style>
 </head>
 <body data-root="https://frenchfries777mc.github.io/games/" data-hub="">
@@ -140,13 +146,14 @@
     <div class="auth" id="heroAuth" hidden><button type="button" data-m="in">로그인</button><button type="button" class="alt" data-m="up">회원가입</button></div>
     <div class="onl" id="onlineBar"></div>
   </section>
-
-</div></div>
-  <div class="ui"><div class="wrap">
+  <div class="dock">
     <div class="two">
       <section class="wi" id="wiki"><h2 class="sh">공략 위키</h2><p class="wi-sub">누구나 읽을 수 있고, 로그인하면 고치거나 새 글을 쓸 수 있어요.</p><a class="wi-go" href="wiki/"><span class="wi-ic">📖</span><span class="wi-gt"><b>Frenchfries777 Wiki</b><span>Stickseum · Crown Envoy · Beaconfall · Isleport</span></span><span class="wi-ar">위키 열기 →</span></a></section>
       <section class="wi" id="cmGo"><h2 class="sh">커뮤니티</h2><p class="wi-sub">게시판, 채팅, 친구 소식, 같이 하기, 갤러리, 피드백이 있어요.</p><a class="wi-go" href="community/"><span class="wi-ic">💬</span><span class="wi-gt"><b>Frenchfries777 Community</b><span>Board · Chat · Gallery · Feedback</span></span><span class="wi-ar">커뮤니티 열기 →</span></a></section>
     </div>
+  </div>
+</div></div>
+  <div class="ui"><div class="wrap">
     <section class="rk" id="ranking"><h2 class="sh">랭킹</h2><div class="rk-g"><div class="rk-c"><h3>🏆 게임 랭킹</h3><div class="cm-f rk-f"><button data-g="crownenvoy" class="on">Crown Envoy</button><button data-g="stickseum">Stickseum</button><button data-g="beaconfall">Beaconfall</button><button data-g="isleport">Isleport</button></div><div id="rankList"></div></div></div></section>
     <section class="news" id="news"><h2 class="sh">뉴스</h2><p class="sp">게임과 허브의 가장 최근 업데이트 6개예요. <a id="hubNotesBtn" class="nl" href="#hubnotes">허브 패치노트 →</a></p><div id="followBar" class="fbar"></div><div id="newsList" class="nws"></div></section>
     <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
