@@ -64,7 +64,7 @@
   <h1 data-u="title">음악 감상실</h1>
   <p class="lead" data-u="lead">게임에 나오는 배경음악을 모아 두었어요. 눌러서 들어 보세요.</p>
   <div id="games"></div>
-  <footer>Frenchfries777 · <a href="../">frenchfries777mc.github.io/games</a>  · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
+  <footer>Frenchfries777 · <a href="../">frenchfries777mc.github.io/hub</a>  · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
 </div>
 <div class="bar" id="bar"><div class="in">
   <div class="t" id="barT"></div>
@@ -77,17 +77,17 @@
 /* 곡 목록: 각 게임 사이트에 있는 mp3를 그대로 재생해요. 게임에 곡이 추가되면 여기에 한 줄 더하면 돼요 */
 var SITE='https://frenchfries777mc.github.io/games/';
 var GAMES=[
-  {id:'stickseum', name:'Stickseum', img:'../stickseum.webp', url:SITE+'stickseum/', tracks:[
+  {id:'stickseum', name:'Stickseum', img:SITE+'stickseum.webp', url:SITE+'stickseum/', tracks:[
     {f:SITE+'stickseum/music-lobby.mp3', n:'로비', d:'메뉴와 대기실에서 나오는 잔잔한 곡'},
     {f:SITE+'stickseum/music-battle.mp3', n:'대전', d:'대전 중에 나오는 빠른 전투 곡'},
     {f:SITE+'stickseum/music-boss.mp3', n:'보스 레이드', d:'보스 레이드에서 나오는 무거운 북과 합창 곡'}]},
-  {id:'crownenvoy', name:'Crown Envoy', img:'../crown-envoy.webp', url:SITE+'crownenvoy/', tracks:[
+  {id:'crownenvoy', name:'Crown Envoy', img:SITE+'crown-envoy.webp', url:SITE+'crownenvoy/', tracks:[
     {f:SITE+'crownenvoy/CrownEnvoy-music.mp3', n:'전투', d:'게임 중에 전쟁 행진곡과 번갈아 나오는 전투 음악'},
     {f:SITE+'crownenvoy/CrownEnvoy-music3.mp3', n:'전쟁 행진곡', d:'게임 중에 전투 음악과 번갈아 나오는 팀파니·작은북·금관 곡'},
     {f:SITE+'crownenvoy/CrownEnvoy-music2.mp3', n:'궁정', d:'로비와 첫 화면에서 나오는 하프시코드·현악기 곡'},
     {f:SITE+'crownenvoy/CrownEnvoy-win.mp3', n:'승리 팡파르', d:'게임에서 이겼을 때 한 번 나오는 금관과 팀파니 곡'},
     {f:SITE+'crownenvoy/CrownEnvoy-lose.mp3', n:'패배', d:'게임에서 졌을 때 한 번 나오는 느린 피아노 곡'}]},
-  {id:'beaconfall', name:'Beaconfall', img:'../beaconfall.webp', url:SITE+'beaconfall/', tracks:[
+  {id:'beaconfall', name:'Beaconfall', img:SITE+'beaconfall.webp', url:SITE+'beaconfall/', tracks:[
     {f:SITE+'beaconfall/bgm-spring.mp3', n:'봄', d:'봄 계절 곡'},
     {f:'beaconfall-summer.mp3', n:'여름 · 로비', d:'여름과 로비에서 나오는 원래 곡'},
     {f:SITE+'beaconfall/bgm-autumn.mp3', n:'가을', d:'가을 계절 곡'},
@@ -99,7 +99,7 @@ var GAMES=[
     {f:SITE+'beaconfall/bgm-night.mp3', n:'밤 소리', d:'파도와 풀벌레 (환경음)'},
     {f:SITE+'beaconfall/bgm-rain.mp3', n:'빗소리', d:'비와 폭풍우 (환경음)'},
     {f:SITE+'beaconfall/bgm-storm.mp3', n:'폭풍우', d:'폭풍우 때 깔리는 낮은 패드와 천둥 곡'}]},
-  {id:'isleport', name:'Isleport', img:'../isleport.webp', url:SITE+'isleport/', tracks:[
+  {id:'isleport', name:'Isleport', img:SITE+'isleport.webp', url:SITE+'isleport/', tracks:[
     {f:SITE+'isleport/isleport-music.mp3', n:'항구의 하루', d:'기타와 피아노, 현악이 겹쳐지는 느긋한 곡'},
     {f:SITE+'isleport/isleport-music2.mp3', n:'항구의 저녁', d:'신스 패드와 피아노가 어우러진 느긋한 곡'},
     {f:SITE+'isleport/isleport-music3.mp3', n:'항구의 밤', d:'패드와 피아노, 유리 종소리가 넓게 퍼지는 차분한 느린 곡'},
