@@ -1,3 +1,4 @@
+.hci{width:1.15em;height:1.15em;vertical-align:-.22em;object-fit:contain;} .hci.big{width:30px;height:30px;vertical-align:middle;} .fd-i .hci{width:24px;height:24px;vertical-align:middle;} .cc-b .hci{width:20px;height:20px;vertical-align:middle;}
 /* games 사이트와 같은 모양의 허브 창(코인·투표·알림·달력·커뮤니티). games/index.html에서 뽑아 옴 */
 .game h2 .gl{width:44px; height:44px; flex:none; object-fit:contain;}
 .coinbar{display:flex; align-items:center; gap:14px; margin:-12px 0 26px; padding:12px 18px; border-radius:14px; border:1px solid var(--line); background:var(--panel);}
