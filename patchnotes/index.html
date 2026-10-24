@@ -53,6 +53,7 @@
   <div class="bar" id="bar"></div>
   <div id="list"></div>
 </div>
+<script src="https://frenchfries777mc.github.io/games/ff-pnsearch.js"></script>
 <script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261023c"></script>
 <script>
 (function(){
@@ -86,14 +87,14 @@ var all=[], sel='all', q='', shown=30, failed=0;
 function tr(n){ var t=lang!=='ko'&&n.tr&&(n.tr[lang]||(['zh','pt','ru','tr','it','pl','ar','nw'].indexOf(lang)>=0&&n.tr.en)); return {title:(t&&t.title)||n.title||'', items:(t&&t.items)||n.items||[]}; }
 function paintBar(){
   var h='<button type="button" class="chip'+(sel==='all'?' on':'')+'" data-k="all">'+esc(T.all)+'</button>'+SRC.map(function(s){ return '<button type="button" class="chip'+(sel===s.k?' on':'')+'" data-k="'+s.k+'">'+esc(s.k==='hub'?T.hubN:s.name)+'</button>'; }).join('')+
-    '<input class="srch" id="q" type="search" placeholder="'+esc(T.search)+'" value="'+esc(q)+'">';
+    '<input class="srch" id="q" type="search" placeholder="'+esc(lang==='ko'?'빌드 번호나 내용으로 검색':T.search)+'" value="'+esc(q)+'">';
   $('#bar').innerHTML=h;
   $('#q').oninput=function(){ q=this.value; shown=30; paintList(); };
   var bs=document.querySelectorAll('#bar .chip'); for(var i=0;i<bs.length;i++) bs[i].onclick=function(){ sel=this.getAttribute('data-k'); shown=30; paintBar(); paintList(); try{ history.replaceState(null,'','#'+sel); }catch(e){} };
   var el=$('#q'); }
 function paintList(){
   var box=$('#list'), ql=q.trim().toLowerCase();
-  var rows=all.filter(function(n){ return (sel==='all'||n.g===sel)&&(!ql||(n.t.title+' '+n.t.items.join(' ')+' '+n.build).toLowerCase().indexOf(ql)>=0); });
+  var rows=all.filter(function(n){ return (sel==='all'||n.g===sel)&&(!ql||(window.FFPN?FFPN.match({build:n.build,t:n.t,o:n.o},q):(n.t.title+' '+n.t.items.join(' ')+' '+n.build).toLowerCase().indexOf(ql)>=0)); });
   if(!rows.length){ box.innerHTML='<div class="'+(failed&&!all.length?'err':'empty')+'">'+esc(failed&&!all.length?T.err:T.empty)+'</div>'; return; }
   var out='', last='';
   rows.slice(0,shown).forEach(function(n){
@@ -105,7 +106,7 @@ function paintList(){
 }
 function load(){
   return Promise.all(SRC.map(function(s,si){ return fetch(s.url,{cache:'no-cache'}).then(function(r){ return r.ok?r.json():null; },function(){ return null; }).then(function(d){
-    if(!d){ failed++; return []; } return (d.notes||[]).map(function(n,i){ return {g:s.k,s:s,i:i,si:si,date:n.date||'',build:n.build||'',t:tr(n)}; }); }); }))
+    if(!d){ failed++; return []; } return (d.notes||[]).map(function(n,i){ return {g:s.k,s:s,i:i,si:si,date:n.date||'',build:n.build||'',t:tr(n),o:{title:n.title,items:n.items}}; }); }); }))
   .then(function(l){ all=[].concat.apply([],l).sort(function(a,b){ return (b.date>a.date?1:b.date<a.date?-1:0)||(a.si-b.si)||(a.i-b.i); }); paintList(); });
 }
 (function init(){
