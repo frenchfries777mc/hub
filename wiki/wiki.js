@@ -75,10 +75,13 @@ function fnv(s){ var h=0x811c9dc5; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(
 
 
 /* 화면 상태: sp = 'main' | 'recent' | null(게임 문서) · view = 'read' | 'edit' | 'hist' */
-var sb=null, me=null, admin=false, all=[], TR={}, names={}, game='stickseum', slug=null, sp='main', view='read', showOrig=false, query='', langSel=null, opened={};
+var sb=null, me=null, admin=false, dev=false, all=[], TR={}, names={}, game='stickseum', slug=null, sp='main', view='read', showOrig=false, query='', langSel=null, opened={};
 
 /* ---- 아주 작은 글 형식: ## 소제목, - 목록, 1. 순서 목록, **굵게** ---- */
 function inl(s,hl){ s=esc(s).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>'); return hl?mark(s,hl):s; }
+/* 정보 상자 값 안의 주소(github.io 등)는 눌러서 열 수 있는 링크로 */
+var URLRE=/\b(?:https?:\/\/)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:io|com|net|org|dev|app)(?:\/(?:[A-Za-z0-9\-._~:\/?#@!$*+,=%]|&amp;)*)?/gi;
+function lk(html){ return html.replace(/(^|>)([^<]*)/g,function(_,a,b){ return a+b.replace(URLRE,function(u){ var m=u.replace(/[.,;:!?=#]+$/,''), tail=u.slice(m.length); if(tail.charAt(0)==='='){ var q=/[?&][A-Za-z0-9_]+$/.exec(m); if(q){ m=m.slice(0,q.index); tail=u.slice(m.length); } } if(!/\./.test(m)) return u; var h=/^https?:\/\//i.test(m)?m:'https://'+m; return '<a href="'+h+'" target="_blank" rel="noopener noreferrer">'+m+'</a>'+tail; }); }); }
 function mark(html,q){ if(!q) return html; var e=esc(q).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); try{ return html.replace(new RegExp('(^|>)([^<]*)','g'),function(_,a,b){ return a+b.replace(new RegExp(e,'gi'),function(x){ return '<mark>'+x+'</mark>'; }); }); }catch(err){ return html; } }
 function render(text,hl){ var out='', list=null, para=[], heads=[], info=[];
   function fp(){ if(para.length){ out+='<p>'+para.join('<br>')+'</p>'; para=[]; } }
@@ -95,7 +98,7 @@ function render(text,hl){ var out='', list=null, para=[], heads=[], info=[];
 /* 정보 상자: 본문의 ':: 항목 = 값' 줄들을 오른쪽 상자로 */
 function ibox(title,info){ var img='', rows=[];
   info.forEach(function(r){ if(r[0].toLowerCase()==='image'){ var u=String(r[1]).trim(); if(/^img\/[a-z0-9_-]+\.(webp|png|jpg)$/.test(u)) img='<div class="ibi"><img src="'+u+'" alt="'+esc(title)+'" loading="lazy"></div>'; } else rows.push(r); });
-  return (img||rows.length)?'<aside class="ibox"><div class="ibh">'+esc(title)+'</div>'+img+(rows.length?'<table>'+rows.map(function(r){ return '<tr><th>'+inl(r[0])+'</th><td>'+inl(r[1])+'</td></tr>'; }).join('')+'</table>':'')+'</aside>':''; }
+  return (img||rows.length)?'<aside class="ibox"><div class="ibh">'+esc(title)+'</div>'+img+(rows.length?'<table>'+rows.map(function(r){ return '<tr><th>'+inl(r[0])+'</th><td>'+lk(inl(r[1]))+'</td></tr>'; }).join('')+'</table>':'')+'</aside>':''; }
 
 /* ---- 보이는 글 (번역이 원문과 맞으면 번역) ---- */
 function trOf(p){ if(lang==='ko'||lang==='gk') return null; var x=TR[p.game+'/'+p.slug]; if(!x||!x.t) return null; return x.h===fnv(p.title+'\n'+p.body)?x:'stale'; }
@@ -235,7 +238,7 @@ async function hist(p){
   rows.forEach(function(x,i){ var d=document.createElement('div'); d.className='hr';
     d.innerHTML='<div class="hm">'+esc(who(x.user_id))+' · '+esc(ago(x.created_at))+(i===0?' · <b>'+esc(t('cur'))+'</b>':'')+'</div><div class="acts"><button type="button" class="btn2 v">'+esc(t('view'))+'</button>'+(i&&me?'<button type="button" class="btn2 rs">'+esc(t('restore'))+'</button>':'')+'</div><div class="txt" style="display:none"></div>';
     d.querySelector('.v').onclick=function(){ var tx=d.querySelector('.txt'); if(tx.style.display==='none'){ var rr=render(x.body); tx.innerHTML='<p><b>'+esc(x.title)+'</b></p>'+ibox(x.title,rr.info)+rr.html; tx.style.display=''; } else tx.style.display='none'; };
-    var rb=d.querySelector('.rs'); if(rb) rb.onclick=async function(){ rb.disabled=true; var q=await sb.rpc('ff_wiki_save',{p_game:p.game, p_slug:p.slug, p_title:x.title, p_body:x.body}); if(q.error){ rb.disabled=false; rb.textContent=errText(q.error); return; } view='read'; await load(); };
+    var rb=d.querySelector('.rs'); if(rb) rb.onclick=async function(){ rb.disabled=true; var q=(dev||admin)?await sb.rpc('ff_wiki_revert',{p_id:x.id}):null; if(!q||(q.error&&/ff_wiki_revert/.test(String(q.error.message||'')))) q=await sb.rpc('ff_wiki_save',{p_game:p.game, p_slug:p.slug, p_title:x.title, p_body:x.body});   /* 되돌리기 함수가 서버에 아직 없으면 예전 저장 방식으로 */ if(q.error){ rb.disabled=false; rb.textContent=errText(q.error); return; } view='read'; await load(); };
     H.appendChild(d); });
 }
 async function del(p,b){ if(!b.dataset.s){ b.dataset.s=1; b.textContent=t('delSure'); return; } var q=await sb.from('ff_wiki').delete().eq('game',p.game).eq('slug',p.slug); if(q.error){ b.textContent=errText(q.error); return; } slug=null; view='read'; await load(); }
@@ -286,7 +289,7 @@ async function load(){
   if(r.error){ $('#page').innerHTML='<div class="e">'+esc(errText(r.error))+'</div>'; return; }
   all=r.data||[]; await paint();
 }
-async function checkAdmin(){ admin=false; if(!sb||!me) return; try{ var a=await sb.rpc('ff_is_admin'); admin=!!(a&&a.data===true); }catch(e){} }
+async function checkAdmin(){ admin=false; dev=false; if(!sb||!me) return; try{ var a=await sb.rpc('ff_is_admin'); admin=!!(a&&a.data===true); }catch(e){} try{ var d=await sb.rpc('ff_is_dev'); dev=!!(d&&d.data===true); }catch(e){} }
 async function start(){
   statics(); fromHash();
   var trP=(lang==='ko'||lang==='gk')?Promise.resolve():fetch('tr/'+(['zh','pt','ru','tr','it','pl','ar','nw'].indexOf(lang)>=0?'en':lang)+'.json',{cache:'no-cache'}).then(function(x){ return x.ok?x.json():{}; }).then(function(j){ TR=j||{}; }).catch(function(){});
