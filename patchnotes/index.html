@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://frenchfries777mc.github.io/games/ff-lang.js?v=20261024a"></script>
+<script src="https://frenchfries777mc.github.io/games/ff-lang.js?v=20261025a"></script>
 <style>
   :root{ --bg:#08090d; --panel:#10131b; --line:#222837; --text:#eef0f5; --dim:#8a93a6; --fry:#ffc93c; --fry2:#ff8a3d; --g0:#ff8fc2; --g1:#3ee0c4; --g2:#e8c25a; --g3:#ffae5a; --g4:#6aa8ff; }
   html[data-ff-theme=light]{ --bg:#f6f3ec; --panel:#ffffff; --line:#e2dccf; --text:#1f1b14; --dim:#6d6658; --g0:#b8326f; --g1:#0f8a77; --g2:#8a6c14; --g3:#a0600c; --g4:#1f5fbf; }
@@ -79,8 +79,7 @@ function detect(){ var c=[]; try{ var s=localStorage.getItem('arenaClashLang'); 
   for(var i=0;i<c.length;i++){ var k=String(c[i]).slice(0,2).toLowerCase(); if(LN.indexOf(k)>=0) return k; } return 'ko'; }
 var lang=detect(), T=U[lang];
 if(lang==='nw'){ document.title='Ministry of Truth: Corrections'; var h1=document.querySelector('h1'); if(h1) h1.innerHTML='Ministry of Truth: <b>Corrections</b>'; }
-var SRC=[{k:'hub',name:'허브',c:'--g0',url:'https://frenchfries777mc.github.io/games/patchnotes.json'},{k:'stickseum',name:'Stickseum',c:'--g1',url:'https://frenchfries777mc.github.io/games/stickseum/patchnotes.json'},
-         {k:'crownenvoy',name:'Crown Envoy',c:'--g2',url:'https://frenchfries777mc.github.io/games/crownenvoy/patchnotes.json'},{k:'beaconfall',name:'Beaconfall',c:'--g3',url:'https://frenchfries777mc.github.io/games/beaconfall/patchnotes.json'}];
+var SRC=(window.FF_REG||[]).map(function(e){ return {k:e.id,name:e.name,c:e.c,e:e}; });   /* 게임 목록은 games/ff-lang.js 의 FF_REG 한 곳에서 와요 */
 function $(s){ return document.querySelector(s); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 var all=[], sel='all', q='', shown=30, failed=0;
@@ -105,7 +104,7 @@ function paintList(){
   box.innerHTML=out; var m=$('#more'); if(m) m.onclick=function(){ shown+=30; paintList(); };
 }
 function load(){
-  return Promise.all(SRC.map(function(s,si){ return fetch(s.url,{cache:'no-cache'}).then(function(r){ return r.ok?r.json():null; },function(){ return null; }).then(function(d){
+  return Promise.all(SRC.map(function(s,si){ return window.FF_REG_NOTES(s.e).then(function(l){ var d=l?{notes:l}:null;
     if(!d){ failed++; return []; } return (d.notes||[]).map(function(n,i){ return {g:s.k,s:s,i:i,si:si,date:n.date||'',build:n.build||'',t:tr(n),o:{title:n.title,items:n.items}}; }); }); }))
   .then(function(l){ all=[].concat.apply([],l).sort(function(a,b){ return (b.date>a.date?1:b.date<a.date?-1:0)||(a.si-b.si)||(a.i-b.i); }); paintList(); });
 }
