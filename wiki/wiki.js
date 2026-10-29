@@ -297,6 +297,8 @@ async function start(){
   await Promise.all([trP, checkAdmin()]);
   await load();
   try{ FFAuth.onChange(async function(u){ me=u||null; await checkAdmin(); if(view!=='edit') paint(); }); }catch(e){}
+  /* 허브 일일 퀘스트 '위키 둘러보기': 로그인하고 위키를 10초 이상 보면 한 번 알려요 */
+  try{ setTimeout(function(){ if(sb&&me&&document.visibilityState!=='hidden') sb.rpc('ff_quest_ping',{p_kind:'wiki'}).then(function(){},function(){}); },10000); }catch(e){}
 }
 start();
 })();
