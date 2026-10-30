@@ -37,9 +37,11 @@
   h2 img{width:34px; height:34px; border-radius:8px; object-fit:cover;}
   h2 a{font-size:13px; font-weight:500; margin-left:auto;}
   .list{display:grid; gap:10px;}
-  .tr{display:grid; grid-template-columns:44px minmax(0,1fr) auto; gap:12px; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px 14px;}
+  .tr{display:grid; grid-template-columns:44px minmax(0,1fr) auto auto; gap:12px; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px 14px;}
   .tr.on{border-color:var(--fry); box-shadow:0 0 0 1px var(--fry) inset;}
   .pb{width:44px; height:44px; border-radius:50%; border:0; background:linear-gradient(135deg,var(--fry),var(--fry2)); color:#1a1206; font-size:18px; cursor:pointer; display:grid; place-items:center;}
+  .fv{background:none; border:0; font-size:22px; line-height:1; cursor:pointer; color:var(--dim); padding:4px 6px;} .fv.on{color:#ff5a7a;} .tr.hide,h2.hide,.list.hide{display:none;}
+  .favBar{margin:0 0 14px;} .favBar button{padding:8px 14px; border-radius:99px; border:1px solid var(--line); background:var(--panel); color:inherit; cursor:pointer; font-weight:700;} .favBar button.on{border-color:#ff5a7a; color:#ff5a7a;}
   .nm{font-weight:700;} .ds{color:var(--dim); font-size:14px;}
   .tm{color:var(--dim); font-size:13px; font-variant-numeric:tabular-nums; white-space:nowrap;}
   .bar{position:fixed; left:0; right:0; bottom:0; background:var(--panel); border-top:1px solid var(--line); padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px)); display:none;}
@@ -51,7 +53,7 @@
   .bar button{border:1px solid var(--line); background:none; color:var(--text); border-radius:8px; padding:5px 10px; cursor:pointer;}
   .bar button.on{border-color:var(--fry); color:var(--fry);}
   footer{color:var(--dim); font-size:13px; margin:36px 0 10px; text-align:center;}
-  @media (max-width:560px){ .tr{grid-template-columns:44px minmax(0,1fr);} .tm{grid-column:2;} .bar .in{grid-template-columns:minmax(0,1fr) auto;} .bar .t{grid-column:1/-1;} }
+  @media (max-width:560px){ .tr{grid-template-columns:44px minmax(0,1fr) auto;} .tm{grid-column:2;} .bar .in{grid-template-columns:minmax(0,1fr) auto;} .bar .t{grid-column:1/-1;} }
 </style>
 </head>
 <body>
@@ -181,14 +183,25 @@ var all=[], box=document.getElementById('games'), h='';
 GAMES.forEach(function(g){
   h+='<h2><img src="'+g.img+'" alt="">'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2><div class="list">';
   g.tracks.forEach(function(tk){ var i=all.length; all.push({f:tk.f,n:g.name+' · '+t(tk.n)});
-    h+='<div class="tr" id="tr'+i+'"><button class="pb" data-i="'+i+'" aria-label="'+esc(t('play'))+'">▶</button><div><div class="nm">'+esc(t(tk.n))+'</div><div class="ds">'+esc(t(tk.d))+'</div></div><span class="tm" id="tm'+i+'">–:––</span></div>'; });
+    h+='<div class="tr" id="tr'+i+'"><button class="pb" data-i="'+i+'" aria-label="'+esc(t('play'))+'">▶</button><div><div class="nm">'+esc(t(tk.n))+'</div><div class="ds">'+esc(t(tk.d))+'</div></div><span class="tm" id="tm'+i+'">–:––</span><button type="button" class="fv" data-i="'+i+'" aria-label="즐겨찾기" title="즐겨찾기">♡</button></div>'; });
   h+='</div>';
 });
 box.innerHTML=h;
+/* 즐겨찾는 곡: 하트를 눌러 두고 "♥ 내 곡만" 으로 따로 들어요 (이 기기에 저장돼요) */
+var FK='ff.music.fav', fav={}, favOnly=false; try{ fav=JSON.parse(localStorage.getItem(FK)||'{}')||{}; }catch(e){ fav={}; }
+function favSave(){ try{ localStorage.setItem(FK,JSON.stringify(fav)); }catch(e){} }
+function favPaint(){ all.forEach(function(tk,i){ var r=document.getElementById('tr'+i), f=!!fav[tk.f], b=r.querySelector('.fv'); b.classList.toggle('on',f); b.textContent=f?'♥':'♡'; r.classList.toggle('hide',favOnly&&!f); });
+  [].forEach.call(box.querySelectorAll('.list'),function(l){ var vis=l.querySelector('.tr:not(.hide)'); l.classList.toggle('hide',!vis); l.previousElementSibling.classList.toggle('hide',!vis); });
+  var fb=document.getElementById('favBtn'); if(fb){ fb.classList.toggle('on',favOnly); fb.textContent=favOnly?'♥ 내 곡만 보는 중':'♥ 내 곡만 보기'; } }
+var fbar=document.createElement('div'); fbar.className='favBar'; fbar.innerHTML='<button type="button" id="favBtn">♥ 내 곡만 보기</button>'; box.parentNode.insertBefore(fbar,box);
+fbar.querySelector('button').onclick=function(){ if(!favOnly&&!Object.keys(fav).some(function(k){ return fav[k]; })){ this.textContent='먼저 곡 오른쪽 ♡를 눌러 주세요'; return; } favOnly=!favOnly; favPaint(); };
+box.addEventListener('click',function(e){ var b=e.target.closest('.fv'); if(!b) return; var f=all[+b.getAttribute('data-i')].f; if(fav[f]) delete fav[f]; else fav[f]=1; favSave(); favPaint(); });
+favPaint();
 var au=new Audio(), cur=-1, loop=false; au.preload='none';
 var bar=document.getElementById('bar'), seek=document.getElementById('seek'), barT=document.getElementById('barT'), barTm=document.getElementById('barTm'), loopBtn=document.getElementById('loopBtn');
 function fmt(s){ if(!isFinite(s)) return '–:––'; s=Math.floor(s); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function mark(){ all.forEach(function(_,i){ var r=document.getElementById('tr'+i); r.classList.toggle('on',i===cur); r.querySelector('.pb').textContent=(i===cur&&!au.paused)?'❚❚':'▶'; }); }
+function nextIdx(i){ for(var k=1;k<=all.length;k++){ var j=(i+k)%all.length; if(!favOnly||fav[all[j].f]) return j; } return i; }
 function play(i){
   if(i===cur){ if(au.paused) au.play().catch(function(){}); else au.pause(); return; }
   cur=i; au.src=all[i].f; au.loop=loop; au.play().catch(function(){}); barT.textContent=all[i].n; bar.classList.add('show'); mark();
@@ -206,10 +219,10 @@ au.addEventListener('timeupdate',function(){ if(au.duration){ seek.value=Math.ro
     function fin(){ if(done) return; done=true; clearTimeout(tm); if(isFinite(a.duration)&&a.duration>0){ dur[f]=a.duration; show(i); } a.removeAttribute('src'); a.load(); next(); }
     var tm=setTimeout(fin,8000); a.addEventListener('loadedmetadata',fin); a.addEventListener('error',fin); a.src=f; }
   next(); next(); })();
-au.addEventListener('ended',function(){ if(!loop) play((cur+1)%all.length); });
+au.addEventListener('ended',function(){ if(!loop) play(nextIdx(cur)); });
 seek.addEventListener('input',function(){ if(au.duration) au.currentTime=seek.value/1000*au.duration; });
 loopBtn.addEventListener('click',function(){ loop=!loop; au.loop=loop; loopBtn.classList.toggle('on',loop); });
-document.getElementById('nextBtn').addEventListener('click',function(){ play((cur+1)%all.length); });
+document.getElementById('nextBtn').addEventListener('click',function(){ play(nextIdx(cur)); });
 })();
 </script>
 </body>
