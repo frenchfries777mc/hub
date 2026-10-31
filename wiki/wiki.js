@@ -6,14 +6,14 @@
 var LANGS=['ko','en','es','fr','de','ja','zh','pt','ru','tr','it','pl','ar','nw','gk','au','sg','em'], NAMES={ko:'한국어',en:'English',es:'Español',fr:'Français',de:'Deutsch',ja:'日本語',zh:"简体中文",pt:"Português (Brasil)",ru:"Русский",tr:"Türkçe",it:"Italiano",pl:"Polski",ar:"العربية",nw:"Newspeak",gk:"번역기 한국어",au:"Aurebesh",sg:"Standard Galactic",em:"😀💬",gk:"번역기 한국어"};
 var GAMES=(window.FF_REG||[]).filter(function(e){ return !e.hub && !e.nowiki; }).map(function(e){ return [e.id,e.name]; }).concat([['tools','Tools'],['educations','Educations'],['account','Community & Account'],['hub','Hub']]);   /* 게임은 games/ff-lang.js 의 FF_REG 에서 와요 */
 var U={
- ko:{hub:'허브',sub:'누구나 읽을 수 있고, 로그인하면 문서를 고치거나 새로 쓸 수 있다.',search:'위키 검색',loading:'불러오는 중…',pages:'글 목록',toc:'목차',newp:'＋ 새 글',
+ ko:{hub:'허브',sub:'누구나 읽을 수 있는 위키이다.',search:'위키 검색',loading:'불러오는 중…',pages:'글 목록',toc:'목차',newp:'＋ 새 글',
   edit:'✏️ 고치기',hist:'🕘 기록',del:'삭제',delSure:'정말 삭제할까요?',empty:'아직 문서가 없다.',nf:'문서를 찾지 못했다.',edited:'{0} 수정',seed:'처음 쓴 글',
   trNote:'번역본이다.',orig:'한국어 원문 보기',showTr:'번역 보기',koOnly:'이 문서는 최근에 고쳐져서 지금은 한국어 원문으로만 볼 수 있다.',editKo:'고치기는 한국어 원문으로 한다.',
   title:'제목',body:'내용',help:'## 소제목 · - 목록 · 1. 순서 목록 · **굵게** · :: 항목 = 값 (정보 상자)',prev:'미리보기',write:'쓰기',cancel:'취소',save:'저장',needT:'제목을 적어 주세요.',
   histT:'🕘 고친 기록',back:'← 글로 돌아가기',noHist:'아직 기록이 없다.',cur:'지금 버전',view:'보기',restore:'이 버전으로 되돌리기',
   res:'"{0}" 검색 결과 {1}개',noRes:'검색 결과가 없다.',pv:'이전 글',nx:'다음 글',fast:'너무 빨리 쓰고 있어요. 잠시 뒤에 다시 해 주세요.',err:'처리하지 못했어요. 잠시 뒤 다시 해 주세요.',
   justNow:'방금',min:'{0}분 전',hr:'{0}시간 전',day:'{0}일 전',lang:'언어',
-  nav:'둘러보기',main:'대문',recent:'최근 바뀜',random:'임의 문서',doc:'문서',special:'특수 문서',read:'읽기',edit:'고치기',hist:'기록 보기',idx:'문서 목록',newp:'＋ 새 글',newT:'새 글 쓰기',mainT:'Frenchfries777 위키',mainIntro:'Stickseum · Crown Envoy · Beaconfall · Isleport 공략과 Tools · Educations 사용법을 담은 위키이다. 누구나 읽을 수 있고, 로그인하면 문서를 고치거나 새로 쓸 수 있다.',colP:'문서',colD:'설명',hatG:'이 문서는 {0} 공략 문서이다. 다른 게임 문서는 왼쪽 메뉴에 있다.',recentIntro:'가장 최근에 고쳐진 문서부터 보여 준다.',count:'문서 {0}개',searchT:'검색'},
+  nav:'둘러보기',main:'대문',recent:'최근 바뀜',random:'임의 문서',doc:'문서',special:'특수 문서',read:'읽기',edit:'고치기',hist:'기록 보기',idx:'문서 목록',newp:'＋ 새 글',newT:'새 글 쓰기',mainT:'Frenchfries777 위키',mainIntro:'Stickseum · Crown Envoy · Beaconfall · Isleport 공략과 Tools · Educations 사용법을 담은 위키이다. 누구나 읽을 수 있다.',colP:'문서',colD:'설명',hatG:'이 문서는 {0} 공략 문서이다. 다른 게임 문서는 왼쪽 메뉴에 있다.',recentIntro:'가장 최근에 고쳐진 문서부터 보여 준다.',count:'문서 {0}개',searchT:'검색'},
  en:{hub:'Hub',sub:'Anyone can read it. Log in to fix a page or write a new one.',search:'Search the wiki',loading:'Loading…',pages:'Pages',toc:'Contents',newp:'＋ New page',
   edit:'✏️ Edit',hist:'🕘 History',del:'Delete',delSure:'Really delete?',empty:'No pages yet. Write the first one!',nf:'Page not found.',edited:'Edited {0}',seed:'Original page',
   trNote:'This is a translation.',orig:'Show the Korean original',showTr:'Show translation',koOnly:'This page was edited recently, so for now it is only available in the Korean original.',editKo:'Edits are made to the Korean original.',
@@ -136,7 +136,7 @@ function paintSide(){
     return '<details class="g-'+g[0]+'" data-g="'+g[0]+'"'+(op?' open':'')+'><summary>'+esc(gameName(g[0]))+'<span class="n">'+ps.length+'</span></summary><div class="sub">'+
       '<a class="idx'+(!sp&&!slug&&g[0]===game&&!query?' on':'')+'" href="#'+g[0]+'">'+esc(t('idx'))+'</a>'+
       ps.map(function(p){ return '<a href="#'+g[0]+'/'+esc(p.slug)+'"'+(!sp&&g[0]===game&&p.slug===slug&&!query?' class="on"':'')+'>'+esc(titleOf(p))+'</a>'; }).join('')+
-      '<button type="button" class="new" data-new="'+g[0]+'">'+esc(t('newp'))+'</button></div></details>'; }).join('')+'</div>';
+      '</div></details>'; }).join('')+'</div>';
   S.innerHTML=''; S.appendChild(logo); S.insertAdjacentHTML('beforeend',h);
   S.querySelectorAll('details').forEach(function(d){ d.addEventListener('toggle',function(){ opened[d.getAttribute('data-g')]=d.open; }); });
 }
@@ -144,9 +144,9 @@ function paintSide(){
 function paintTabs(kind){
   var L='', R='';
   if(kind==='page'){ L='<a class="on" href="'+hashNow()+'">'+esc(t('doc'))+'</a>';
-    R='<button type="button" data-v="read"'+(view==='read'?' class="on"':'')+'>'+esc(t('read'))+'</button><button type="button" data-v="edit"'+(view==='edit'?' class="on"':'')+'>'+esc(t('edit'))+'</button><button type="button" data-v="hist"'+(view==='hist'?' class="on"':'')+'>'+esc(t('hist'))+'</button>'+(admin?'<button type="button" class="dl" data-v="del">'+esc(t('del'))+'</button>':''); }
+    R=''; }
   else if(kind==='new') L='<a class="on" href="'+hashNow()+'">'+esc(t('newT'))+'</a>';
-  else if(kind==='game'){ L='<a class="on" href="#'+game+'">'+esc(t('idx'))+'</a>'; R='<button type="button" data-new="'+game+'">'+esc(t('newp'))+'</button>'; }
+  else if(kind==='game'){ L='<a class="on" href="#'+game+'">'+esc(t('idx'))+'</a>'; R=''; }
   else L='<a class="on" href="'+(query?'#':hashNow())+'">'+esc(kind==='main'?t('main'):t('special'))+'</a>';
   $('#tabsL').innerHTML=L; $('#tabsR').innerHTML=R;
 }
@@ -177,7 +177,7 @@ async function paint(){
   if(s.tr) note='<div class="note">'+esc(t('trNote'))+'<button type="button" data-orig="1">'+esc(t('orig'))+'</button></div>';
   else if(lang!=='ko'&&showOrig&&trOf(p)&&trOf(p)!=='stale') note='<div class="note"><button type="button" data-orig="0" style="margin:0">'+esc(t('showTr'))+'</button></div>';
   else if(s.stale) note='<div class="note">'+esc(t('koOnly'))+'</div>';
-  var body=r.html.replace(/<\/span><\/h3>/g,'</span><span class="se">[<button type="button" data-v="edit">'+esc(t('edit'))+'</button>]</span></h3>');
+  var body=r.html;
   if(r.heads.length>1){ var toc='<div class="toc"><h4>'+esc(t('toc'))+'</h4><ol>'+r.heads.map(function(h){ return '<li><a href="#" data-h="'+h[0]+'">'+esc(h[1])+'</a></li>'; }).join('')+'</ol></div>', k=body.indexOf('<h3');
     body=k<0?body+toc:body.slice(0,k)+toc+body.slice(k); }
   A.className='page g-'+game;
@@ -260,8 +260,7 @@ function paintSearch(){
 function clearQ(){ query=''; $('#q').value=''; }
 document.addEventListener('click',function(e){
   var b=e.target.closest('[data-v]'); if(b){ var v=b.getAttribute('data-v'), p=curPage(); if(!p) return;
-    if(v==='del') return del(p,b); if(v==='edit'&&!me) return login(); view=v; paint(); window.scrollTo(0,0); return; }
-  b=e.target.closest('[data-new]'); if(b){ clearQ(); if(!me) return login(); sp=null; game=b.getAttribute('data-new'); slug=null; setHash(); paintSide(); document.body.setAttribute('data-g',game); document.body.classList.remove('navOpen'); edit(null); window.scrollTo(0,0); return; }
+    if(v!=='read') return; view=v; paint(); window.scrollTo(0,0); return; }
   b=e.target.closest('[data-rand]'); if(b){ if(!all.length) return; var p=all[Math.floor(Math.random()*all.length)]; clearQ(); location.hash='#'+p.game+'/'+p.slug; return; }
   b=e.target.closest('[data-orig]'); if(b){ showOrig=b.getAttribute('data-orig')==='1'; paint(); return; }
   b=e.target.closest('.toc a[data-h]'); if(b){ e.preventDefault(); var h=document.getElementById(b.getAttribute('data-h')); if(h) h.scrollIntoView({behavior:'smooth',block:'start'}); return; }
