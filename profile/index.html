@@ -568,7 +568,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
     if(U&&SB){ try{ var pr=await SB.from('profiles').select('display_name,username').eq('id',U.id).limit(1); if(pr&&pr.data&&pr.data[0]) NICK=pr.data[0].display_name||pr.data[0].username||''; }catch(e){}
       if(window.FFBorders){ owned=await FFBorders.mine(SB); cur=await FFBorders.equipped(SB,U.id); } }
     me(); borders(); acct(); }
-  var s=document.createElement('script'); s.src='https://frenchfries777mc.github.io/games/ff-borders.js?v=20261103f'; s.onload=load; document.head.appendChild(s);
+  var s=document.createElement('script'); s.src='https://frenchfries777mc.github.io/games/ff-borders.js?v=20261103g'; s.onload=load; document.head.appendChild(s);
   function wire(){ if(window.FFAuth){ FFAuth.ready.then(load); FFAuth.onChange(load); } else setTimeout(wire,200); } wire();
   } if(document.readyState==='complete') boot(); else window.addEventListener('load',boot);
   })();
@@ -577,6 +577,6 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span><nav class="fl"><a href="../lounge/">라운지</a><a href="../settings/">설정</a><a href="../patchnotes/">패치노트</a><a href="../wiki/">위키</a><a href="../music/">음악</a><a href="../community/#feedback">피드백</a><a href="https://github.com/frenchfries777mc" target="_blank" rel="noopener">GitHub</a></nav></footer>
 </div>
 <script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261103g"></script>
-<script src="https://frenchfries777mc.github.io/games/hub.js?v=20261103f"></script>
+<script src="https://frenchfries777mc.github.io/games/hub.js?v=20261103g"></script>
 </body>
 </html>

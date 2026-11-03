@@ -523,7 +523,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
        disp:'화면',theme:'테마',dark:'🌙 다크',light:'☀️ 라이트',yellow:'🟡 노랑',red:'🔴 빨강',blue:'🔵 파랑',size:'글자 크기',s:'작게',m:'보통',l:'크게',xl:'아주 크게',
        lang:'언어',langN:'바꾸면 페이지를 다시 불러와요.',acct:'계정',needLogin:'로그인하면 닉네임, 아이디, 비밀번호를 바꿀 수 있어요.',login:'로그인',
        note:'알림',noteN:'이 브라우저에만 적용돼요. 끈 종류는 알림 창과 팝업에 나오지 않아요.',
-       comment:'댓글',commentD:'내 글에 댓글이 달렸을 때',like:'좋아요',likeD:'내 글을 좋아할 때',mention:'언급',mentionD:'글이나 채팅에서 나를 불렀을 때',
+       comment:'댓글',commentD:'내 글에 댓글이 달렸을 때',like:'좋아요',likeD:'내 글을 좋아할 때',mention:'언급',mentionD:'글이나 채팅에서 나를 불렀을 때',friendpost:'친구 새 글',friendpostD:'친구가 게시판에 글을 올렸을 때',
        friend:'친구 요청',friendD:'친구 요청을 받았을 때',dm:'메시지',dmD:'친구가 메시지를 보냈을 때',coin:'Hub Coin 선물',coinD:'친구가 코인을 보냈을 때',
        admin:'관리자 답변',adminD:'보낸 피드백이나 신고를 관리자가 확인했을 때',toast:'화면 팝업',toastD:'새 알림이 오면 화면 아래에 잠깐 알려 줘요',
        perf:'최적화',perfN:'이 브라우저에만 적용돼요. 허브와 모든 게임이 같은 값을 읽고, 바꾸면 게임을 다시 열 때 적용돼요.',low:'저사양 모드',lowD:'효과, 그림자, 파티클을 줄이고 프레임을 30으로 제한해요',fx:'효과 품질',fxD:'파티클, 그림자, 화면 효과의 양',fxhigh:'높음',fxmid:'보통',fxlow:'낮음',fps:'프레임 제한',fpsD:'낮추면 배터리와 열이 줄어요',fps0:'제한 없음',fps60:'60',fps30:'30'},
@@ -531,7 +531,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
        disp:'Display',theme:'Theme',dark:'🌙 Dark',light:'☀️ Light',yellow:'🟡 Yellow',red:'🔴 Red',blue:'🔵 Blue',size:'Text size',s:'Small',m:'Normal',l:'Large',xl:'Extra large',
        lang:'Language',langN:'The page reloads when you change it.',acct:'Account',needLogin:'Log in to change your nickname, username and password.',login:'Log in',
        note:'Notifications',noteN:'Applies to this browser only. Kinds you turn off do not show in the bell or as pop-ups.',
-       comment:'Comments',commentD:'When someone comments on my post',like:'Likes',likeD:'When someone likes my post',mention:'Mentions',mentionD:'When someone mentions me in a post or chat',
+       comment:'Comments',commentD:'When someone comments on my post',like:'Likes',likeD:'When someone likes my post',mention:'Mentions',mentionD:'When someone mentions me in a post or chat',friendpost:'Friend posts',friendpostD:'When a friend posts on the board',
        friend:'Friend requests',friendD:'When I get a friend request',dm:'Messages',dmD:'When a friend sends me a message',coin:'Hub Coin gifts',coinD:'When a friend sends me coins',
        admin:'Admin replies',adminD:'When the admin has seen my feedback or report',toast:'Pop-ups',toastD:'Show a short pop-up at the bottom for new notifications',perf:"Optimization",perfN:"Applies to this browser only. The hub and every game read the same values; changes take effect the next time a game opens.",low:"Low-spec mode",lowD:"Cuts effects, shadows and particles and caps the frame rate at 30",fx:"Effect quality",fxD:"Amount of particles, shadows and screen effects",fxhigh:"High",fxmid:"Medium",fxlow:"Low",fps:"Frame limit",fpsD:"Lower it to save battery and heat",fps0:"No limit",fps60:'60',fps30:'30'},
    es:{back:'Volver',vlang:"Idiomas ficticios",sub:'Cambia el aspecto, el idioma, la cuenta y las notificaciones en un solo lugar. Se aplica al inicio, los juegos, educaciones y herramientas.',
@@ -574,7 +574,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   };
   var L=document.documentElement.lang||'ko'; if(!T[L]) L='ko'; var t=Object.assign({},T.ko,T[L]);
   var LANGS=[['ko','한국어'],['en','English'],['es','Español'],['fr','Français'],['de','Deutsch'],['ja','日本語'],['zh','简体中文'],['pt','Português (Brasil)'],['ru','Русский'],['tr','Türkçe'],['it','Italiano'],['pl','Polski'],['ar','العربية'],['nw','Newspeak'],['gk','번역기 한국어'],['au','Aurebesh'],['sg','Standard Galactic'],['em','😀💬']];
-  var KINDS=['comment','like','mention','friend','dm','coin','admin'];
+  var KINDS=['comment','like','mention','friendpost','friend','dm','coin','admin'];
   function $(i){ return document.getElementById(i); }
   function esc(x){ return String(x).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   $('stBackT').textContent=t.back; $('stSub').textContent=t.sub;
@@ -619,6 +619,6 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span><nav class="fl"><a href="../lounge/">라운지</a><a href="./">설정</a><a href="../patchnotes/">패치노트</a><a href="../wiki/">위키</a><a href="../music/">음악</a><a href="../community/#feedback">피드백</a><a href="https://github.com/frenchfries777mc" target="_blank" rel="noopener">GitHub</a></nav></footer>
 </div>
 <script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261103g"></script>
-<script src="https://frenchfries777mc.github.io/games/hub.js?v=20261103f"></script>
+<script src="https://frenchfries777mc.github.io/games/hub.js?v=20261103g"></script>
 </body>
 </html>
