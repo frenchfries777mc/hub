@@ -54,7 +54,7 @@
   <div class="bar" id="bar"></div>
   <div id="list"></div>
 </div>
-<script src="https://frenchfries777mc.github.io/games/ff-pnsearch.js?v=20261025c"></script>
+<script src="https://frenchfries777mc.github.io/games/ff-pnsearch.js?v=20261103a"></script>
 <script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261103j"></script>
 <script>
 (function(){
@@ -102,7 +102,7 @@ function paintList(){
     out+='<article class="card" style="--c:var('+n.s.c+')"><div class="h"><span class="g">'+esc(n.g==='hub'?(lang==='ko'?'허브':T.hubN):n.s.name)+'</span>'+(n.build?'<span>'+esc(n.build)+'</span>':'')+'<span>'+esc(T.items.replace('{0}',n.t.items.length))+'</span></div>'+
       '<h3>'+esc(n.t.title)+'</h3><ul>'+n.t.items.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></article>'; });
   if(rows.length>shown) out+='<button type="button" class="more" id="more">'+esc(T.more)+'</button>';
-  box.innerHTML=out; var m=$('#more'); if(m) m.onclick=function(){ shown+=30; paintList(); };
+  box.innerHTML=out; if(window.FFPN) FFPN.highlight(box,q); var m=$('#more'); if(m) m.onclick=function(){ shown+=30; paintList(); };
 }
 function load(){
   return Promise.all(SRC.map(function(s,si){ return window.FF_REG_NOTES(s.e).then(function(l){ var d=l?{notes:l}:null;
