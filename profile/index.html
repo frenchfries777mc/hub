@@ -501,27 +501,42 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   html[data-ff-theme=light] #ffaAcct.inl .pv{background:#fff; color:#1f1b14; border-color:#d9d2c3;}
   </style>
   <style>
-  .bd-g{display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:10px; margin-top:8px;}
-  .bd{border:1px solid var(--line); background:transparent; color:var(--text); border-radius:12px; padding:12px 6px 8px; font:inherit; font-size:12.5px; font-weight:700; cursor:pointer; text-align:center;}
-  .bd i{display:block; width:46px; height:46px; margin:0 auto 8px; border-radius:12px; background:#1b2030 center/60% no-repeat;}
-  .bd.on{outline:2px solid var(--fry); background:rgba(255,196,61,.1);}
-  .bd.lock{opacity:.38; cursor:default;} .bd small{display:block; font-weight:600; color:var(--dim); font-size:11px; margin-top:2px;}
-  .bd-h{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
-  .bd-h .ffa-btn{padding:6px 12px; font-size:13px;}
-  .bd-m{min-height:20px; font-size:13px; color:var(--dim); margin-top:8px;}
+  .pf{max-width:980px; margin:26px 0 70px; display:grid; grid-template-columns:300px 1fr; gap:22px; align-items:start;}
+  .pf-me{position:sticky; top:84px; text-align:center; padding:30px 20px 24px; border-radius:24px; border:1px solid var(--line); background:radial-gradient(ellipse at 50% 0%, rgba(255,196,61,.16), transparent 62%), var(--panel);}
+  .pf-av{width:176px; height:176px; margin:0 auto 6px; display:block; image-rendering:auto;}
+  .pf-nm{font-family:'Oswald','Noto Sans KR',sans-serif; font-size:27px; font-weight:700; margin:6px 0 2px; word-break:break-all;}
+  .pf-id{color:var(--dim); font-size:14px;} .pf-bn{margin-top:14px; font-size:13px; color:var(--fry); font-weight:800; min-height:18px;}
+  .pf-me .ffa-btn{margin-top:16px; width:100%; justify-content:center;}
+  .pf-main{display:grid; gap:20px; min-width:0;}
+  .pf-tabs{display:flex; gap:6px; border-bottom:1px solid var(--line);}
+  .pf-tabs button{background:none; border:0; border-bottom:3px solid transparent; color:var(--dim); font:inherit; font-size:16px; font-weight:800; padding:10px 16px; cursor:pointer; margin-bottom:-1px;}
+  .pf-tabs button.on{color:var(--text); border-bottom-color:var(--fry);}
+  .pf-pane{display:none;} .pf-pane.on{display:block;}
+  .pf-chips{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+  .pf-chips button{border:1px solid var(--line); background:transparent; color:var(--dim); border-radius:99px; padding:6px 13px; font:inherit; font-size:13.5px; font-weight:700; cursor:pointer;}
+  .pf-chips button.on{background:var(--fry); color:#1a1206; border-color:transparent;}
+  .pf-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:10px;}
+  .pf-b{position:relative; border:1px solid var(--line); background:#0d1018; border-radius:16px; padding:2px 4px 10px; color:var(--text); font:inherit; font-size:13px; font-weight:800; text-align:center; cursor:pointer;}
+  .pf-b img{width:100%; display:block;} .pf-b small{display:block; color:var(--dim); font-weight:600; font-size:11.5px; margin-top:2px;}
+  .pf-b.on{border-color:var(--fry); box-shadow:0 0 0 2px rgba(255,196,61,.35);} .pf-b.lock img{opacity:.5; filter:grayscale(.5);} .pf-b.lock{cursor:default;}
+  .pf-m{min-height:20px; font-size:13.5px; color:var(--dim); margin-top:12px;}
+  .pf-box{border:1px solid var(--line); border-radius:20px; padding:22px 24px; background:var(--panel);}
+  @media(max-width:760px){ .pf{grid-template-columns:1fr;} .pf-me{position:static;} }
+  html[data-ff-theme=light] .pf-b{background:#faf8f3;}
   </style>
-  <section class="hero st-h">
+  <section class="hero st-h" style="padding-bottom:6px">
     <div class="hero-t">
     <a class="st-back" id="stBack" href="../">← <span data-notr id="stBackT">허브</span></a>
-    <span class="eyebrow">Profile</span>
     <h1><span>프로필</span></h1>
-    <p>닉네임, 아이디, 비밀번호, 프로필 테두리를 여기서 바꿔요. 테두리는 각 게임에서 사면 생겨요.</p>
     </div>
   </section>
-  <section class="stwrap" id="stBody">
-    <div class="st-c" id="account"></div>
-    <div class="st-c" id="borders"></div>
-    <div class="st-c" id="cardc"></div>
+  <section class="pf" id="pf">
+    <aside class="pf-me" id="pfMe"></aside>
+    <div class="pf-main">
+      <div class="pf-tabs"><button type="button" class="on" data-t="bd">테두리</button><button type="button" data-t="ac">계정 정보</button></div>
+      <div class="pf-pane on" id="pane-bd"></div>
+      <div class="pf-pane" id="pane-ac"><div class="pf-box" id="account"></div></div>
+    </div>
   </section>
   <script>
   (function(){ function boot(){
@@ -529,34 +544,39 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   function esc(x){ return String(x).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   (function(){ var r=''; try{ r=document.referrer||''; }catch(e){} if(/^https:\/\/frenchfries777mc\.github\.io\//.test(r)&&r.indexOf('/profile/')<0) $('stBack').href=r; })();
   var GN={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',isleport:'Isleport',tumblecrown:'Tumble Crown',vowkeep:'Vowkeep',dummyparty:'Dummy Party'};
-  function acct(){ var A=window.FFAuth, u=A&&A.user&&A.user(), box=$('account');
-    if(!u){ box.innerHTML='<h2>내 계정</h2><p style="margin:0 0 12px">로그인하면 닉네임과 테두리를 바꿀 수 있어요.</p><button type="button" class="ffa-btn" id="stLogin">🍟 로그인</button>'; $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
-    box.innerHTML='<h2>내 계정</h2><div id="stAcct"></div>'; A.openAcct($('stAcct')); }
-  var owned=null, cur='';
-  async function borders(){ var A=window.FFAuth, u=A&&A.user&&A.user(), box=$('borders'), B=window.FFBorders;
-    if(!u||!B){ box.innerHTML='<h2>프로필 테두리</h2><p>로그인하면 가진 테두리가 보여요.</p>'; return; }
-    var sb=A.client&&A.client(); if(!sb){ box.innerHTML='<h2>프로필 테두리</h2><p>잠시 후 다시 열어 주세요.</p>'; return; }
-    if(owned===null){ owned=await B.mine(sb); cur=await B.equipped(sb,u.id); }
-    var h='<div class="bd-h"><h2 style="margin:0">프로필 테두리</h2><button type="button" class="ffa-btn" id="bdOff">테두리 벗기</button></div><p>게임 상점에서 산 테두리만 쓸 수 있어요. 안 산 건 흐리게 보여요. ('+owned.length+'/'+B.LIST.length+')</p>';
-    Object.keys(GN).forEach(function(g){ var l=B.LIST.filter(function(b){ return b.game===g; }); if(!l.length) return;
-      h+='<h3>'+GN[g]+'</h3><div class="bd-g">'+l.map(function(b){ var has=owned.indexOf(b.id)>=0; return '<button type="button" class="bd'+(has?'':' lock')+(cur===b.id?' on':'')+'" data-b="'+b.id+'"><i style="'+B.css(b.id)+'"></i>'+esc(b.ko)+'<small>'+(has?(cur===b.id?'끼는 중':'가짐'):'🔒 '+GN[g]+'에서')+'</small></button>'; }).join('')+'</div>'; });
-    h+='<div class="bd-m" id="bdM"></div>'; box.innerHTML=h;
-    async function set(id){ var m=$('bdM'); try{ await B.equip(sb,id); cur=id; m.textContent=id?'끼웠어요!':'벗었어요.'; borders(); }catch(e){ m.textContent='지금은 못 바꿔요. 잠시 후 다시 해 주세요.'; } }
+  var owned=null, cur='', filt='all', U=null, SB=null, NICK='';
+  [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(b){ b.onclick=function(){ [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(x){ x.classList.toggle('on',x===b); }); $('pane-bd').classList.toggle('on',b.getAttribute('data-t')==='bd'); $('pane-ac').classList.toggle('on',b.getAttribute('data-t')==='ac'); }; });
+  function acct(){ var A=window.FFAuth, box=$('account');
+    if(!U){ box.innerHTML='<p style="margin:0 0 12px;color:var(--dim)">로그인하면 닉네임과 비밀번호를 바꿀 수 있어요.</p><button type="button" class="ffa-btn" id="stLogin">🍟 로그인</button>'; $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
+    box.innerHTML='<div id="stAcct"></div>'; A.openAcct($('stAcct')); }
+  function me(){ var B=window.FFBorders, box=$('pfMe');
+    if(!U){ box.innerHTML='<div class="pf-nm">로그인이 필요해요</div><button type="button" class="ffa-btn" id="meLogin">🍟 로그인</button>'; $('meLogin').onclick=function(){ FFAuth.openLogin(); }; return; }
+    var ic=B?B.preview(cur&&B.get(cur)?cur:'',352):'', nm=NICK||U.email||'';
+    box.innerHTML='<img class="pf-av" alt="" src="'+(ic||'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==')+'"><div class="pf-nm">'+esc(nm)+'</div><div class="pf-bn">'+(cur&&B?esc(B.name(cur,'ko')):'테두리 없음')+'</div><button type="button" class="ffa-btn" id="meCard">내 프로필 카드 보기</button>';
+    $('meCard').onclick=function(){ FFAuth.openProfile&&FFAuth.openProfile(U.id); }; }
+  function borders(){ var B=window.FFBorders, box=$('pane-bd');
+    if(!U||!B){ box.innerHTML='<div class="pf-box"><p style="margin:0">로그인하면 가진 테두리가 보여요.</p></div>'; return; }
+    var h='<div class="pf-chips"><button type="button" data-g="all" class="'+(filt==='all'?'on':'')+'">전체</button><button type="button" data-g="mine" class="'+(filt==='mine'?'on':'')+'">가진 것 '+owned.length+'</button>'+Object.keys(GN).map(function(g){ return '<button type="button" data-g="'+g+'" class="'+(filt===g?'on':'')+'">'+GN[g]+'</button>'; }).join('')+'<button type="button" id="bdOff" style="margin-left:auto">테두리 벗기</button></div>';
+    var l=B.LIST.filter(function(b){ return filt==='all'||(filt==='mine'?owned.indexOf(b.id)>=0:b.game===filt); });
+    h+='<div class="pf-grid">'+l.map(function(b){ var has=owned.indexOf(b.id)>=0; return '<button type="button" class="pf-b'+(has?'':' lock')+(cur===b.id?' on':'')+'" data-b="'+b.id+'"><img alt="" src="'+B.preview(b.id,224)+'">'+esc(b.ko)+'<small>'+(has?(cur===b.id?'끼는 중':'가짐'):'🔒 '+GN[b.game]+'에서')+'</small></button>'; }).join('')+'</div><div class="pf-m" id="bdM">'+(l.length?'':'아직 가진 테두리가 없어요. 게임 상점에서 사 보세요.')+'</div>';
+    box.innerHTML=h;
+    async function set(id){ var m=$('bdM'); try{ await B.equip(SB,id); cur=id; me(); borders(); $('bdM').textContent=id?'끼웠어요!':'벗었어요.'; }catch(e){ m.textContent='지금은 못 바꿔요. 잠시 후 다시 해 주세요.'; } }
     $('bdOff').onclick=function(){ set(''); };
-    [].forEach.call(box.querySelectorAll('.bd'),function(b){ b.onclick=function(){ if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(b.getAttribute('data-b')).game]+'에서 사면 생겨요.'; return; } set(b.getAttribute('data-b')); }; }); }
-  function cardc(){ var A=window.FFAuth, u=A&&A.user&&A.user(), box=$('cardc'); if(!u){ box.style.display='none'; return; } box.style.display='';
-    box.innerHTML='<h2>프로필 카드</h2><p style="margin:0 0 12px">다른 사람에게 보이는 내 카드를 열어요.</p><button type="button" class="ffa-btn" id="cdOpen">내 프로필 카드 보기</button>'; $('cdOpen').onclick=function(){ A.openProfile&&A.openProfile(u.id); }; }
-  function all(){ owned=null; acct(); borders(); cardc(); }
-  all();
-  function wire(){ if(window.FFAuth){ FFAuth.ready.then(all); FFAuth.onChange(all); } else setTimeout(wire,200); } wire();
-  var s=document.createElement('script'); s.src='https://frenchfries777mc.github.io/games/ff-borders.js?v=20261103c'; s.onload=borders; document.head.appendChild(s);
+    [].forEach.call(box.querySelectorAll('[data-g]'),function(b){ b.onclick=function(){ filt=b.getAttribute('data-g'); borders(); }; });
+    [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
+  async function load(){ var A=window.FFAuth; U=A&&A.user&&A.user(); SB=A&&A.client&&A.client(); owned=[]; cur=''; NICK='';
+    if(U&&SB){ try{ var pr=await SB.from('profiles').select('display_name,username').eq('id',U.id).limit(1); if(pr&&pr.data&&pr.data[0]) NICK=pr.data[0].display_name||pr.data[0].username||''; }catch(e){}
+      if(window.FFBorders){ owned=await FFBorders.mine(SB); cur=await FFBorders.equipped(SB,U.id); } }
+    me(); borders(); acct(); }
+  var s=document.createElement('script'); s.src='https://frenchfries777mc.github.io/games/ff-borders.js?v=20261103d'; s.onload=load; document.head.appendChild(s);
+  function wire(){ if(window.FFAuth){ FFAuth.ready.then(load); FFAuth.onChange(load); } else setTimeout(wire,200); } wire();
   } if(document.readyState==='complete') boot(); else window.addEventListener('load',boot);
   })();
   </script>
 
   <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span><nav class="fl"><a href="../lounge/">라운지</a><a href="../settings/">설정</a><a href="../patchnotes/">패치노트</a><a href="../wiki/">위키</a><a href="../music/">음악</a><a href="../community/#feedback">피드백</a><a href="https://github.com/frenchfries777mc" target="_blank" rel="noopener">GitHub</a></nav></footer>
 </div>
-<script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261103c"></script>
+<script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261103d"></script>
 <script src="https://frenchfries777mc.github.io/games/hub.js?v=20261103b"></script>
 </body>
 </html>
