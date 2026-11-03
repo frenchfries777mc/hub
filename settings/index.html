@@ -588,7 +588,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
     [].forEach.call($('language').querySelectorAll('[data-lg]'),function(x){ var l=x.getAttribute('data-lg'); x.classList.toggle('on',l===CUR); x.onclick=function(){ if(l===CUR) return; try{ localStorage.setItem('arenaClashLang',l); }catch(e){} try{ if(window.FFLang) FFLang.set(l); }catch(e){} location.reload(); }; }); }
   function acct(){ var A=window.FFAuth, u=A&&A.user&&A.user(); var box=$('account');
     if(!u){ box.innerHTML='<h2>'+esc(t.acct)+'</h2><div class="st-login"><p style="margin:0">'+esc(t.needLogin)+'</p><button type="button" class="ffa-btn" id="stLogin">🍟 '+esc(t.login)+'</button></div>'; $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
-    box.innerHTML='<h2>'+esc(t.acct)+'</h2><div id="stAcct"></div>'; A.openAcct($('stAcct')); }
+    box.innerHTML='<h2>'+esc(t.acct)+'</h2><p style="margin:0 0 12px">닉네임·아이디·비밀번호·프로필 테두리는 프로필 페이지에서 바꿔요.</p><a class="ffa-btn" href="../profile/">프로필 설정 열기</a>'; }
   function notes(){ var P=(window.FFAuth&&FFAuth.notePrefs)?FFAuth.notePrefs.get():{};
     var rows=KINDS.concat(['toast']).map(function(k){ return '<div class="st-t"><div><b>'+esc(t[k])+'</b><span>'+esc(t[k+'D'])+'</span></div><button type="button" class="st-sw'+(P[k]===false?'':' on')+'" data-k="'+k+'" role="switch" aria-checked="'+(P[k]===false?'false':'true')+'" aria-label="'+esc(t[k])+'"></button></div>'; }).join('');
     $('notify').innerHTML='<h2>'+esc(t.note)+'</h2>'+rows+'<p>'+esc(t.noteN)+'</p>';
@@ -609,7 +609,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
 
   <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span><nav class="fl"><a href="../lounge/">라운지</a><a href="./">설정</a><a href="../patchnotes/">패치노트</a><a href="../wiki/">위키</a><a href="../music/">음악</a><a href="../community/#feedback">피드백</a><a href="https://github.com/frenchfries777mc" target="_blank" rel="noopener">GitHub</a></nav></footer>
 </div>
-<script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261103b"></script>
+<script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261103c"></script>
 <script src="https://frenchfries777mc.github.io/games/hub.js?v=20261103b"></script>
 </body>
 </html>
