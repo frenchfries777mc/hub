@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://frenchfries777.com/games/ff-lang.js?v=20261103a"></script>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261104d" defer></script>
 <style>
   :root{ --bg:#08090d; --panel:#10131b; --line:#222837; --text:#eef0f5; --dim:#8a93a6; --fry:#ffc93c; --fry2:#ff8a3d; }
   html[data-ff-theme=light]{ --bg:#f6f3ec; --panel:#ffffff; --line:#e2dccf; --text:#1f1b14; --dim:#6d6658; }
@@ -201,6 +202,7 @@ function favPaint(){ all.forEach(function(tk,i){ var r=document.getElementById('
   var fb=document.getElementById('favBtn'); if(fb){ fb.classList.toggle('on',favOnly); fb.textContent=favOnly?'♥ 내 곡만 보는 중':'♥ 내 곡만 보기'; } }
 var fbar=document.createElement('div'); fbar.className='favBar'; fbar.innerHTML='<button type="button" id="favBtn">♥ 내 곡만 보기</button>'; box.parentNode.insertBefore(fbar,box);
 fbar.querySelector('button').onclick=function(){ if(!favOnly&&!Object.keys(fav).some(function(k){ return fav[k]; })){ this.textContent='먼저 곡 오른쪽 ♡를 눌러 주세요'; return; } favOnly=!favOnly; favPaint(); };
+box.addEventListener('click',function(e){ var d=e.target.closest('a.dl'); if(!d||d.target==='_blank'||!window.FFAuth) return; e.preventDefault(); Promise.resolve(FFAuth.ready).then(function(){ if(FFAuth.user()){ var a=document.createElement('a'); a.href=d.href; a.download=d.getAttribute('download')||''; document.body.appendChild(a); a.click(); a.remove(); } else FFAuth.openLogin(); }); });
 box.addEventListener('click',function(e){ var b=e.target.closest('.fv'); if(!b) return; var f=all[+b.getAttribute('data-i')].f; if(fav[f]) delete fav[f]; else fav[f]=1; favSave(); favPaint(); });
 favPaint();
 var au=new Audio(), cur=-1, loop=false; au.preload='none';
