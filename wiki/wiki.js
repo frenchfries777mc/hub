@@ -1,5 +1,5 @@
 /* Frenchfries777 Wiki — Stickseum · Crown Envoy · Beaconfall · Isleport 공략 위키
-   글은 Supabase ff_wiki (원문 = 한국어), 고친 기록은 ff_wiki_hist, 저장은 ff_wiki_save (supabase-ff-wiki.sql).
+   글은 pages.json (원문 = 한국어, wiki-src/mk_pages.py로 만들어요). 읽기 전용이라 DB는 쓰지 않아요.
    번역은 tr/<언어>.json 에 있어요: { "게임/slug": { h: 원문 해시, t: 제목, b: 본문 } }.
    원문이 고쳐져서 해시가 달라지면 번역 대신 한국어 원문을 보여 줘요. 번역을 다시 만들면 h 를 새 원문으로 계산해요 (fnv 아래). */
 (function(){
@@ -283,10 +283,11 @@ function statics(){
   langSel=sel;
 }
 async function load(){
-  if(!sb){ $('#page').innerHTML='<div class="e">'+esc(t('err'))+'</div>'; return; }
-  var r=await sb.from('ff_wiki').select('game,slug,title,sort,body,updated_by,updated_at').order('sort').limit(500);
-  if(r.error){ $('#page').innerHTML='<div class="e">'+esc(errText(r.error))+'</div>'; return; }
-  all=r.data||[]; await paint();
+  /* 글은 코드 파일(pages.json)에서 읽어요. DB(Supabase)는 쓰지 않아요 */
+  var rows=null;
+  try{ var x=await fetch('pages.json',{cache:'no-cache'}); if(x.ok) rows=await x.json(); }catch(e){}
+  if(!rows||!rows.length){ $('#page').innerHTML='<div class="e">'+esc(t('err'))+'</div>'; return; }
+  all=rows; await paint();
 }
 async function checkAdmin(){ admin=false; dev=false; if(!sb||!me) return; try{ var a=await sb.rpc('ff_is_admin'); admin=!!(a&&a.data===true); }catch(e){} try{ var d=await sb.rpc('ff_is_dev'); dev=!!(d&&d.data===true); }catch(e){} }
 async function start(){
