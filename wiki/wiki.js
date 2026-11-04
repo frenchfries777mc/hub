@@ -150,7 +150,7 @@ function paintTabs(kind){
   else L='<a class="on" href="'+(query?'#':hashNow())+'">'+esc(kind==='main'?t('main'):t('special'))+'</a>';
   $('#tabsL').innerHTML=L; $('#tabsR').innerHTML=R;
 }
-var TI='https://frenchfries777mc.github.io/tools/icons/ai/';
+var TI='https://frenchfries777.com/tools/icons/ai/';
 var ICO={'account/lounge':['img/lounge/patchnotes.svg','img/lounge/gallery.svg','img/lounge/music.svg','img/lounge/prototypes.svg','img/lounge/github.svg','img/lounge/ai.svg'],'account/music-room':['img/lounge/music.svg'],'tools/ff777-models':[TI+'tarius.svg',TI+'lectus.svg',TI+'premus.svg']};
 function icoStrip(g,s){ var a=ICO[g+'/'+s]; return a?'<div class="ico">'+a.map(function(u){ return '<img src="'+u+'" alt="" width="56" height="56" loading="lazy">'; }).join('')+'</div>':''; }
 function head(title,cls){ return '<div class="ph"><h1>'+esc(title)+'</h1><span class="lg"></span></div>'; }
