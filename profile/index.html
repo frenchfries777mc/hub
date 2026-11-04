@@ -533,8 +533,9 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   <section class="pf" id="pf">
     <aside class="pf-me" id="pfMe"></aside>
     <div class="pf-main">
-      <div class="pf-tabs"><button type="button" class="on" data-t="bd">테두리</button><button type="button" data-t="ac">계정 정보</button></div>
-      <div class="pf-pane on" id="pane-bd"></div>
+      <div class="pf-tabs"><button type="button" class="on" data-t="ph">프로필 사진</button><button type="button" data-t="bd">테두리</button><button type="button" data-t="ac">계정 정보</button></div>
+      <div class="pf-pane on" id="pane-ph"></div>
+      <div class="pf-pane" id="pane-bd"></div>
       <div class="pf-pane" id="pane-ac"><div class="pf-box" id="account"></div></div>
     </div>
   </section>
@@ -544,16 +545,29 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   function esc(x){ return String(x).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   (function(){ var r=''; try{ r=document.referrer||''; }catch(e){} if(/^https:\/\/frenchfries777mc\.github\.io\//.test(r)&&r.indexOf('/profile/')<0) $('stBack').href=r; })();
   var GN={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',isleport:'Isleport',tumblecrown:'Tumble Crown',vowkeep:'Vowkeep',dummyparty:'Dummy Party'};
-  var owned=null, cur='', filt='all', U=null, SB=null, NICK='';
-  [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(b){ b.onclick=function(){ [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(x){ x.classList.toggle('on',x===b); }); $('pane-bd').classList.toggle('on',b.getAttribute('data-t')==='bd'); $('pane-ac').classList.toggle('on',b.getAttribute('data-t')==='ac'); }; });
+  var owned=null, cur='', filt='all', U=null, SB=null, NICK='', PK=null, PIMG=null, PSTATS={}, pfilt='all';
+  [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(b){ b.onclick=function(){ [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(x){ x.classList.toggle('on',x===b); }); $('pane-ph').classList.toggle('on',b.getAttribute('data-t')==='ph'); $('pane-bd').classList.toggle('on',b.getAttribute('data-t')==='bd'); $('pane-ac').classList.toggle('on',b.getAttribute('data-t')==='ac'); }; });
   function acct(){ var A=window.FFAuth, box=$('account');
     if(!U){ box.innerHTML='<p style="margin:0 0 12px;color:var(--dim)">로그인하면 닉네임과 비밀번호를 바꿀 수 있어요.</p><button type="button" class="ffa-btn" id="stLogin">🍟 로그인</button>'; $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
     box.innerHTML='<div id="stAcct"></div>'; A.openAcct($('stAcct')); }
   function me(){ var B=window.FFBorders, box=$('pfMe');
     if(!U){ box.innerHTML='<div class="pf-nm">로그인이 필요해요</div><button type="button" class="ffa-btn" id="meLogin">🍟 로그인</button>'; $('meLogin').onclick=function(){ FFAuth.openLogin(); }; return; }
-    var ic=B?B.preview(cur&&B.get(cur)?cur:'',352):'', nm=NICK||U.email||'';
+    var ic=B?B.preview(cur&&B.get(cur)?cur:'',352,PIMG):'', nm=NICK||U.email||'';
     box.innerHTML='<img class="pf-av" alt="" src="'+(ic||'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==')+'"><div class="pf-nm">'+esc(nm)+'</div><div class="pf-bn">'+(cur&&B?esc(B.name(cur,'ko')):'테두리 없음')+'</div><button type="button" class="ffa-btn" id="meCard">내 프로필 카드 보기</button>';
     $('meCard').onclick=function(){ FFAuth.openProfile&&FFAuth.openProfile(U.id); }; }
+  var PG=[['all','전체'],['site','사이트'],['stk','Stickseum'],['ce','Crown Envoy'],['bf','Beaconfall'],['ip','Isleport'],['dp','Dummy Party'],['vk','Vowkeep']];
+  function loadPhoto(){ return new Promise(function(res){ PIMG=null; if(!PK||!window.FFProfile) return res(); var im=new Image(); im.crossOrigin='anonymous'; im.onload=function(){ PIMG=im; res(); }; im.onerror=function(){ res(); }; im.src=FFProfile.avatarUrl(PK); }); }
+  function photos(){ var P=window.FFProfile, box=$('pane-ph');
+    if(!U){ box.innerHTML='<div class="pf-box"><p style="margin:0">로그인하면 프로필 사진을 고를 수 있어요.</p></div>'; return; }
+    if(!P||!P.avatars){ box.innerHTML='<div class="pf-box"><p style="margin:0">불러오는 중이에요...</p></div>'; return; }
+    var h='<div class="pf-chips">'+PG.map(function(g){ return '<button type="button" data-pg="'+g[0]+'" class="'+(pfilt===g[0]?'on':'')+'">'+g[1]+'</button>'; }).join('')+'<button type="button" id="phOff" style="margin-left:auto">기본 사진으로</button></div>';
+    var l=P.avatars.filter(function(x){ return x.kind==='free'&&(pfilt==='all'||(pfilt==='site'?!x.grp:x.grp===pfilt)); });
+    h+='<div class="pf-grid">'+l.map(function(x){ var lk=P.t2lock&&P.t2lock(x.id,PSTATS); return '<button type="button" class="pf-b ph'+(lk?' lock':'')+(PK===x.id?' on':'')+'" data-p="'+esc(x.id)+'"><img alt="" loading="lazy" src="'+esc(P.avatarUrl(x.id))+'">'+esc(x.n.ko||x.n.en)+'<small>'+(lk?'🔒 아직 없어요':(PK===x.id?'쓰는 중':''))+'</small></button>'; }).join('')+'</div><div class="pf-m" id="phM"></div>';
+    box.innerHTML=h;
+    async function setP(id){ var m=$('phM'); try{ var r=await SB.rpc('ff_avatar_set',{p_id:id}); if(r&&r.error) throw r.error; PK=id; try{ window.dispatchEvent(new CustomEvent('ff-avatar',{detail:{pick:id}})); }catch(e){} await loadPhoto(); me(); photos(); $('phM').textContent=id?'프로필 사진을 바꿨어요!':'기본 사진으로 돌렸어요.'; }catch(e){ m.textContent='지금은 못 바꿔요. 잠시 후 다시 해 주세요.'; } }
+    $('phOff').onclick=function(){ setP(null); };
+    [].forEach.call(box.querySelectorAll('[data-pg]'),function(b){ b.onclick=function(){ pfilt=b.getAttribute('data-pg'); photos(); }; });
+    [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ if(b.classList.contains('lock')){ $('phM').textContent='이 사진은 그 스킨을 가지면 쓸 수 있어요.'; return; } setP(b.getAttribute('data-p')); }; }); }
   function borders(){ var B=window.FFBorders, box=$('pane-bd');
     if(!U||!B){ box.innerHTML='<div class="pf-box"><p style="margin:0">로그인하면 가진 테두리가 보여요.</p></div>'; return; }
     var h='<div class="pf-chips"><button type="button" data-g="all" class="'+(filt==='all'?'on':'')+'">전체</button><button type="button" data-g="mine" class="'+(filt==='mine'?'on':'')+'">가진 것 '+owned.length+'</button>'+Object.keys(GN).map(function(g){ return '<button type="button" data-g="'+g+'" class="'+(filt===g?'on':'')+'">'+GN[g]+'</button>'; }).join('')+'<button type="button" id="bdOff" style="margin-left:auto">테두리 벗기</button></div>';
@@ -564,11 +578,15 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
     $('bdOff').onclick=function(){ set(''); };
     [].forEach.call(box.querySelectorAll('[data-g]'),function(b){ b.onclick=function(){ filt=b.getAttribute('data-g'); borders(); }; });
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
+  var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777mc.github.io/games/ff-profile.js?v=20261104a'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
   async function load(){ var A=window.FFAuth; U=A&&A.user&&A.user(); SB=A&&A.client&&A.client(); owned=[]; cur=''; NICK='';
     if(U&&SB){ try{ var pr=await SB.from('profiles').select('display_name,username').eq('id',U.id).limit(1); if(pr&&pr.data&&pr.data[0]) NICK=pr.data[0].display_name||pr.data[0].username||''; }catch(e){}
-      if(window.FFBorders){ owned=await FFBorders.mine(SB); cur=await FFBorders.equipped(SB,U.id); } }
-    me(); borders(); acct(); }
-  var s=document.createElement('script'); s.src='https://frenchfries777mc.github.io/games/ff-borders.js?v=20261103f'; s.onload=load; document.head.appendChild(s);
+      if(window.FFBorders){ owned=await FFBorders.mine(SB); cur=await FFBorders.equipped(SB,U.id); }
+      try{ var ap=await SB.from('ff_avatar').select('pick').eq('user_id',U.id).limit(1); PK=(ap&&!ap.error&&ap.data&&ap.data[0]&&ap.data[0].pick)||null; }catch(e){}
+      try{ var ps=await SB.from('profiles').select('stats').eq('id',U.id).limit(1); PSTATS=(ps&&ps.data&&ps.data[0]&&ps.data[0].stats)||{}; }catch(e){}
+      await libP(); await loadPhoto(); }
+    me(); photos(); borders(); acct(); }
+  var s=document.createElement('script'); s.src='https://frenchfries777mc.github.io/games/ff-borders.js?v=20261104a'; s.onload=load; document.head.appendChild(s);
   function wire(){ if(window.FFAuth){ FFAuth.ready.then(load); FFAuth.onChange(load); } else setTimeout(wire,200); } wire();
   } if(document.readyState==='complete') boot(); else window.addEventListener('load',boot);
   })();
@@ -576,7 +594,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
 
   <footer><span>Made by Frenchfries777 with Claude AI</span> <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span><nav class="fl"><a href="../lounge/">라운지</a><a href="../settings/">설정</a><a href="../patchnotes/">패치노트</a><a href="../wiki/">위키</a><a href="../music/">음악</a><a href="../community/#feedback">피드백</a><a href="https://github.com/frenchfries777mc" target="_blank" rel="noopener">GitHub</a></nav></footer>
 </div>
-<script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261104b"></script>
+<script src="https://frenchfries777mc.github.io/games/ff-auth.js?v=20261104a"></script>
 <script src="https://frenchfries777mc.github.io/games/hub.js?v=20261104b"></script>
 </body>
 </html>
