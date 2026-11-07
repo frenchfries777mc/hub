@@ -23,7 +23,7 @@
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);}
   body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif; font-size:16px; line-height:1.6; min-height:100vh; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
   html{background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(217,180,95,.10), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(255,77,94,.08), transparent 60%), radial-gradient(ellipse 800px 600px at -10% 90%, rgba(31,74,165,.12), transparent 60%); background-attachment:fixed;}
-  .wrap{max-width:1440px; margin:0 auto; padding:0 clamp(22px,4vw,56px);}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 22px;}
   header{display:flex; align-items:center; padding:26px 0 0; gap:8px;}
   .logo{display:flex; align-items:center; gap:10px; font-family:'Oswald',sans-serif; font-weight:600; font-size:20px; letter-spacing:.04em; color:var(--text); text-decoration:none;}
   .logo .fry{width:34px; height:34px; border-radius:9px; display:grid; place-items:center; font-size:20px; background:linear-gradient(135deg,var(--fry),var(--fry2)); box-shadow:0 6px 18px rgba(255,160,60,.25);}
@@ -73,9 +73,10 @@
   html[data-ff-theme=light] header .right nav a{color:var(--text);text-shadow:none;} html[data-ff-theme=light] .hero .btn:not(.pri),html[data-ff-theme=light] .hero a.ghost{background:rgba(255,255,255,.88);color:var(--text);border-color:var(--line);}
   header{gap:8px;} header .right{flex:0 0 auto; display:flex; align-items:center;} header nav{white-space:nowrap;} header .right nav a{color:#fff!important; opacity:.92; text-decoration:none; font-size:15px; margin-left:18px; text-shadow:0 1px 8px rgba(0,0,0,.8);} header nav a:hover{color:#fff;}
   .swr{display:flex; align-items:center; gap:8px;} .srx-btn{background:rgba(16,19,27,.8); backdrop-filter:blur(8px); color:var(--text); border:1px solid var(--line); border-radius:99px; width:38px; height:38px; display:inline-grid; place-items:center; cursor:pointer; font-size:15px; flex:0 0 auto;} .srx-btn:hover{border-color:var(--fry);}
-  .tb{display:inline-flex; align-items:center; gap:2px; margin-left:16px; padding:3px; background:rgba(16,19,27,.8); backdrop-filter:blur(8px); border:1px solid var(--line); border-radius:12px; position:relative;}
+  .tb{display:inline-flex; align-items:center; gap:2px; margin-left:16px; padding:3px; background:transparent; border:1px solid var(--fry); border-radius:12px; position:relative;}
   .tb [data-ff-account],.tb [data-ff-account] .ffa-wrap{display:contents;} .tb .ffa-chip,.tb .ffa-btn,.tb .ffa-set,.tb .ffa-hub{display:none!important;}
   .tb .cchip{margin-left:0;}
+  .tb .cc-b,.tb .ffa-bell,.tb .ffa-vote{color:var(--text)!important;}
   .tb .cc-b,.tb .ffa-bell,.tb .ffa-vote{background:transparent!important; border:0!important; margin:0!important; border-radius:9px!important; padding:6px 10px!important;} .tb .cc-b:hover,.tb .ffa-bell:hover,.tb .ffa-vote:hover{background:rgba(217,180,95,.12)!important;}
   .auth{display:flex; gap:12px; margin:26px 0 0; flex-wrap:wrap;} .auth[hidden]{display:none;}
   .auth button{font:inherit; font-weight:700; font-size:16px; padding:12px 28px; border-radius:99px; cursor:pointer; border:1px solid transparent; background:linear-gradient(90deg,var(--fry),var(--fry2)); color:#1c1405;}
@@ -147,7 +148,7 @@
   .ui .wi{margin-bottom:var(--sec);} .ui .rk,.ui .news{margin-bottom:var(--sec);}
   #annBar{margin-top:14px;} .hero .onl{margin-top:18px;}
   .cm-f button{background:var(--panel); color:var(--dim); border:1px solid var(--line); border-radius:99px; padding:6px 14px; font:inherit; font-size:14px; cursor:pointer;} .cm-f button.on{border-color:var(--fry); color:var(--fry);}
-  .wrap{max-width:none; padding:0 clamp(22px,5vw,110px);}
+  .wrap{max-width:1120px; padding:0 22px;}
   .ui .two{gap:clamp(22px,2.4vw,44px);}
   .dock{margin-top:auto; padding:0 0 clamp(18px,3vh,36px);} .dock .two{display:grid; grid-template-columns:1fr 1fr; gap:clamp(16px,2vw,32px);} @media(max-width:760px){ .dock .two{grid-template-columns:1fr;} }
   .dock .wi{margin:0;} .dock .sh{margin:0 0 6px; font-size:clamp(20px,1.8vw,26px); text-shadow:0 2px 8px rgba(0,0,0,.8);} .dock .wi-sub{margin:0 0 10px; color:#dfe4ef; text-shadow:0 1px 8px rgba(0,0,0,.9); font-size:14.5px;}
