@@ -326,7 +326,7 @@ html[data-ff-theme=light] .srx .g3{color:#a0600c;}
 .cm-thm{align-self:center; font-size:18px; font-weight:800; color:var(--dim); padding:0 6px;}
 /* rich look for hub windows (coin, vote, notification, calendar, community) */
 html[data-ff-theme] .hn-b,html[data-ff-theme] .cc-dd,html[data-ff-theme] .mn-box,html[data-ff-theme] .cal-tip{background:var(--bg)!important;border:1px solid var(--fry)!important;border-left:8px solid var(--fry)!important;border-radius:16px!important;box-shadow:0 10px 30px rgba(0,0,0,.3)!important;color:var(--text)}
-html[data-ff-theme] .hn-b::after,html[data-ff-theme] .cc-dd::after{content:'';position:absolute;left:22px;bottom:0;width:70px;height:3px;background:var(--fry);pointer-events:none}
+html[data-ff-theme] .hn-b::after,html[data-ff-theme] .cc-dd::after{display:none!important}
 html[data-ff-theme] .hn-b{position:relative;padding-bottom:26px}
 html[data-ff-theme] .hn-h{font-family:'Oswald','Noto Sans KR',sans-serif;text-transform:uppercase;color:var(--text)}
 html[data-ff-theme] .hn-h::before{content:'';display:inline-block;width:8px;height:.9em;background:var(--fry);margin-right:10px;vertical-align:-.08em}
