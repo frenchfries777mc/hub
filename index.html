@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://frenchfries777.com/">
 <meta property="og:type" content="website"><meta property="og:site_name" content="Frenchfries777"><meta property="og:title" content="Frenchfries777 Hub"><meta property="og:description" content="Frenchfries777의 허브예요. 브라우저에서 바로 하는 게임, 놀면서 배우는 교육 게임, 직접 만든 도구와 공략 위키, 커뮤니티, 라운지를 한곳에서 만나요."><meta property="og:url" content="https://frenchfries777.com/"><meta property="og:image" content="https://frenchfries777.com/games/og/hub.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://frenchfries777.com/games/og/hub.jpg">
-<meta name="theme-color" content="#08090d">
+<meta name="theme-color" content="#0e0e0e">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="icon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
@@ -18,11 +18,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="hubui.css?v=2">
 <style>
-  :root{ --bg:#08090d; --panel:#10131b; --line:#222837; --text:#eef0f5; --dim:#8a93a6; --fry:#ffc93c; --fry2:#ff8a3d; }
+  :root{ --bg:#0e0e0e; --panel:#171717; --line:#2e2b25; --text:#ece6d8; --dim:#a39c8c; --fry:#d9b45f; --fry2:#b8923a; }
   *{box-sizing:border-box;}
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);}
   body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif; font-size:16px; line-height:1.6; min-height:100vh; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
-  html{background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(255,201,60,.10), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(255,77,94,.08), transparent 60%), radial-gradient(ellipse 800px 600px at -10% 90%, rgba(31,74,165,.12), transparent 60%); background-attachment:fixed;}
+  html{background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(217,180,95,.10), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(255,77,94,.08), transparent 60%), radial-gradient(ellipse 800px 600px at -10% 90%, rgba(31,74,165,.12), transparent 60%); background-attachment:fixed;}
   .wrap{max-width:1440px; margin:0 auto; padding:0 clamp(22px,4vw,56px);}
   header{display:flex; align-items:center; padding:26px 0 0; gap:8px;}
   .logo{display:flex; align-items:center; gap:10px; font-family:'Oswald',sans-serif; font-weight:600; font-size:20px; letter-spacing:.04em; color:var(--text); text-decoration:none;}
@@ -61,18 +61,28 @@
   .hero p{margin:20px 0 0; max-width:34em; font-size:clamp(16px,1.8vw,20px); color:#dfe4ef; text-shadow:0 1px 10px rgba(0,0,0,.85);}
   footer{margin:0; padding:20px 0 22px; color:#cfd5e3; font-size:13.5px; display:flex; flex-wrap:wrap; gap:6px 14px; text-shadow:0 1px 8px rgba(0,0,0,.9);} footer a{color:#cfd5e3;}
   @media(max-width:700px){ .bg::after{background:linear-gradient(180deg,rgba(8,9,13,.55),rgba(8,9,13,.6));} }
+  /* light (white) theme: the photos stay, a white veil makes black text readable */
+  html[data-ff-theme=light] .bg::after{background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.74) 55%,rgba(255,255,255,.5) 100%), linear-gradient(0deg,rgba(255,255,255,.88),rgba(255,255,255,0) 40%);}
+  @media(max-width:700px){ html[data-ff-theme=light] .bg::after{background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.84));} }
+  html[data-ff-theme=light] .sw,html[data-ff-theme=light] .srx-btn,html[data-ff-theme=light] .dock .wi-go{background:rgba(255,255,255,.88);}
+  html[data-ff-theme=light] .dock .sh,html[data-ff-theme=light] .dock .wi-sub{text-shadow:none;color:var(--text);}
+  html[data-ff-theme=light] .dock .wi-sub{color:var(--dim);}
+  html[data-ff-theme=light] body .hero [class*=eyebrow],html[data-ff-theme=light] body .hero .mono,html[data-ff-theme=light] body .hero .by,html[data-ff-theme=light] body header .right nav a,html[data-ff-theme=light] body header .right nav a:hover{color:var(--text)!important;text-shadow:none!important;}
+  html[data-ff-theme=light] body .auth button.alt{background:rgba(255,255,255,.9)!important;color:var(--text)!important;border:1px solid var(--line)!important;}
+  html[data-ff-theme=light] .hero h1{text-shadow:none;} html[data-ff-theme=light] .hero p{color:var(--text);text-shadow:none;} html[data-ff-theme=light] .eyebrow{color:var(--text);text-shadow:none;}
+  html[data-ff-theme=light] header .right nav a{color:var(--text);text-shadow:none;} html[data-ff-theme=light] .hero .btn:not(.pri),html[data-ff-theme=light] .hero a.ghost{background:rgba(255,255,255,.88);color:var(--text);border-color:var(--line);}
   header{gap:8px;} header .right{flex:0 0 auto; display:flex; align-items:center;} header nav{white-space:nowrap;} header .right nav a{color:#fff!important; opacity:.92; text-decoration:none; font-size:15px; margin-left:18px; text-shadow:0 1px 8px rgba(0,0,0,.8);} header nav a:hover{color:#fff;}
   .swr{display:flex; align-items:center; gap:8px;} .srx-btn{background:rgba(16,19,27,.8); backdrop-filter:blur(8px); color:var(--text); border:1px solid var(--line); border-radius:99px; width:38px; height:38px; display:inline-grid; place-items:center; cursor:pointer; font-size:15px; flex:0 0 auto;} .srx-btn:hover{border-color:var(--fry);}
   .tb{display:inline-flex; align-items:center; gap:2px; margin-left:16px; padding:3px; background:rgba(16,19,27,.8); backdrop-filter:blur(8px); border:1px solid var(--line); border-radius:12px; position:relative;}
   .tb [data-ff-account],.tb [data-ff-account] .ffa-wrap{display:contents;} .tb .ffa-chip,.tb .ffa-btn,.tb .ffa-set,.tb .ffa-hub{display:none!important;}
   .tb .cchip{margin-left:0;}
-  .tb .cc-b,.tb .ffa-bell,.tb .ffa-vote{background:transparent!important; border:0!important; margin:0!important; border-radius:9px!important; padding:6px 10px!important;} .tb .cc-b:hover,.tb .ffa-bell:hover,.tb .ffa-vote:hover{background:rgba(255,201,60,.12)!important;}
+  .tb .cc-b,.tb .ffa-bell,.tb .ffa-vote{background:transparent!important; border:0!important; margin:0!important; border-radius:9px!important; padding:6px 10px!important;} .tb .cc-b:hover,.tb .ffa-bell:hover,.tb .ffa-vote:hover{background:rgba(217,180,95,.12)!important;}
   .auth{display:flex; gap:12px; margin:26px 0 0; flex-wrap:wrap;} .auth[hidden]{display:none;}
   .auth button{font:inherit; font-weight:700; font-size:16px; padding:12px 28px; border-radius:99px; cursor:pointer; border:1px solid transparent; background:linear-gradient(90deg,var(--fry),var(--fry2)); color:#1c1405;}
   .auth button.alt{background:rgba(16,19,27,.72); backdrop-filter:blur(8px); color:var(--text); border-color:rgba(255,255,255,.3);}
   @media(max-width:960px){ header nav{display:none;} }
   @media(max-width:520px){ .tb{margin-left:8px;} .cc-dd{position:fixed; left:12px; right:12px; top:70px; width:auto;} }
-  :root{--sec:48px; --gap:22px; --fs-sh:28px; --fs-h3:17px; --panel:#10131b;}
+  :root{--sec:48px; --gap:22px; --fs-sh:28px; --fs-h3:17px; --panel:#171717;}
   .onl{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; margin-top:18px; font-size:14.5px; color:var(--dim);} .onl:empty{display:none;} .onl>b{color:var(--text);}
   .wi{margin:0 0 56px;} .wi-sub{color:var(--dim); margin:-6px 0 12px;}
   .wi-go{display:flex; align-items:center; gap:16px; padding:18px 22px; border-radius:16px; background:var(--panel); border:1px solid var(--line); color:var(--text); text-decoration:none; transition:border-color .15s, transform .15s;} .wi-go:hover{border-color:var(--fry); transform:translateY(-2px);}
@@ -104,9 +114,9 @@
   .cm-gal.n1{grid-template-columns:1fr;} .cm-gal.n2,.cm-gal.n4{grid-template-columns:repeat(2,1fr);} .cm-gal.n3{grid-template-columns:repeat(3,1fr);} .cm-gal.n1 img{aspect-ratio:auto; max-height:560px; object-fit:contain;} .cm-gal.n2 img,.cm-gal.n3 img,.cm-gal.n4 img{aspect-ratio:1; height:auto;}
   .cm-gal img{width:100%; max-height:420px; object-fit:cover; border-radius:10px; display:block; border:1px solid var(--line); background:#0b0d13;}
   .cm-cimg img{display:block; width:240px; max-width:100%; height:auto; object-fit:contain; max-height:260px; border-radius:9px; margin-top:6px;} .cm-bub.only .cm-cimg img{margin-top:0;} .cm-bub.only{padding:5px;}
-  .nw.g0{border-top:3px solid var(--fry,#ffc93c);} .nw.g0 .ng{color:var(--fry,#ffc93c);}
+  .nw.g0{border-top:3px solid var(--fry,#d9b45f);} .nw.g0 .ng{color:var(--fry,#d9b45f);}
   #annBar:empty{display:none;} #annBar{display:flex; flex-direction:column; gap:8px; margin:6px 0 4px;}
-  .ann{display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; padding:11px 40px 11px 14px; border-radius:12px; position:relative; font-size:15px; border:1px solid rgba(255,196,61,.35); background:linear-gradient(135deg,rgba(255,201,60,.14),rgba(255,138,61,.10));}
+  .ann{display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; padding:11px 40px 11px 14px; border-radius:12px; position:relative; font-size:15px; border:1px solid rgba(217,180,95,.35); background:linear-gradient(135deg,rgba(217,180,95,.14),rgba(255,138,61,.10));}
   .ann.ev{border-color:rgba(125,255,155,.35); background:linear-gradient(135deg,rgba(125,255,155,.12),rgba(63,224,197,.08));}
   .ann .ak{font-weight:800; white-space:nowrap;} .ann .ab{flex:1; min-width:160px; word-break:break-word;} .ann .al{color:var(--fry); font-weight:700; text-decoration:none; white-space:nowrap;} .ann .ae{color:var(--dim); font-size:13px; white-space:nowrap;}
   .ann .ax{position:absolute; top:6px; right:8px; background:none; border:0; color:var(--dim); font-size:20px; cursor:pointer; line-height:1;} .ann .ax:hover{color:#fff;}
@@ -127,7 +137,7 @@
   .wk.g1 .gn{color:#3fe0c5;} .wk.g2 .gn{color:#f2dc94;} .wk.g3 .gn{color:#f3e4b0;}
   .rkt{width:100%; border-collapse:collapse; font-size:14.5px;} .rkt th{color:var(--dim); font-size:12.5px; font-weight:700; text-align:right; padding:4px 6px;} .rkt th:nth-child(2){text-align:left;}
   .rkt td{padding:7px 6px; border-top:1px solid var(--line); text-align:right; white-space:nowrap;} .rkt td:nth-child(2){text-align:left; max-width:160px; overflow:hidden; text-overflow:ellipsis;} .rkt td:first-child{font-weight:800; color:var(--dim); width:34px;}
-  .rkt tr.t1 td:first-child{color:#ffd36b;} .rkt tr.t2 td:first-child{color:#d8dee9;} .rkt tr.t3 td:first-child{color:#e0a36b;} .rkt tr.me td{background:rgba(255,196,61,.10);} .rkt .pt{font-weight:800; color:var(--fry);}
+  .rkt tr.t1 td:first-child{color:#ffd36b;} .rkt tr.t2 td:first-child{color:#d8dee9;} .rkt tr.t3 td:first-child{color:#e0a36b;} .rkt tr.me td{background:rgba(217,180,95,.10);} .rkt .pt{font-weight:800; color:var(--fry);}
   .rk-me{margin-top:8px; font-size:13.5px; color:var(--dim);}
   .sh{font-size:var(--fs-sh); margin:var(--sec) 0 8px; display:flex; align-items:center; gap:12px;}
   .sh::before{content:''; width:5px; height:1.05em; border-radius:2px; background:linear-gradient(180deg,var(--fry),var(--fry2)); flex:0 0 auto;}
@@ -144,6 +154,7 @@
   .dock .wi-go{background:rgba(10,12,18,.78); backdrop-filter:blur(10px);}
   .hero{padding-bottom:clamp(20px,3vh,40px);}
 </style>
+<link rel="stylesheet" href="https://frenchfries777.com/games/ff-rich.css?v=1">
 </head>
 <body data-root="https://frenchfries777.com/games/" data-hub="">
 <div class="bg" aria-hidden="true"><img class="s" src="img/beaconfall.webp" alt=""><img class="s" src="img/stickseum.webp" alt=""><img class="s" src="img/planetsearch.webp" alt=""><img class="s" src="img/crown-envoy.webp" alt=""><img class="s" src="img/blocks.webp" alt=""><img class="s" src="img/isleport.webp" alt=""><img class="s" src="img/proverb.webp" alt=""><img class="s" src="img/sheet.webp" alt=""><img class="s" src="img/balance.webp" alt=""><img class="s" src="img/slides.webp" alt=""><img class="s" src="img/speedcode.webp" alt=""><img class="s" src="img/lab.webp" alt=""></div>
