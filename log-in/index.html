@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sign in · Frenchfries777</title>
+<meta name="description" content="Frenchfries777 계정으로 로그인하거나 새로 가입해요. 한 번 로그인하면 게임, 교육 게임, 도구 모두에서 같은 계정을 써요.">
+<link rel="canonical" href="https://frenchfries777.com/log-in/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Frenchfries777"><meta property="og:title" content="Sign in · Frenchfries777"><meta property="og:url" content="https://frenchfries777.com/log-in/">
+<meta name="theme-color" content="#0e0e0e">
+<meta name="copyright" content="© 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../icon-48.png" type="image/png" sizes="48x48">
+<link rel="icon" href="../icon-192.png" type="image/png" sizes="192x192">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>
+  :root{--lp-bg:#0e0e0e;--lp-tx:#ece6d8;--lp-dim:#a39c8c;--lp-ln:#2e2b25;--lp-gold:#d9b45f}
+  html,body{margin:0;background:var(--lp-bg);color:var(--lp-tx);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 16px;box-sizing:border-box}
+  header{order:0;display:flex;flex-direction:column;align-items:center;gap:10px;margin:7vh 0 18px}
+  header img{width:88px;height:88px;border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  header a{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:inherit}
+  header b{font-size:24px;letter-spacing:.08em}header b i{font-style:normal;color:var(--lp-gold)}
+  /* ff-auth.js의 로그인 창을 이 페이지에서는 팝업이 아니라 본문으로 보여요 */
+  #ffaModal{position:static!important;inset:auto!important;order:1;display:flex!important;background:none!important;padding:0!important;width:100%;justify-content:center}
+  #ffaModal .b{max-width:380px!important}
+  nav{order:2;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:26px 0 8px}
+  nav a{padding:10px 18px;border-radius:12px;border:1px solid var(--lp-ln);color:var(--lp-tx);text-decoration:none;font-weight:700;font-size:14px}
+  nav a:hover{border-color:var(--lp-gold);color:var(--lp-gold)}
+  footer{order:3;margin-top:auto;padding:22px 0 18px;color:var(--lp-dim);font-size:13px;text-align:center}
+  footer a{color:inherit}
+</style>
+</head>
+<body>
+<header><a href="../"><img src="../icon-192.png" width="88" height="88" alt="Frenchfries777"><b>FRENCHFRIES<i>777</i></b></a></header>
+<nav aria-label="Frenchfries777">
+  <a href="https://frenchfries777.com/games/">Games</a>
+  <a href="https://frenchfries777.com/educations/">Educations</a>
+  <a href="https://frenchfries777.com/tools/">Tools</a>
+  <a href="https://frenchfries777.com/">Hub</a>
+</nav>
+<footer><span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h"></script>
+<script>
+(function(){
+  var up=new URLSearchParams(location.search).get('m')==='up';
+  function go(){ if(window.FFAuth&&FFAuth.ready) FFAuth.ready.then(function(){ if(!FFAuth.user()) FFAuth.openLogin(up?'up':'in'); }); else setTimeout(go,100); }
+  go();
+})();
+</script>
+</body>
+</html>
