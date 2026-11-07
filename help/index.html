@@ -55,13 +55,38 @@ a{color:var(--fry)}
  .app:not(.sel) .main{display:none}
  .back{display:inline-block;margin-bottom:14px;background:none;border:1px solid var(--line);color:var(--text);font:inherit;font-size:14px;padding:6px 12px;border-radius:99px;cursor:pointer}
 }
+
+/* 질문 남기기 */
+.tabs{display:flex;gap:6px;margin:12px 0 0}
+.tabs button{flex:1;font:inherit;font-size:14px;padding:8px 6px;border-radius:9px;border:1px solid var(--line);background:none;color:var(--text);cursor:pointer}
+.tabs button.on{background:var(--on);border-color:var(--fry);font-weight:700}
+.qa-f input,.qa-f textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);margin-bottom:8px}
+.qa-f textarea{min-height:90px;resize:vertical}
+.qa-b{font:inherit;font-size:15px;font-weight:700;padding:9px 18px;border-radius:99px;border:1px solid var(--fry);background:var(--fry);color:#111;cursor:pointer}
+.qa-b.g{background:none;color:var(--text);border-color:var(--line);font-weight:500}
+.qa-b:disabled{opacity:.5;cursor:default}
+.qa-q{display:block;width:100%;text-align:left;font:inherit;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 10px;color:var(--text);cursor:pointer}
+.qa-q:hover{border-color:var(--fry)}
+.qa-q b{display:block;font-size:16px}.qa-q small{color:var(--dim);font-size:13px}
+.qa-st{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:1px 8px;margin-left:6px;border:1px solid var(--line);color:var(--dim)}
+.qa-st.ok{color:var(--fry);border-color:var(--fry)}
+.qa-who{display:flex;align-items:center;gap:9px;margin:0 0 8px;flex-wrap:wrap}
+.qa-who img{width:36px;height:36px;border-radius:50%;object-fit:cover;background:var(--panel);border:1px solid var(--line)}
+.qa-who a{font-weight:800;color:var(--text);cursor:pointer;text-decoration:none}
+.qa-who small{color:var(--dim);font-size:12.5px}
+.qa-a{border:1px solid var(--line);border-left:3px solid var(--fry);background:var(--panel);border-radius:0 12px 12px 0;padding:12px 16px;margin:0 0 12px}
+.qa-a .t,.qa-qb{white-space:pre-wrap;word-break:break-word}
+.qa-del{background:none;border:0;color:var(--dim);font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;margin-left:auto}
+.qa-msg{color:var(--dim);font-size:14px;margin:6px 0}
+.qa-err{color:#e8806b}
 </style><link rel="stylesheet" href="../hub-rich.css?v=3">
 </head>
 <body>
 <div class="app" id="app">
 <aside class="side">
  <div class="s-top"><a class="brand" href="../">🍟 Frenchfries<span>777</span></a>
- <input class="sr" id="q" type="search" placeholder="질문 검색" autocomplete="off" aria-label="검색"></div>
+ <input class="sr" id="q" type="search" placeholder="질문 검색" autocomplete="off" aria-label="검색">
+ <div class="tabs"><button type="button" id="tabF" class="on">자주 묻는 질문</button><button type="button" id="tabA">질문 남기기</button></div></div>
  <nav class="list" id="list"></nav>
  <p class="none" id="none">검색 결과가 없어요. 다른 말로 찾아보세요.</p>
  <div class="s-foot"><span data-notr>Created by Frenchfries777</span><br><span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></div>
@@ -168,6 +193,98 @@ var QA=[
  var id=(location.hash||'').slice(1);
  if(id&&byId[id]){ app.classList.add('sel'); show(id,false); } else { show(QA[0][1],false); }
  window.addEventListener('hashchange',function(){ var i=(location.hash||'').slice(1); if(byId[i]){ app.classList.add('sel'); show(i,false); } });
+})();
+</script>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261107d"></script>
+<script>
+/* 질문 남기기: 로그인한 사람이 질문, 개발자(ff_devs)가 답변 */
+(function(){
+ var app=document.getElementById('app'),ans=document.getElementById('ans'),list=document.getElementById('list'),tabF=document.getElementById('tabF'),tabA=document.getElementById('tabA');
+ var sb=null,me=null,ver=0;
+ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+ function dt(t){ try{ var d=new Date(t); return d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }catch(e){ return ''; } }
+ function ready(){ return window.FFAuth?window.FFAuth.ready.then(function(){ sb=FFAuth.client(); me=FFAuth.user(); return sb; }):Promise.resolve(null); }
+ function mark(on){ tabA.classList.toggle('on',on); tabF.classList.toggle('on',!on); }
+ var cache={};
+ async function people(ids){
+  ids=ids.filter(function(i,k){return i&&ids.indexOf(i)===k&&!cache[i];}); if(!ids.length||!sb) return;
+  try{ var r=await sb.from('profiles').select('id,username,display_name').in('id',ids); ((r&&r.data)||[]).forEach(function(p){ cache[p.id]={n:(p.display_name&&String(p.display_name).trim())||p.username||'???'}; }); }catch(e){}
+  try{ var a=await sb.from('ff_avatar').select('user_id,pick').in('user_id',ids); ((a&&a.data)||[]).forEach(function(x){ if(cache[x.user_id]) cache[x.user_id].p=x.pick; }); }catch(e){}
+  ids.forEach(function(i){ if(!cache[i]) cache[i]={n:'???'}; });
+ }
+ function avSrc(id){ var p=cache[id]&&cache[id].p, B='https://frenchfries777.com/games/'; return p&&/^[a-z0-9_-]{1,30}$/i.test(p)?B+'avatars/'+p+(/^(stk|ce|bf|ip|dp|vk)_/.test(p)?'.png':'.svg'):B+'hubicons/account.svg'; }
+ function who(id,t,dev){ var c=cache[id]||{n:'???'};
+  return '<div class="qa-who"><img src="'+esc(avSrc(id))+'" alt="" loading="lazy"><a data-uid="'+esc(id)+'" data-notr>'+esc(c.n)+'</a>'+(window.FFAuth&&FFAuth.devBadge?FFAuth.devBadge(id):'')+'<small>'+esc(dt(t))+'</small></div>'; }
+ function isDev(){ return !!(me&&window.FFAuth&&FFAuth.devRole&&FFAuth.devRole(me.id)); }
+ function put(h){ ans.innerHTML=h; app.classList.add('sel'); document.querySelector('.main').scrollTop=0; window.scrollTo(0,0); }
+ function bind(){ var b=document.getElementById('back'); if(b) b.onclick=function(){ app.classList.remove('sel'); window.scrollTo(0,0); }; }
+
+ async function showList(push){
+  var my=++ver; mark(true); [].forEach.call(list.querySelectorAll('button'),function(b){b.classList.remove('on');});
+  if(push!==false) try{ history.replaceState(null,'','#ask'); }catch(e){}
+  put('<button type="button" class="back" id="back">← 질문 목록</button><div class="crumb">질문 남기기</div><h1>궁금한 걸 남겨 주세요</h1><p class="qa-msg">불러오는 중…</p>'); bind();
+  await ready(); if(my!==ver) return;
+  if(window.FFAuth&&FFAuth.loadDevs) await FFAuth.loadDevs();
+  var form;
+  if(!sb) form='<p class="qa-msg">지금은 질문을 불러올 수 없어요.</p>';
+  else if(!me) form='<p>질문은 로그인한 사람만 남길 수 있어요.</p><p><button type="button" class="qa-b" id="qaLogin">로그인</button></p>';
+  else form='<div class="qa-f"><input id="qaT" maxlength="80" placeholder="제목" aria-label="제목"><textarea id="qaB" maxlength="1000" placeholder="내용 (선택)" aria-label="내용"></textarea><button type="button" class="qa-b" id="qaGo">질문 남기기</button> <span class="qa-msg" id="qaM"></span></div>';
+  var rows=[],ac={};
+  if(sb){ try{ var r=await sb.from('ff_help_q').select('id,user_id,title,created_at').order('created_at',{ascending:false}).limit(60); if(r.error) throw r.error; rows=r.data||[];
+    if(rows.length){ var a=await sb.from('ff_help_a').select('q_id').in('q_id',rows.map(function(x){return x.id;})); ((a&&a.data)||[]).forEach(function(x){ ac[x.q_id]=(ac[x.q_id]||0)+1; }); } }catch(e){ form+='<p class="qa-msg qa-err">질문 기능이 아직 준비되지 않았어요.</p>'; } }
+  if(my!==ver) return; await people(rows.map(function(x){return x.user_id;})); if(my!==ver) return;
+  var h='<button type="button" class="back" id="back">← 질문 목록</button><div class="crumb">질문 남기기</div><h1>궁금한 걸 남겨 주세요</h1><p>개발자가 확인하고 답변해요. 자주 묻는 질문에 없는 내용을 남겨 주세요.</p>'+form+'<h2 style="font-size:18px;margin:26px 0 10px">남겨진 질문</h2>';
+  if(!rows.length) h+='<p class="qa-msg">아직 질문이 없어요.</p>';
+  rows.forEach(function(q){ h+='<button type="button" class="qa-q" data-q="'+esc(q.id)+'"><b>'+esc(q.title)+(ac[q.id]?'<span class="qa-st ok">답변 '+ac[q.id]+'</span>':'<span class="qa-st">답변 대기</span>')+'</b><small><span data-notr>'+esc((cache[q.user_id]||{}).n||'???')+'</span> · '+esc(dt(q.created_at))+'</small></button>'; });
+  put(h); bind();
+  var lg=document.getElementById('qaLogin'); if(lg) lg.onclick=function(){ FFAuth.openLogin(); };
+  var go=document.getElementById('qaGo'); if(go) go.onclick=async function(){
+   var t=document.getElementById('qaT').value.trim(), b=document.getElementById('qaB').value.trim(), m=document.getElementById('qaM');
+   if(!t){ m.textContent='제목을 적어 주세요.'; return; }
+   go.disabled=true; var r=await sb.from('ff_help_q').insert({user_id:me.id,title:t,body:b}).select('id').single(); go.disabled=false;
+   if(r.error){ m.className='qa-msg qa-err'; m.textContent='남기지 못했어요. 하루에 10개까지 남길 수 있어요.'; return; }
+   showQ(r.data.id);
+  };
+ }
+
+ async function showQ(id,push){
+  var my=++ver; mark(true);
+  if(push!==false) try{ history.replaceState(null,'','#ask/'+id); }catch(e){}
+  await ready(); if(window.FFAuth&&FFAuth.loadDevs) await FFAuth.loadDevs(); if(my!==ver) return;
+  var q=null,as=[];
+  try{ var r=await sb.from('ff_help_q').select('id,user_id,title,body,created_at').eq('id',id).limit(1); q=r.data&&r.data[0];
+   var a=await sb.from('ff_help_a').select('id,user_id,body,created_at').eq('q_id',id).order('created_at'); as=(a&&a.data)||[]; }catch(e){}
+  if(!q){ put('<button type="button" class="back" id="back">← 질문 목록</button><p>질문을 찾을 수 없어요.</p><p><a href="#ask" data-ask>질문 목록으로</a></p>'); bind(); return; }
+  await people([q.user_id].concat(as.map(function(x){return x.user_id;}))); if(my!==ver) return;
+  var canDel=me&&(me.id===q.user_id||isDev());
+  var h='<button type="button" class="back" id="back">← 질문 목록</button><div class="crumb"><a data-ask style="cursor:pointer">질문 남기기</a></div><h1>'+esc(q.title)+'</h1>'+who(q.user_id,q.created_at)+(q.body?'<p class="qa-qb">'+esc(q.body)+'</p>':'')+(canDel?'<p><button type="button" class="qa-del" data-dq="1">이 질문 지우기</button></p>':'')+'<h2 style="font-size:18px;margin:24px 0 10px">답변 '+as.length+'</h2>';
+  if(!as.length) h+='<p class="qa-msg">아직 답변이 없어요.</p>';
+  as.forEach(function(x){ var d=me&&(me.id===x.user_id||(FFAuth.devRole(me.id)==='owner'));
+   h+='<div class="qa-a">'+who(x.user_id,x.created_at)+'<div class="t">'+esc(x.body)+'</div>'+(d?'<p style="margin:6px 0 0"><button type="button" class="qa-del" data-da="'+esc(x.id)+'" style="margin:0">답변 지우기</button></p>':'')+'</div>'; });
+  if(isDev()) h+='<div class="qa-f"><textarea id="qaA" maxlength="2000" placeholder="답변" aria-label="답변"></textarea><button type="button" class="qa-b" id="qaAGo">답변 남기기</button> <span class="qa-msg" id="qaAM"></span></div>';
+  put(h); bind();
+  var g=document.getElementById('qaAGo'); if(g) g.onclick=async function(){
+   var v=document.getElementById('qaA').value.trim(), m=document.getElementById('qaAM'); if(!v){ m.textContent='답변을 적어 주세요.'; return; }
+   g.disabled=true; var r=await sb.from('ff_help_a').insert({q_id:id,user_id:me.id,body:v}); g.disabled=false;
+   if(r.error){ m.className='qa-msg qa-err'; m.textContent='남기지 못했어요.'; return; } showQ(id,false);
+  };
+  ans.onclick=async function(e){
+   var u=e.target.closest('[data-uid]'); if(u&&window.FFAuth) { FFAuth.openProfile(u.getAttribute('data-uid')); return; }
+   if(e.target.closest('[data-ask]')){ showList(); return; }
+   var da=e.target.closest('[data-da]'); if(da){ if(da.getAttribute('data-sure')!=='1'){ da.setAttribute('data-sure','1'); da.textContent='한 번 더 누르면 지워요'; return; } await sb.from('ff_help_a').delete().eq('id',da.getAttribute('data-da')); showQ(id,false); return; }
+   var dq=e.target.closest('[data-dq]'); if(dq){ if(dq.getAttribute('data-sure')!=='1'){ dq.setAttribute('data-sure','1'); dq.textContent='한 번 더 누르면 지워요'; return; } await sb.from('ff_help_q').delete().eq('id',id); showList(); return; }
+  };
+ }
+ ans.addEventListener('click',function(e){
+  if(e.target.closest('[data-ask]')){ e.preventDefault(); showList(); return; }
+  var q=e.target.closest('[data-q]'); if(q){ showQ(q.getAttribute('data-q')); return; }
+  var u=e.target.closest('[data-uid]'); if(u&&window.FFAuth&&FFAuth.openProfile) FFAuth.openProfile(u.getAttribute('data-uid'));
+ });
+ tabA.addEventListener('click',function(){ showList(); });
+ tabF.addEventListener('click',function(){ ver++; mark(false); try{ history.replaceState(null,'','#'); }catch(e){} var b=list.querySelector('button'); if(b) b.click(); });
+ list.addEventListener('click',function(){ ver++; mark(false); });
+ function route(){ var h=(location.hash||'').slice(1); if(h==='ask'){ app.classList.add('sel'); showList(false); } else if(h.indexOf('ask/')===0){ app.classList.add('sel'); showQ(h.slice(4),false); } }
+ window.addEventListener('hashchange',route); route();
 })();
 </script>
 </body></html>
