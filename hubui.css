@@ -324,3 +324,26 @@ html[data-ff-theme=light] .srx .g3{color:#a0600c;}
 .cm-thw{position:relative; display:block; width:120px; max-width:calc(50% - 3px); height:90px; border-radius:8px; overflow:hidden; border:1px solid var(--line); background:#0b0d13; flex:none;}
 .cm-th{display:block; width:100%; height:100%; max-width:100%; object-fit:contain; margin:0;}
 .cm-thm{align-self:center; font-size:18px; font-weight:800; color:var(--dim); padding:0 6px;}
+/* rich look for hub windows (coin, vote, notification, calendar, community) */
+html[data-ff-theme] .hn-b,html[data-ff-theme] .cc-dd,html[data-ff-theme] .mn-box,html[data-ff-theme] .cal-tip{background:var(--bg)!important;border:1px solid var(--fry)!important;border-left:8px solid var(--fry)!important;border-radius:16px!important;box-shadow:0 10px 30px rgba(0,0,0,.3)!important;color:var(--text)}
+html[data-ff-theme] .hn-b::after,html[data-ff-theme] .cc-dd::after{content:'';position:absolute;left:22px;bottom:0;width:70px;height:3px;background:var(--fry);pointer-events:none}
+html[data-ff-theme] .hn-b{position:relative;padding-bottom:26px}
+html[data-ff-theme] .hn-h{font-family:'Oswald','Noto Sans KR',sans-serif;text-transform:uppercase;color:var(--text)}
+html[data-ff-theme] .hn-h::before{content:'';display:inline-block;width:8px;height:.9em;background:var(--fry);margin-right:10px;vertical-align:-.08em}
+html[data-ff-theme] .hn-h{justify-content:space-between}
+html[data-ff-theme] .hn-n h3,html[data-ff-theme] .cx-g b{color:var(--text)}
+html[data-ff-theme] .hn-n ul,html[data-ff-theme] .cb-s,html[data-ff-theme] .cx-have,html[data-ff-theme] .cx-rt,html[data-ff-theme] .cx-l small{color:var(--text);opacity:.85}
+html[data-ff-theme] .hn-n,html[data-ff-theme] .cx-l,html[data-ff-theme] .nl,html[data-ff-theme] .fd-i{border-color:color-mix(in srgb,var(--fry) 45%,transparent)}
+html[data-ff-theme] .cx-r,html[data-ff-theme] .cx-pend,html[data-ff-theme] .cx-ok,html[data-ff-theme] .cal-d,html[data-ff-theme] .nw,html[data-ff-theme] .nh{background:transparent;border:1px solid var(--fry);border-radius:12px;color:var(--text)}
+html[data-ff-theme] .cx-in input{background:transparent;color:var(--text);border:1px solid var(--fry);border-radius:99px}
+html[data-ff-theme] .cx-tabs{border-bottom:2px solid var(--fry)}
+html[data-ff-theme] .cx-tabs button{color:var(--text)}
+html[data-ff-theme] .cx-tabs button.on{color:var(--fry);border-bottom-color:var(--fry)}
+html[data-ff-theme] .cx-games button,html[data-ff-theme] .cm-btn2,html[data-ff-theme] .cal-nav button{background:transparent;color:var(--text);border:1px solid var(--fry);border-radius:99px}
+html[data-ff-theme] .cx-games button.on{background:var(--fry);color:var(--bg);border-color:var(--fry)}
+html[data-ff-theme] .cx-go button,html[data-ff-theme] .cm-btn,html[data-ff-theme] .hn-b .cm-btn{background:var(--fry);background-image:none;color:var(--bg);border:1px solid var(--fry);border-radius:99px}
+html[data-ff-theme] .mn-box button.on,html[data-ff-theme] .mn-box button:hover{background:var(--fry);color:var(--bg)}
+html[data-ff-theme] .cb-n,html[data-ff-theme] .cx-have b,html[data-ff-theme] .cx-pv,html[data-ff-theme] .mn{color:var(--fry)}
+html[data-ff-theme] .cc-b{background:transparent;border:1px solid var(--fry);border-radius:99px;color:var(--text)}
+html[data-ff-theme] .coin-pop{background:var(--fry);color:var(--bg);box-shadow:none}
+html[data-ff-theme] .hn-bg{backdrop-filter:none}
