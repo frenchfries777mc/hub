@@ -33,6 +33,7 @@
   .bar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px;}
   .chip{background:var(--panel); color:var(--dim); border:1px solid var(--line); border-radius:99px; padding:5px 13px; font:inherit; font-size:14px; font-weight:700; cursor:pointer;}
   .chip:hover{color:var(--text);} .chip.on{color:#1a1206; background:linear-gradient(135deg,var(--fry),var(--fry2)); border-color:transparent;}
+  .tsel{appearance:auto; color:var(--text);}
   .srch{flex:1 1 200px; min-width:180px; background:var(--panel); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:8px 12px; font:inherit; font-size:15px;}
   .srch:focus{outline:none; border-color:var(--fry);}
   .day{margin:22px 0 8px; font-size:13px; letter-spacing:.08em; color:var(--dim); font-weight:700;}
@@ -81,21 +82,27 @@ function detect(){ var c=[]; try{ var s=localStorage.getItem('arenaClashLang'); 
   for(var i=0;i<c.length;i++){ var k=String(c[i]).slice(0,2).toLowerCase(); if(LN.indexOf(k)>=0) return k; } return 'ko'; }
 var lang=detect(), T=U[lang];
 if(lang==='nw'){ document.title='Ministry of Truth: Corrections'; var h1=document.querySelector('h1'); if(h1) h1.innerHTML='Ministry of Truth: <b>Corrections</b>'; }
-var SRC=(window.FF_REG||[]).map(function(e){ return {k:e.id,name:e.name,c:e.c,e:e}; });   /* 게임 목록은 games/ff-lang.js 의 FF_REG 한 곳에서 와요 */
+var SRC=(window.FF_REG||[]).map(function(e){ return {k:e.id,name:e.name,c:e.c,e:e}; });
+/* Tools 프로그램별 패치노트 (tools/patchnotes/<이름>.json). 목록에서 골라 볼 수 있어요 */
+var TOOLS=[['site','Tools 사이트'],['python','Fry Code'],['blocks','Fry Blocks'],['sheet','Fry Sheet'],['docs','Fry Docs'],['slides','Fry Slides'],['draw','Fry Draw'],['lab','Fry Lab'],['score','Fry Score'],['video','Fry Video'],['ai','FF777 AI']];
+TOOLS.forEach(function(t){ SRC.push({k:'tools_'+t[0],name:t[1],c:'--g0',tool:1,e:{site:'https://frenchfries777.com/tools/patchnotes/',notes:t[0]+'.json'}}); });
+function isT(k){ return k==='tools'||/^tools_/.test(k); }   /* 게임 목록은 games/ff-lang.js 의 FF_REG 한 곳에서 와요 */
 function $(s){ return document.querySelector(s); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 var all=[], sel='all', q='', shown=30, failed=0;
 function tr(n){ var t=lang!=='ko'&&n.tr&&(n.tr[lang]||(['zh','pt','ru','tr','it','pl','ar','nw'].indexOf(lang)>=0&&n.tr.en)); return {title:(t&&t.title)||n.title||'', items:(t&&t.items)||n.items||[]}; }
 function paintBar(){
-  var h='<button type="button" class="chip'+(sel==='all'?' on':'')+'" data-k="all">'+esc(T.all)+'</button>'+SRC.map(function(s){ return '<button type="button" class="chip'+(sel===s.k?' on':'')+'" data-k="'+s.k+'">'+esc(s.k==='hub'?T.hubN:s.name)+'</button>'; }).join('')+
+  var h='<button type="button" class="chip'+(sel==='all'?' on':'')+'" data-k="all">'+esc(T.all)+'</button>'+SRC.filter(function(s){ return !s.tool; }).map(function(s){ return '<button type="button" class="chip'+(sel===s.k?' on':'')+'" data-k="'+s.k+'">'+esc(s.k==='hub'?T.hubN:s.name)+'</button>'; }).join('')+
+    '<button type="button" class="chip'+(isT(sel)?' on':'')+'" data-k="tools">Tools</button>'+(isT(sel)?'<select class="chip tsel" id="tsel"><option value="tools"'+(sel==='tools'?' selected':'')+'>'+esc(lang==='ko'?'Tools 전체':'All Tools')+'</option>'+TOOLS.map(function(t){ return '<option value="tools_'+t[0]+'"'+(sel==='tools_'+t[0]?' selected':'')+'>'+esc(t[1])+'</option>'; }).join('')+'</select>':'')+
     '<input class="srch" id="q" type="search" placeholder="'+esc(lang==='ko'?'빌드 번호나 내용으로 검색':T.search)+'" value="'+esc(q)+'">';
   $('#bar').innerHTML=h;
   $('#q').oninput=function(){ q=this.value; shown=30; paintList(); };
-  var bs=document.querySelectorAll('#bar .chip'); for(var i=0;i<bs.length;i++) bs[i].onclick=function(){ sel=this.getAttribute('data-k'); shown=30; paintBar(); paintList(); try{ history.replaceState(null,'','#'+sel); }catch(e){} };
+  var ts=$('#tsel'); if(ts) ts.onchange=function(){ sel=this.value; shown=30; paintBar(); paintList(); try{ history.replaceState(null,'','#'+sel); }catch(e){} };
+  var bs=document.querySelectorAll('#bar button.chip'); for(var i=0;i<bs.length;i++) bs[i].onclick=function(){ sel=this.getAttribute('data-k'); shown=30; paintBar(); paintList(); try{ history.replaceState(null,'','#'+sel); }catch(e){} };
   var el=$('#q'); }
 function paintList(){
   var box=$('#list'), ql=q.trim().toLowerCase();
-  var rows=all.filter(function(n){ return (sel==='all'||n.g===sel)&&(!ql||(window.FFPN?FFPN.match({build:n.build,t:n.t,o:n.o},q):(n.t.title+' '+n.t.items.join(' ')+' '+n.build).toLowerCase().indexOf(ql)>=0)); });
+  var rows=all.filter(function(n){ return (sel==='all'||n.g===sel||(sel==='tools'&&n.s.tool))&&(!ql||(window.FFPN?FFPN.match({build:n.build,t:n.t,o:n.o},q):(n.t.title+' '+n.t.items.join(' ')+' '+n.build).toLowerCase().indexOf(ql)>=0)); });
   if(!rows.length){ box.innerHTML='<div class="'+(failed&&!all.length?'err':'empty')+'">'+esc(failed&&!all.length?T.err:T.empty)+'</div>'; return; }
   var out='', last='';
   rows.slice(0,shown).forEach(function(n){
@@ -115,7 +122,7 @@ function load(){
   var ls=$('#lang'); var VL={"ko": "가상 언어", "en": "Fictional languages", "es": "Idiomas ficticios", "fr": "Langues fictives", "de": "Fiktive Sprachen", "ja": "架空の言語", "zh": "虚构语言", "pt": "Idiomas fictícios", "ru": "Вымышленные языки", "tr": "Kurgusal diller","it":"Lingue immaginarie","pl":"Języki fikcyjne","ar":"لغات خيالية", "nw": "Fictional speaks","gk":"Fictional 언어들"}, cur=(window.FFLang&&FFLang.pick)?FFLang.pick():lang, op=function(k){ return '<option value="'+k+'"'+(k===cur?' selected':'')+'>'+NAMES[k]+'</option>'; }, vk=function(k){ return k==='nw'||k==='gk'||(k==='au'||k==='sg'||k==='em'); };
   ls.innerHTML=LN.filter(function(k){ return !vk(k); }).map(op).join('')+'<optgroup label="'+(VL[lang]||VL.en)+'">'+LN.filter(vk).map(op).join('')+'</optgroup>';
   ls.onchange=function(){ try{ localStorage.setItem('arenaClashLang',this.value); }catch(e){} try{ if(window.FFLang) FFLang.set(this.value); }catch(e){} location.reload(); };
-  var h=(location.hash||'').slice(1); if(SRC.some(function(s){ return s.k===h; })) sel=h;
+  var h=(location.hash||'').slice(1); if(h==='tools'||SRC.some(function(s){ return s.k===h; })) sel=h;
   paintBar(); load();
 })();
 })();
