@@ -1,0 +1,19 @@
+{
+  "name": "frenchfries777",
+  "productName": "Frenchfries777",
+  "version": "1.0.0",
+  "description": "Frenchfries777 데스크톱 앱",
+  "main": "main.js",
+  "author": "Frenchfries777",
+  "license": "CC-BY-NC-ND-4.0",
+  "scripts": { "start": "electron .", "dist": "electron-builder" },
+  "devDependencies": { "electron": "33.2.1", "electron-builder": "25.1.8" },
+  "build": {
+    "appId": "com.frenchfries777.app",
+    "productName": "Frenchfries777",
+    "files": ["main.js", "icon.png"],
+    "win": { "target": "nsis", "icon": "icon.png" },
+    "mac": { "target": "dmg", "icon": "icon.png", "category": "public.app-category.games" },
+    "nsis": { "oneClick": true, "perMachine": false }
+  }
+}
