@@ -78,15 +78,17 @@ function fnv(s){ var h=0x811c9dc5; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(
 var sb=null, me=null, admin=false, dev=false, all=[], TR={}, names={}, game='stickseum', slug=null, sp='main', view='read', showOrig=false, query='', langSel=null, opened={};
 
 /* ---- 아주 작은 글 형식: ## 소제목, - 목록, 1. 순서 목록, **굵게** ---- */
-function inl(s,hl){ s=esc(s).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>'); return hl?mark(s,hl):s; }
+function inl(s,hl){ var cs=[]; s=esc(s).replace(/`([^`]+)`/g,function(_,c){ cs.push(c); return '\u0001'+(cs.length-1)+'\u0001'; }).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\u0001(\d+)\u0001/g,function(_,i){ return '<code>'+cs[+i]+'</code>'; }); return hl?mark(s,hl):s; }   /* `글` = 코드 글자 */
 /* 정보 상자 값 안의 주소(github.io 등)는 눌러서 열 수 있는 링크로 */
 var URLRE=/\b(?:https?:\/\/)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:io|com|net|org|dev|app)(?:\/(?:[A-Za-z0-9\-._~:\/?#@!$*+,=%]|&amp;)*)?/gi;
 function lk(html){ return html.replace(/(^|>)([^<]*)/g,function(_,a,b){ return a+b.replace(URLRE,function(u){ var m=u.replace(/[.,;:!?=#]+$/,''), tail=u.slice(m.length); if(tail.charAt(0)==='='){ var q=/[?&][A-Za-z0-9_]+$/.exec(m); if(q){ m=m.slice(0,q.index); tail=u.slice(m.length); } } if(!/\./.test(m)) return u; var h=/^https?:\/\//i.test(m)?m:'https://'+m; return '<a href="'+h+'" target="_blank" rel="noopener noreferrer">'+m+'</a>'+tail; }); }); }
 function mark(html,q){ if(!q) return html; var e=esc(q).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); try{ return html.replace(new RegExp('(^|>)([^<]*)','g'),function(_,a,b){ return a+b.replace(new RegExp(e,'gi'),function(x){ return '<mark>'+x+'</mark>'; }); }); }catch(err){ return html; } }
-function render(text,hl){ var out='', list=null, para=[], heads=[], info=[];
+function render(text,hl){ var out='', list=null, para=[], heads=[], info=[], fence=null;
   function fp(){ if(para.length){ out+='<p>'+para.join('<br>')+'</p>'; para=[]; } }
   function fl(){ if(list){ out+='</'+list+'>'; list=null; } }
   String(text||'').replace(/\r/g,'').split('\n').forEach(function(raw){ var l=raw.replace(/\s+$/,''), m;
+    if(fence){ if(/^```/.test(l)){ out+='<pre class="cb"><code>'+esc(fence.join('\n'))+'</code></pre>'; fence=null; } else fence.push(l); return; }   /* ``` 로 감싼 코드 블록 (들여쓰기 그대로) */
+    if(/^```/.test(l)){ fp(); fl(); fence=[]; return; }
     if((m=/^::\s*([^=]+?)\s*=\s*(.*)$/.exec(l))){ info.push([m[1],m[2]]); }
     else if((m=/^!(img\/[a-z0-9_-]+\.(?:webp|png|jpg))$/.exec(l))){ fp(); fl(); out+='<img class="chi" src="'+m[1]+'" alt="" loading="lazy">'; }
     else if(/^#{2,3}\s+/.test(l)){ fp(); fl(); var h=l.replace(/^#{2,3}\s+/,''), id='h'+heads.length; heads.push([id,h.replace(/\*\*/g,'')]); out+='<h3 id="'+id+'"><span>'+inl(h,hl)+'</span></h3>'; }
@@ -94,6 +96,7 @@ function render(text,hl){ var out='', list=null, para=[], heads=[], info=[];
     else if((m=/^\s*\d+[.)]\s+(.*)$/.exec(l))){ fp(); if(list!=='ol'){ fl(); out+='<ol>'; list='ol'; } out+='<li>'+inl(m[1],hl)+'</li>'; }
     else if(!l.trim()){ fp(); fl(); }
     else { fl(); para.push(inl(l,hl)); } });
+  if(fence) out+='<pre class="cb"><code>'+esc(fence.join('\n'))+'</code></pre>';
   fp(); fl(); return {html:out, heads:heads, info:info}; }
 /* 정보 상자: 본문의 ':: 항목 = 값' 줄들을 오른쪽 상자로 */
 function ibox(title,info){ var img='', rows=[];
@@ -106,7 +109,7 @@ function shown(p){ var x=trOf(p); if(x&&x!=='stale'&&!showOrig) return {title:x.
 function titleOf(p){ var x=trOf(p); return (x&&x!=='stale')?x.t:p.title; }
 function pagesOf(g){ return all.filter(function(p){ return p.game===g; }).sort(function(a,b){ return (a.sort-b.sort)||String(a.title).localeCompare(String(b.title)); }); }
 function descOf(p){ var x=trOf(p), b=(x&&x!=='stale')?x.b:p.body, ls=String(b).replace(/\r/g,'').split('\n');
-  for(var i=0;i<ls.length;i++){ var l=ls[i].trim(); if(!l||/^#{2,3}\s|^::/.test(l)) continue; l=l.replace(/\*\*/g,'').replace(/^[-•]\s+|^\d+[.)]\s+/,''); return l.length>90?l.slice(0,88)+'…':l; } return ''; }
+  for(var i=0;i<ls.length;i++){ var l=ls[i].trim(); if(!l||/^#{2,3}\s|^::|^```/.test(l)) continue; l=l.replace(/\*\*/g,'').replace(/^[-•]\s+|^\d+[.)]\s+/,''); return l.length>90?l.slice(0,88)+'…':l; } return ''; }
 
 function ago(ts){ var d=(Date.now()-Date.parse(ts))/1000; if(!(d>=0)) return ''; if(d<60) return t('justNow'); if(d<3600) return t('min',Math.floor(d/60)); if(d<86400) return t('hr',Math.floor(d/3600)); if(d<8*86400) return t('day',Math.floor(d/86400));
   try{ return new Date(ts).toLocaleDateString(lang); }catch(e){ return String(ts).slice(0,10); } }
