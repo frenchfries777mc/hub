@@ -1,5 +1,9 @@
 name: desktop-app
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches: [desktop-app]
+    paths: [".github/workflows/desktop.yml", "desktop/**"]
 jobs:
   build:
     strategy:
