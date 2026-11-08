@@ -22,5 +22,5 @@ jobs:
         with:
           name: frenchfries777-${{ matrix.os }}
           path: |
-            desktop/dist/*.exe
+            desktop/dist/*.zip
 
