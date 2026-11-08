@@ -3,7 +3,7 @@ on: workflow_dispatch
 jobs:
   build:
     strategy:
-      matrix: { os: [windows-latest, macos-latest] }
+      matrix: { os: [windows-latest] }
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -19,4 +19,4 @@ jobs:
           name: frenchfries777-${{ matrix.os }}
           path: |
             desktop/dist/*.exe
-            desktop/dist/*.dmg
+
