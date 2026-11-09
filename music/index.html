@@ -40,6 +40,9 @@
   h2 img{width:34px; height:34px; border-radius:8px; object-fit:cover;}
   h2 a{font-size:13px; font-weight:500; margin-left:auto;}
   .list{display:grid; gap:10px;}
+  .vg{margin:0 0 10px;} .vg>summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; padding:9px 14px; border:1px solid var(--line); border-radius:10px; background:var(--panel); margin-bottom:10px; font-size:15px;}
+  .vg>summary::-webkit-details-marker{display:none;} .vg .car{color:var(--fry); display:inline-block; transition:transform .15s;} .vg[open] .car{transform:rotate(90deg);}
+  .vg .ct{margin-left:auto; color:var(--dim); font-size:13px;} .vg .tg{font-style:normal; font-size:11px; background:var(--fry); color:#1a1206; border-radius:99px; padding:1px 8px; font-weight:700;} .vg.hide{display:none;}
   .tr{display:grid; grid-template-columns:44px minmax(0,1fr) auto auto 36px; gap:12px; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px 14px;}
   .dl{width:36px; height:36px; border-radius:50%; border:0; background:transparent; color:var(--dim); font-size:17px; text-decoration:none; display:grid; place-items:center;} .dl:hover{color:var(--fry);}
   .tr.on{border-color:var(--fry); box-shadow:0 0 0 1px var(--fry) inset;}
@@ -87,9 +90,9 @@ var SITE='https://frenchfries777.com/games/';
 var GAMES=[
   {id:'shared', name:'공용', img:'../logo.svg', url:'../', linkText:'허브', tracks:[
     {f:SITE+'stickseum/music-intro.mp3', n:'인트로', d:'Stickseum, Crown Envoy, Beaconfall 등 인트로가 있는 게임이 모두 함께 쓰는 5초짜리 곡'}]},
-  {id:'stickseum', name:'Stickseum', img:SITE+'stickseum.webp', url:SITE+'stickseum/', tracks:[
+  {id:'stickseum', name:'Stickseum', vers:['1.1','오리지널'], img:SITE+'stickseum.webp', url:SITE+'stickseum/', tracks:[
     {f:SITE+'stickseum/music-lobby.mp3', n:'로비', d:'메뉴와 대기실에서 나오는 잔잔한 곡'},
-    {f:SITE+'stickseum/music-lobby-victorian.mp3', n:'로비 (빅토리아풍)', d:'스틱세움 1.1용 로비 곡'},
+    {f:SITE+'stickseum/music-lobby-victorian.mp3', n:'로비 (빅토리아풍)', d:'스틱세움 1.1용 로비 곡', v:'1.1'},
     {f:SITE+'stickseum/music-battle-jump.mp3', n:'The Final Jump', d:'대전 중에 나오는 빠른 전투 곡'},
     {f:SITE+'stickseum/music-boss.mp3', n:'보스 레이드', d:'보스 레이드에서 나오는 무거운 북과 합창 곡'},
     {f:SITE+'stickseum/music-win.mp3', n:'승리', d:'대전에서 이겼을 때 나오는 곡'},
@@ -194,17 +197,26 @@ function tt(ko,en){ return lang==='ko'?ko:en; }
 function dlName(g,n){ return ('Frenchfries777 - '+g+' - '+n).replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim()+'.mp3'; }
 var all=[], box=document.getElementById('games'), h='';
 GAMES.forEach(function(g){
-  h+='<h2><img src="'+g.img+'" alt="">'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2><div class="list">';
-  g.tracks.forEach(function(tk){ var i=all.length; all.push({f:tk.f,n:g.name+' · '+t(tk.n)});
+  h+='<section class="gs"><h2><img src="'+g.img+'" alt="">'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2>';
+  /* 버전이 붙은 곡(v)이 하나라도 있으면 버전별로 접어서 묶고, 맨 앞 버전만 펼쳐요. v가 없는 곡은 "오리지널" */
+  var ORI='오리지널', hasV=g.tracks.some(function(tk){ return tk.v; });
+  var vers=g.vers||[]; if(hasV){ g.tracks.forEach(function(tk){ var v=tk.v||ORI; if(vers.indexOf(v)<0) vers.push(v); }); } else vers=[null];
+  vers.forEach(function(v,vi){
+    var tl=g.tracks.filter(function(tk){ return hasV?((tk.v||ORI)===v):true; });
+    if(hasV) h+='<details class="vg"'+(vi===0?' open':'')+'><summary><span class="car">▸</span><b>'+esc(v===ORI?tt('오리지널','Original'):v)+'</b>'+(vi===0?'<i class="tg">'+esc(tt('최신','New'))+'</i>':'')+'<span class="ct">'+tl.length+esc(tt('곡',' tracks'))+'</span></summary>';
+    h+='<div class="list">';
+  tl.forEach(function(tk){ var i=all.length; all.push({f:tk.f,n:g.name+' · '+t(tk.n)});
     h+='<div class="tr" id="tr'+i+'"><button class="pb" data-i="'+i+'" aria-label="'+esc(t('play'))+'">▶</button><div><div class="nm">'+esc(t(tk.n))+'</div><div class="ds">'+esc(t(tk.d))+'</div></div><span class="tm" id="tm'+i+'">–:––</span><button type="button" class="fv" data-i="'+i+'" aria-label="즐겨찾기" title="즐겨찾기">♡</button><a class="dl" href="'+esc(tk.ext||tk.f)+'"'+(tk.ext?' target="_blank" rel="noopener"':' download="'+esc(dlName(g.name,tk.n))+'"')+' aria-label="'+esc(tt('다운로드','Download'))+'" title="'+esc(tt('다운로드','Download'))+'">⬇</a></div>'; });
-  h+='</div>';
+    h+='</div>'; if(hasV) h+='</details>';
+  });
+  h+='</section>';
 });
 box.innerHTML=h;
 /* 즐겨찾는 곡: 하트를 눌러 두고 "♥ 내 곡만" 으로 따로 들어요 (이 기기에 저장돼요) */
 var FK='ff.music.fav', fav={}, favOnly=false; try{ fav=JSON.parse(localStorage.getItem(FK)||'{}')||{}; }catch(e){ fav={}; }
 function favSave(){ try{ localStorage.setItem(FK,JSON.stringify(fav)); }catch(e){} }
 function favPaint(){ all.forEach(function(tk,i){ var r=document.getElementById('tr'+i), f=!!fav[tk.f], b=r.querySelector('.fv'); b.classList.toggle('on',f); b.textContent=f?'♥':'♡'; r.classList.toggle('hide',favOnly&&!f); });
-  [].forEach.call(box.querySelectorAll('.list'),function(l){ var vis=l.querySelector('.tr:not(.hide)'); l.classList.toggle('hide',!vis); l.previousElementSibling.classList.toggle('hide',!vis); });
+  [].forEach.call(box.querySelectorAll('.gs'),function(sec){ var any=false; [].forEach.call(sec.querySelectorAll('.list'),function(l){ var vis=l.querySelector('.tr:not(.hide)'); l.classList.toggle('hide',!vis); if(l.parentNode.classList.contains('vg')) l.parentNode.classList.toggle('hide',!vis); if(vis) any=true; }); sec.querySelector('h2').classList.toggle('hide',!any); });
   var fb=document.getElementById('favBtn'); if(fb){ fb.classList.toggle('on',favOnly); fb.textContent=favOnly?'♥ 내 곡만 보는 중':'♥ 내 곡만 보기'; } }
 var fbar=document.createElement('div'); fbar.className='favBar'; fbar.innerHTML='<button type="button" id="favBtn">♥ 내 곡만 보기</button>'; box.parentNode.insertBefore(fbar,box);
 fbar.querySelector('button').onclick=function(){ if(!favOnly&&!Object.keys(fav).some(function(k){ return fav[k]; })){ this.textContent='먼저 곡 오른쪽 ♡를 눌러 주세요'; return; } favOnly=!favOnly; favPaint(); };
@@ -218,6 +230,7 @@ function mark(){ all.forEach(function(_,i){ var r=document.getElementById('tr'+i
 function nextIdx(i){ for(var k=1;k<=all.length;k++){ var j=(i+k)%all.length; if(!favOnly||fav[all[j].f]) return j; } return i; }
 function play(i){
   if(i===cur){ if(au.paused) au.play().catch(function(){}); else au.pause(); return; }
+  var dg=document.getElementById('tr'+i).closest('details'); if(dg) dg.open=true;
   cur=i; au.src=all[i].f; au.loop=loop; au.play().catch(function(){}); barT.textContent=all[i].n; bar.classList.add('show'); mark();
 }
 box.addEventListener('click',function(e){ var b=e.target.closest('.pb'); if(b) play(+b.getAttribute('data-i')); });
