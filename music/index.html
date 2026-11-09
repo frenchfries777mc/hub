@@ -90,9 +90,8 @@ var SITE='https://frenchfries777.com/games/';
 var GAMES=[
   {id:'shared', name:'공용', img:'../logo.svg', url:'../', linkText:'허브', tracks:[
     {f:SITE+'stickseum/music-intro.mp3', n:'인트로', d:'Stickseum, Crown Envoy, Beaconfall 등 인트로가 있는 게임이 모두 함께 쓰는 5초짜리 곡'}]},
-  {id:'stickseum', name:'Stickseum', vers:['1.1','오리지널'], img:SITE+'stickseum.webp', url:SITE+'stickseum/', tracks:[
+  {id:'stickseum', name:'Stickseum', img:SITE+'stickseum.webp', url:SITE+'stickseum/', tracks:[
     {f:SITE+'stickseum/music-lobby.mp3', n:'로비', d:'메뉴와 대기실에서 나오는 잔잔한 곡'},
-    {f:SITE+'stickseum/music-lobby-victorian.mp3', n:'로비 (빅토리아풍)', d:'스틱세움 1.1용 로비 곡', v:'1.1'},
     {f:SITE+'stickseum/music-battle-jump.mp3', n:'The Final Jump', d:'대전 중에 나오는 빠른 전투 곡'},
     {f:SITE+'stickseum/music-boss.mp3', n:'보스 레이드', d:'보스 레이드에서 나오는 무거운 북과 합창 곡'},
     {f:SITE+'stickseum/music-win.mp3', n:'승리', d:'대전에서 이겼을 때 나오는 곡'},
@@ -199,11 +198,11 @@ var all=[], box=document.getElementById('games'), h='';
 GAMES.forEach(function(g){
   h+='<section class="gs"><h2><img src="'+g.img+'" alt="">'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2>';
   /* 버전이 붙은 곡(v)이 하나라도 있으면 버전별로 접어서 묶고, 맨 앞 버전만 펼쳐요. v가 없는 곡은 "오리지널" */
-  var ORI='오리지널', hasV=g.tracks.some(function(tk){ return tk.v; });
+  var ORI=g.ori||'오리지널', hasV=g.tracks.some(function(tk){ return tk.v; });
   var vers=g.vers||[]; if(hasV){ g.tracks.forEach(function(tk){ var v=tk.v||ORI; if(vers.indexOf(v)<0) vers.push(v); }); } else vers=[null];
   vers.forEach(function(v,vi){
     var tl=g.tracks.filter(function(tk){ return hasV?((tk.v||ORI)===v):true; });
-    if(hasV) h+='<details class="vg"'+(vi===0?' open':'')+'><summary><span class="car">▸</span><b>'+esc(v===ORI?tt('오리지널','Original'):v)+'</b>'+(vi===0?'<i class="tg">'+esc(tt('최신','New'))+'</i>':'')+'<span class="ct">'+tl.length+esc(tt('곡',' tracks'))+'</span></summary>';
+    if(hasV) h+='<details class="vg"'+(vi===0?' open':'')+'><summary><span class="car">▸</span><b>'+esc(v===ORI&&!g.ori?tt('오리지널','Original'):v)+'</b>'+(vi===0&&!g.noTag?'<i class="tg">'+esc(tt('최신','New'))+'</i>':'')+'<span class="ct">'+tl.length+esc(tt('곡',' tracks'))+'</span></summary>';
     h+='<div class="list">';
   tl.forEach(function(tk){ var i=all.length; all.push({f:tk.f,n:g.name+' · '+t(tk.n)});
     h+='<div class="tr" id="tr'+i+'"><button class="pb" data-i="'+i+'" aria-label="'+esc(t('play'))+'">▶</button><div><div class="nm">'+esc(t(tk.n))+'</div><div class="ds">'+esc(t(tk.d))+'</div></div><span class="tm" id="tm'+i+'">–:––</span><button type="button" class="fv" data-i="'+i+'" aria-label="즐겨찾기" title="즐겨찾기">♡</button><a class="dl" href="'+esc(tk.ext||tk.f)+'"'+(tk.ext?' target="_blank" rel="noopener"':' download="'+esc(dlName(g.name,tk.n))+'"')+' aria-label="'+esc(tt('다운로드','Download'))+'" title="'+esc(tt('다운로드','Download'))+'">⬇</a></div>'; });
