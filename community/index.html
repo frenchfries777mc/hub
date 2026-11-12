@@ -235,6 +235,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   .sp{color:var(--dim); margin:0 0 16px; font-size:15px;}
   .cm-tabs{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 14px;}
   .cm-tabs button,.cm-f button{background:var(--panel); color:var(--dim); border:1px solid var(--line); border-radius:99px; padding:8px 15px; font:inherit; font-size:14.5px; font-weight:700; cursor:pointer;}
+  .cm-tabs .cm-chatlink{display:inline-block; background:var(--panel); color:var(--fry); border:1px solid var(--fry); border-radius:99px; padding:8px 15px; font:inherit; font-size:14.5px; font-weight:700; text-decoration:none; margin-left:auto;}
   .cm-tabs button.on,.cm-f button.on{color:#1a1206; background:linear-gradient(135deg,var(--fry),var(--fry2)); border-color:transparent;}
   .cm-p{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px;}
   .cm-bar{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
@@ -482,7 +483,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
 
   <section class="cm" id="community">
     <h2 class="sh">커뮤니티</h2>
-    <div class="cm-tabs"><button data-t="board" class="on">📋 게시판</button><button data-t="chat">💬 채팅</button><button data-t="feed">👥 친구 소식</button><button data-t="lfg">🎮 같이 하기</button><button data-t="gal">🖼️ 갤러리</button><button data-t="fb">📮 피드백 · 버그 신고</button></div>
+    <div class="cm-tabs"><button data-t="board" class="on">📋 게시판</button><button data-t="chat">💬 채팅</button><button data-t="feed">👥 친구 소식</button><button data-t="lfg">🎮 같이 하기</button><button data-t="gal">🖼️ 갤러리</button><button data-t="fb">📮 피드백 · 버그 신고</button><a class="cm-chatlink" href="https://frenchfries777.com/chat/">✉️ 메신저</a></div>
     <div class="cm-p" data-p="board"></div>
     <div class="cm-p" data-p="chat" style="display:none"></div>
     <div class="cm-p" data-p="feed" style="display:none"></div>
