@@ -156,31 +156,48 @@
   .hero{padding-bottom:clamp(20px,3vh,40px);}
 </style>
 <link rel="stylesheet" href="https://frenchfries777.com/games/ff-rich.css?v=10">
+<link rel="stylesheet" href="ff-shell.css?v=1">
+<link rel="stylesheet" href="hub-home.css?v=1">
+<script src="ff-shell.js?v=1" defer></script>
 </head>
 <body data-root="https://frenchfries777.com/games/" data-hub="">
-<div class="bg" aria-hidden="true"><img class="s" src="img/beaconfall.webp" alt=""><img class="s" src="img/stickseum.webp" alt=""><img class="s" src="img/planetsearch.webp" alt=""><img class="s" src="img/crown-envoy.webp" alt=""><img class="s" src="img/blocks.webp" alt=""><img class="s" src="img/isleport.webp" alt=""><img class="s" src="img/proverb.webp" alt=""><img class="s" src="img/sheet.webp" alt=""><img class="s" src="img/balance.webp" alt=""><img class="s" src="img/slides.webp" alt=""><img class="s" src="img/speedcode.webp" alt=""><img class="s" src="img/lab.webp" alt=""></div>
 <div class="page"><div class="wrap">
-  <header><a class="logo" href="./"><span class="fry" aria-hidden="true">🍟</span><span>FRENCHFRIES<b>777</b></span></a><div class="swr"><span class="sw" data-notr><a class="on" href="./" aria-current="page">Hub</a><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a></span><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button></div><div class="right"><nav><a href="wiki/">위키</a><a href="community/">커뮤니티</a><a href="lounge/">라운지</a><a href="settings/">설정</a></nav><div class="tb"><span class="cchip"><button type="button" class="cc-b" id="coinChip" title="Hub Coin" aria-haspopup="true"><img class="hci" src="https://frenchfries777.com/games/hubicons/coin.svg?v=20261103a" alt="" width="20" height="20" draggable="false"><b id="coinChipN" data-notr>0</b></button><div class="cc-dd" id="coinDd" hidden><div class="coinbar" id="coinBar"></div></div></span><span data-ff-account data-ff-nohub></span></div></div></header>
+  <header><a class="logo" href="./"><span class="fry" aria-hidden="true">🍟</span><span>FRENCHFRIES<b>777</b></span></a><div class="swr"><span class="sw" data-notr><a class="on" href="./" aria-current="page">Hub</a><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a></span><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button></div><div class="right"><nav><a href="wiki/">위키</a><a href="community/">커뮤니티</a><a href="lounge/">라운지</a><a href="settings/">설정</a></nav><div class="onl" id="onlineBar"></div><div class="tb"><span class="cchip"><button type="button" class="cc-b" id="coinChip" title="Hub Coin" aria-haspopup="true"><img class="hci" src="https://frenchfries777.com/games/hubicons/coin.svg?v=20261103a" alt="" width="20" height="20" draggable="false"><b id="coinChipN" data-notr>0</b></button><div class="cc-dd" id="coinDd" hidden><div class="coinbar" id="coinBar"></div></div></span><span data-ff-account data-ff-nohub></span></div></div></header>
   <div id="annBar"></div>
   <section class="hero"><span class="mono">BY FRENCHFRIES777 · WITH CLAUDE AI</span><h1>Frenchfries777</h1>
     <p>Frenchfries777은 Claude AI와 함께 만드는 사이트 모음이에요. 브라우저에서 바로 하는 게임, 놀면서 배우는 교육 게임, 직접 쓰려고 만든 도구가 있어요. 계정은 하나만 만들면 되고 설치는 필요 없어요.</p>
     <div class="auth" id="heroAuth" hidden><button type="button" data-m="in">로그인</button><button type="button" class="alt" data-m="up">회원가입</button></div>
-    <div class="onl" id="onlineBar"></div>
   </section>
-  <div class="dock">
-    <div class="two">
-      <section class="wi" id="wiki"><h2 class="sh">공략 위키</h2><p class="wi-sub">누구나 읽을 수 있어요.</p><a class="wi-go" href="wiki/"><span class="wi-ic"><img src="https://frenchfries777.com/games/hubicons/wiki-logo.svg?v=20261103a" alt="" width="40" height="40" style="display:block;border-radius:9px"></span><span class="wi-gt"><b>Frenchfries777 Wiki</b><span>Stickseum · Crown Envoy · Beaconfall · Isleport</span></span><span class="wi-ar">위키 열기 →</span></a></section>
-      <section class="wi" id="cmGo"><h2 class="sh">커뮤니티</h2><p class="wi-sub">게시판, 채팅, 친구 소식, 같이 하기, 갤러리, 피드백이 있어요.</p><a class="wi-go" href="community/"><span class="wi-ic">💬</span><span class="wi-gt"><b>Frenchfries777 Community</b><span>Board · Chat · Gallery · Feedback</span></span><span class="wi-ar">커뮤니티 열기 →</span></a></section>
-    </div>
+  <div class="hh">
+    <section class="hh-sec" id="spaces"><h2>세 가지 공간</h2>
+      <div class="hh-sp">
+        <a href="https://frenchfries777.com/games/"><img src="img/home/games.webp" alt="브라우저 게임 모음" loading="lazy"><div><span class="t"><b>Games</b><span class="n">8개</span></span><span class="d">설치 없이 링크만 열면 바로 시작해요. 친구에게 주소만 보내면 같이 할 수 있어요.</span></div></a>
+        <a href="https://frenchfries777.com/educations/"><img src="img/home/educations.webp" alt="교육 게임 모음" loading="lazy"><div><span class="t"><b>Educations</b><span class="n">6개</span></span><span class="d">과학, 코딩, 역사, 국어를 게임으로 배워요. 선생님이 방을 열어 반 전체가 같이 풀 수도 있어요.</span></div></a>
+        <a href="https://frenchfries777.com/tools/"><img src="img/home/tools.webp" alt="도구 모음" loading="lazy"><div><span class="t"><b>Tools</b><span class="n">9개</span></span><span class="d">코드, 블록 코딩, 표, 문서, 발표, 그림, 영상까지. 직접 쓰려고 만든 도구예요.</span></div></a>
+      </div>
+    </section>
+    <section class="hh-sec" id="browse"><h2>둘러보기</h2>
+      <div class="hh-br">
+        <a id="wiki" href="wiki/"><img src="img/home/wiki.webp" alt="공략 위키" loading="lazy"><span class="b"><b>공략 위키</b><span class="d">누구나 읽을 수 있어요. Stickseum · Crown Envoy · Beaconfall · Isleport</span></span></a>
+        <a id="cmGo" href="community/"><img src="img/home/community.webp" alt="커뮤니티" loading="lazy"><span class="b"><b>커뮤니티</b><span class="d">게시판, 채팅, 친구 소식, 같이 하기, 갤러리, 피드백이 있어요.</span></span></a>
+      </div>
+    </section>
+    <section class="hh-about"><img src="img/home/about.webp" alt="Crown Envoy 지도" loading="lazy"><i></i><div><span class="e">ABOUT</span><h2>Claude AI와 같이 만든 사이트예요</h2><p>게임은 친구에게 링크만 보내면 같이 할 수 있고, 교육 게임은 놀면서 배우게 만들었어요. 도구는 직접 쓰려고 만들었는데 누구나 쓸 수 있어요.</p><a href="patchnotes/">패치노트 보기</a></div></section>
+    <section class="hh-sec" id="perks" style="padding-bottom:72px"><h2>이런 점이 좋아요</h2>
+      <div class="hh-pk">
+        <div><i>1</i><b>무료예요</b><span>게임, 교육, 도구를 돈 내지 않고 모두 쓸 수 있어요.</span></div>
+        <div><i>2</i><b>광고가 없어요</b><span>광고도 팝업도 없이 열자마자 바로 시작해요.</span></div>
+        <div><i>3</i><b>계정 만들기가 쉬워요</b><span>계정 하나로 게임, 교육, 도구에서 모두 로그인돼요.</span></div>
+        <div><i>4</i><b>도구에서 Claude AI를 써요</b><span>Fry Docs, Fry Sheet 같은 도구에서 Claude AI의 도움을 받아요.</span></div>
+        <div><i>5</i><b>설치가 필요 없어요</b><span>브라우저에서 바로 하고, 원하면 앱으로 설치할 수도 있어요.</span></div>
+        <div><i>6</i><b>친구와 링크로 같이</b><span>주소만 보내면 친구와 같이 게임을 할 수 있어요.</span></div>
+      </div>
+    </section>
   </div>
 </div></div>
   <div class="ui"><div class="wrap">
     <footer><nav class="seo-nav" data-notr aria-label="Frenchfries777 sites"><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a><a href="https://frenchfries777.com/lounge/">Lounge</a><a href="https://frenchfries777.com/wiki/">Wiki</a><a href="https://frenchfries777.com/community/">Community</a></nav> <span>Made by Frenchfries777 with Claude AI</span> <span data-notr>Created by Frenchfries777</span> · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
   </div></div>
-<script>
-(function(){var im=document.querySelectorAll('.bg .s'),i=0;if(!im.length)return;im[0].classList.add('on');
-setInterval(function(){im[i].classList.remove('on');i=(i+1)%im.length;im[i].classList.add('on');},5000);})();
-</script>
 <script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
