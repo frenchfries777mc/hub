@@ -700,7 +700,7 @@ body{background-image:none!important}
     [].forEach.call($('display').querySelectorAll('[data-sz]'),function(b){ b.onclick=function(){ FFTheme.set(null,b.getAttribute('data-sz')); theme(); }; }); }
   function langs(){ var VIRT={nw:1,gk:1,au:1,sg:1,em:1}, CUR=(window.FFLang&&FFLang.pick)?FFLang.pick():L;
     function list(v){ return LANGS.filter(function(q){ return !VIRT[q[0]]===!v; }).map(function(q){ return [q[0],q[1]]; }); }
-    $('language').innerHTML=head('lang',t.lang,t.langN)+row(x('siteLang'),'',seg('data-lg',list(0),CUR),'sx-wide')+row(t.vlang,'',seg('data-lg',list(1),CUR),'sx-wide');
+    $('language').innerHTML=head('lang',t.lang,t.langN)+row(x('siteLang'),'한국어, English, Español, Français, Deutsch, 日本語',seg('data-lg',list(0),CUR),'sx-wide')+row(t.vlang,'',seg('data-lg',list(1),CUR),'sx-wide');
     [].forEach.call($('language').querySelectorAll('[data-lg]'),function(b){ var l=b.getAttribute('data-lg'); b.onclick=function(){ if(l===CUR) return; try{ localStorage.setItem('arenaClashLang',l); }catch(e){} try{ if(window.FFLang) FFLang.set(l); }catch(e){} location.reload(); }; }); }
   function acct(){ var A=window.FFAuth, u=A&&A.user&&A.user(); var box=$('account');
     if(!u){ box.innerHTML=head('acct',t.acct,t.needLogin)+row(x('acctT'),x('acctD'),'<button type="button" class="sx-btn" id="stLogin">'+esc(t.login)+'</button>'); $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
