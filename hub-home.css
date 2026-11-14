@@ -1,0 +1,46 @@
+/* Hub home (new design). Shell styles live in ff-shell.css */
+body.ffs-hub .page,body.ffs-hub .ui{background:transparent}
+body.ffs-hub .wrap{max-width:none;padding-left:0;padding-right:0}
+body.ffs-hub header{padding:20px 40px 0;gap:14px;align-items:center}
+body.ffs-hub header .right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.hh-onl .onl,.hh-onl.onl{margin:0}
+#onlineBar.onl{margin:0!important;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:var(--text)}
+body.ffs-hub .hero{min-height:calc(100svh - 120px);display:flex!important;flex-direction:column!important;justify-content:flex-end!important;padding:80px 40px 52px!important;gap:20px;max-width:800px}
+body.ffs-hub .hero .mono{font-size:12px;letter-spacing:.2em;color:#f0cf7e;text-shadow:none}
+body.ffs-hub .hero h1{font-size:clamp(56px,9vw,128px);line-height:.92;margin:0;text-transform:none;text-shadow:none}
+body.ffs-hub .hero p{margin:0;max-width:620px;font-size:18px;line-height:1.7;color:#ece4d0;text-shadow:none}
+body.ffs-hub .auth{margin:0;gap:12px}
+body.ffs-hub .auth button{border-radius:10px;padding:15px 28px;font-size:16px;background:#d9b45f;color:#0e0e0e}
+body.ffs-hub .auth button.alt{background:transparent;color:#ece6d8;border:1px solid #ece6d8;backdrop-filter:none}
+body.ffs-hub #annBar{padding:0 40px}
+.hh{padding:0 40px}
+.hh-sec{padding:44px 0 24px;display:flex;flex-direction:column;gap:24px}
+.hh-sec h2{margin:0;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:32px;letter-spacing:.04em;text-transform:uppercase}
+.hh-sp{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.hh-sp a{display:flex;flex-direction:column;background:#171717;border:1px solid #2e2b25;border-radius:16px;overflow:hidden;min-width:0;color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+.hh-sp a:hover,.hh-br a:hover{border-color:#d9b45f;transform:translateY(-2px)}
+.hh-sp img{width:100%;aspect-ratio:1200/630;object-fit:cover;display:block}
+.hh-sp div{padding:20px;display:flex;flex-direction:column;gap:8px}
+.hh-sp .t{display:flex;align-items:baseline;gap:12px}
+.hh-sp b{font-family:'Oswald',sans-serif;font-size:24px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.hh-sp .n{font-size:14px;color:#d9b45f}
+.hh-sp span.d,.hh-br .d{font-size:14px;line-height:1.65;color:#a39c8c}
+.hh-br{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+.hh-br a{display:flex;background:#171717;border:1px solid #2e2b25;border-radius:16px;overflow:hidden;min-width:0;color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+.hh-br img{width:46%;object-fit:cover;display:block}
+.hh-br span.b{padding:22px;display:flex;flex-direction:column;gap:6px;justify-content:center}
+.hh-br b{font-size:20px}
+.hh-about{margin:36px 0 24px;position:relative;border-radius:20px;overflow:hidden;min-height:320px;display:flex;align-items:center;background:#16210f}
+.hh-about>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hh-about>i{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,14,14,.94) 0,rgba(14,14,14,.78) 50%,rgba(14,14,14,.3) 100%)}
+.hh-about div{position:relative;padding:40px;max-width:600px;display:flex;flex-direction:column;gap:16px}
+.hh-about .e{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e}
+.hh-about h2{font-size:34px;line-height:1.15;text-transform:none;letter-spacing:0}
+.hh-about p{margin:0;font-size:16px;line-height:1.75;color:#d8d1c0}
+.hh-about a{align-self:flex-start;padding:12px 22px;border-radius:10px;border:1px solid #d9b45f;color:#f0cf7e;font-weight:500;font-size:15px;text-decoration:none}
+.hh-pk{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.hh-pk div{display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:16px;background:rgba(23,23,23,.88);border:1px solid #2e2b25;min-width:0}
+.hh-pk i{width:34px;height:34px;border-radius:8px;background:#26221a;border:1px solid #d9b45f;color:#f0cf7e;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;font-style:normal}
+.hh-pk b{font-size:19px}.hh-pk span{font-size:14px;line-height:1.7;color:#a39c8c}
+body.ffs-hub footer{padding:0 40px}
+@media(max-width:860px){body.ffs-hub header,body.ffs-hub #annBar,.hh,body.ffs-hub footer{padding-left:18px;padding-right:18px}body.ffs-hub .hero{padding:48px 18px 36px}.hh-br img{width:38%}}
