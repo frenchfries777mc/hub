@@ -42,11 +42,20 @@ body.ffs .wrap{max-width:1180px;padding-left:40px;padding-right:40px}
 }
 
 /* new look overrides for the old gold-bar "rich" layer */
-body.ffs .st-c,body.ffs .cm-p,body.ffs .pf-box,body.ffs .pf-me,body.ffs .lz-c,body.ffs .rk-c,body.ffs .hn-b,body.ffs .card,body.ffs .tr,body.ffs .ans .note,body.ffs:not(.ffs-hub) .page,
+html[data-ff-theme=dark] body.ffs .st-c,body.ffs .cm-p,body.ffs .pf-box,body.ffs .pf-me,body.ffs .lz-c,body.ffs .rk-c,body.ffs .hn-b,body.ffs .card,body.ffs .tr,body.ffs .ans .note,body.ffs:not(.ffs-hub) .page,
 html[data-ff-theme] body.ffs .hn-b,html[data-ff-theme] body.ffs .cc-dd,html[data-ff-theme] body.ffs .mn-box,html[data-ff-theme] body.ffs .cal-tip{
   background:rgba(23,23,23,.92)!important;border:1px solid #2e2b25!important;border-left:1px solid #2e2b25!important;border-radius:16px!important}
-body.ffs .lz-c:hover,body.ffs .card:hover{border-color:#d9b45f!important}
-body.ffs .hero h1,body.ffs .rh-h1,body.ffs .wrap>h1,body.ffs .ph h1,body.ffs .ans h1{border-left:0!important;padding-left:0!important;text-transform:none}
-body.ffs .cm-post{border-left:1px solid #2e2b25!important}
-body.ffs footer{border-top:1px solid #2e2b25!important;background:transparent!important}
-body.ffs .tb{border:1px solid #3a3530!important;background:rgba(14,14,14,.6)!important;border-radius:10px!important}
+html[data-ff-theme=dark] body.ffs .lz-c:hover,body.ffs .card:hover{border-color:#d9b45f!important}
+html[data-ff-theme=dark] body.ffs .hero h1,body.ffs .rh-h1,body.ffs .wrap>h1,body.ffs .ph h1,body.ffs .ans h1{border-left:0!important;padding-left:0!important;text-transform:none}
+html[data-ff-theme=dark] body.ffs .cm-post{border-left:1px solid #2e2b25!important}
+html[data-ff-theme=dark] body.ffs footer{border-top:1px solid #2e2b25!important;background:transparent!important}
+html[data-ff-theme=dark] body.ffs .tb{border:1px solid #3a3530!important;background:rgba(14,14,14,.6)!important;border-radius:10px!important}
+
+/* light theme: keep the left menu, drop the dark picture */
+html.ffs[data-ff-theme=light]{background:var(--bg,#f6f3ec)!important}
+html[data-ff-theme=light] .ffs-bg{display:none}
+html[data-ff-theme=light] .ffs-side{background:var(--panel,#fff);border-color:var(--line,#ddd)}
+html[data-ff-theme=light] .ffs-side .ffs-logo,html[data-ff-theme=light] .ffs-side .ffs-m{color:var(--text,#222)}
+html[data-ff-theme=light] .ffs-side .ffs-m:hover{background:rgba(0,0,0,.05)}
+html[data-ff-theme=light] .ffs-side .ffs-m.on{background:rgba(217,180,95,.25);color:#7a5a10}
+html[data-ff-theme=light] .ffs-side .ffs-foot,html[data-ff-theme=light] .ffs-side .ffs-foot a{color:var(--dim,#666)}

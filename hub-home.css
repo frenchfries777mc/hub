@@ -44,3 +44,10 @@ body.ffs-hub #annBar{padding:0 40px}
 .hh-pk b{font-size:19px}.hh-pk span{font-size:14px;line-height:1.7;color:#a39c8c}
 body.ffs-hub footer{padding:0 40px}
 @media(max-width:860px){body.ffs-hub header,body.ffs-hub #annBar,.hh,body.ffs-hub footer{padding-left:18px;padding-right:18px}body.ffs-hub .hero{padding:48px 18px 36px}.hh-br img{width:38%}}
+
+html[data-ff-theme=light] .hh-sp a,html[data-ff-theme=light] .hh-br a,html[data-ff-theme=light] .hh-pk div{background:var(--panel,#fff);border-color:var(--line,#ddd);color:var(--text)}
+html[data-ff-theme=light] .hh-sec h2,html[data-ff-theme=light] .hh-sp b,html[data-ff-theme=light] .hh-br b,html[data-ff-theme=light] .hh-pk b{color:var(--text)}
+html[data-ff-theme=light] .hh-sp span.d,html[data-ff-theme=light] .hh-br .d,html[data-ff-theme=light] .hh-pk span{color:var(--dim)}
+html[data-ff-theme=light] #onlineBar.onl{background:var(--panel,#fff);border-color:var(--line,#ddd)}
+html[data-ff-theme=light] body.ffs-hub .hero h1,html[data-ff-theme=light] body.ffs-hub .hero p{color:var(--text)!important}
+html[data-ff-theme=light] body.ffs-hub .auth button.alt{color:var(--text);border-color:var(--text)}
