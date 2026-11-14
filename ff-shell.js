@@ -10,17 +10,20 @@
     ['Tools','/tools/',['/tools/']],
     ['위키','/wiki/',['/wiki/']],
     ['커뮤니티','/community/',['/community/']],
-    ['라운지','/lounge/',['/lounge/','/patchnotes/','/music/','/gallery/','/prototypes/','/ai-chat/']],
+    ['라운지','/lounge/',['/lounge/','/patchnotes/','/music/','/games/gallery/','/games/prototypes/','/tools/ai-chat/']],
     ['설정','/settings/',['/settings/']]
   ];
+  var lounge=items[6][2], inLounge=false;
+  for(var k=0;k<lounge.length;k++){ if(path.indexOf(lounge[k])===0)inLounge=true; }
   function isOn(it){
     if(it[1]==='/')return path==='/'||path==='';
+    if(inLounge)return it[0]==='라운지';
     for(var i=0;i<it[2].length;i++){ if(path.indexOf(it[2][i])===0)return true; }
     return false;
   }
   function build(){
     if(!d.body||d.querySelector('.ffs-side'))return;
-    if(!d.querySelector('link[href*="ff-shell.css"]')){var css=d.createElement('link'); css.rel='stylesheet'; css.href='/ff-shell.css?v=5'; d.head.appendChild(css);}
+    if(!d.querySelector('link[href*="ff-shell.css"]')){var css=d.createElement('link'); css.rel='stylesheet'; css.href='/ff-shell.css?v=6'; d.head.appendChild(css);}
     root.classList.add('ffsh'); d.body.classList.add('ffsh');
     if(path==='/'||path==='')d.body.classList.add('ffs-hub');
     if(/^\/(games|educations|tools)\/$/.test(path))d.body.classList.add('ffs-front');
