@@ -1,0 +1,15 @@
+/* Frenchfries777 colour themes for the rebuilt hub-side pages (light, yellow, red, blue).
+   The pages are drawn dark; light and yellow flip it with a root filter, red and blue turn the gold accent. */
+html[data-ff-theme=light]{filter:invert(1) hue-rotate(180deg);background:#fff!important}
+html[data-ff-theme=light] img,html[data-ff-theme=light] video,html[data-ff-theme=light] canvas,html[data-ff-theme=light] iframe,html[data-ff-theme=light] [data-noinv]{filter:invert(1) hue-rotate(180deg)}
+html[data-ff-theme=light] .ffx-root>main>img,html[data-ff-theme=light] .ffx-root>main>div[style*="gradient"]{display:none!important}
+html[data-ff-theme=light] .ffx-root>main{background:#000!important}
+html[data-ff-theme=light][data-ff-accent=yellow]{filter:invert(1) hue-rotate(180deg) sepia(.55) saturate(1.8) brightness(.99)}
+html[data-ff-accent=red]{filter:hue-rotate(-38deg) saturate(1.15)}
+html[data-ff-accent=blue]{filter:hue-rotate(172deg) saturate(1.1)}
+html[data-ff-accent=red] img,html[data-ff-accent=red] video,html[data-ff-accent=red] canvas,html[data-ff-accent=red] iframe{filter:hue-rotate(38deg)}
+html[data-ff-accent=blue] img,html[data-ff-accent=blue] video,html[data-ff-accent=blue] canvas,html[data-ff-accent=blue] iframe{filter:hue-rotate(-172deg)}
+html[data-ff-theme=light] .sx-sw2{filter:invert(1) hue-rotate(180deg)}
+html[data-ff-accent=red] .sx-sw2{filter:hue-rotate(38deg)}
+html[data-ff-accent=blue] .sx-sw2{filter:hue-rotate(-172deg)}
+html[data-ff-theme=light][data-ff-accent=yellow] .sx-sw2{filter:invert(1) hue-rotate(180deg)}

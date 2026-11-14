@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
    The pages are written in Korean; this file translates their text in place. Whole text nodes are looked up first (S: site strings),
@@ -499,6 +499,10 @@ img{max-width:100%}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
+.srx-btn{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;color:#ece6d8;font-size:16px;cursor:pointer;padding:0}
+.srx-btn:hover{border-color:#d9b45f}
+.ffx-foot{padding:26px 0 48px;margin-top:10px;border-top:1px solid #2e2b25;font-size:13px;color:#8d877a;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.ffx-foot a{color:#a39c8c;text-decoration:none}.ffx-foot a:hover{color:#f0cf7e}
 .ffx-nav a:hover{background:#1c1a16}
 @media(max-width:860px){
   .ffx-root{flex-direction:column!important;flex-wrap:nowrap!important}
@@ -519,6 +523,47 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 .ffx-c .cm-post{border-left:1px solid #2e2b25!important}
 .ffx-c h1,.ffx-c .rh-h1{border-left:0!important;padding-left:0!important}
 </style>
+<style id="sxcss">
+body{background-image:none!important}
+.sx-chips{display:flex;flex-wrap:wrap;gap:10px;padding:6px 0 34px}
+.sx-chips a{padding:8px 16px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.55);color:#c9c2b0;font-size:14px;font-weight:500;text-decoration:none}
+.sx-chips a.on{border-color:#d9b45f;background:#26221a;color:#f0cf7e}
+.sx-wrap{display:flex!important;flex-wrap:wrap;gap:24px;align-items:flex-start;padding:28px 0 72px;margin:0!important;max-width:none!important}
+.sx-nav{flex:0 0 200px;display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;position:sticky;top:20px}
+.sx-nav a{display:flex;align-items:center;padding:12px 14px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0;text-decoration:none}
+.sx-nav a.on{background:#26221a;color:#f0cf7e}
+.sx-main{flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.sx-main .st-c{display:flex;flex-direction:column;padding:26px 28px 10px!important;border-radius:18px!important;background:rgba(23,23,23,.92)!important;border:1px solid #2e2b25!important;margin:0!important;scroll-margin-top:20px}
+.sx-h{display:flex;align-items:center;gap:16px;padding-bottom:18px}
+.sx-i{flex:none;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center}
+.sx-hh{display:flex;flex-direction:column;gap:3px}.sx-hh b{font-size:22px;color:#ece6d8}.sx-hh span{font-size:13px;color:#a39c8c}
+.sx-r{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:18px 0;border-top:1px solid #2e2b25}
+.sx-rt{flex:1 1 260px;display:flex;flex-direction:column;gap:3px;min-width:0}.sx-rt b{font-size:16px;color:#ece6d8}.sx-rt span{font-size:13px;line-height:1.5;color:#a39c8c}
+.sx-rc{flex:0 1 auto;max-width:100%}
+.sx-wide{align-items:flex-start}.sx-wide .sx-rt{flex:1 1 140px}.sx-wide .sx-rc{flex:1 1 360px}
+.sx-seg{display:inline-flex;padding:4px;border-radius:12px;background:#0e0e0e;border:1px solid #2e2b25;gap:2px;flex-wrap:wrap}
+.sx-seg button{padding:9px 16px;border-radius:9px;font-size:14px;font-weight:500;background:transparent;color:#c9c2b0;border:0;cursor:pointer}
+.sx-seg button.on{background:#d9b45f;color:#0e0e0e}
+.sx-wide .sx-seg{background:transparent;border:0;padding:0;gap:8px}
+.sx-wide .sx-seg button{padding:9px 16px;border-radius:10px;border:1px solid #3a3530}
+.sx-wide .sx-seg button.on{border-color:#d9b45f;background:#26221a;color:#f0cf7e}
+.sx-ths{display:flex;gap:12px;flex-wrap:wrap}
+.sx-th{display:flex;flex-direction:column;gap:8px;align-items:center;background:none;border:0;padding:0;cursor:pointer;font-size:13px;color:#c9c2b0}
+.sx-th.on{color:#f0cf7e}
+.sx-sw2{width:84px;height:56px;border-radius:12px;border:2px solid #3a3530;display:flex;align-items:flex-end;padding:8px;box-sizing:border-box}
+.sx-th.on .sx-sw2{border-color:#d9b45f}
+.sx-sw2 i{display:block;width:100%;height:8px;border-radius:4px}
+.sx-sw{display:inline-block;width:48px;height:28px;border-radius:999px;background:#3a3530;position:relative;border:0;cursor:pointer;padding:0}
+.sx-sw::after{content:'';position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#0e0e0e;transition:left .15s}
+.sx-sw.on{background:#d9b45f}.sx-sw.on::after{left:24px}
+.sx-btn{display:inline-flex;align-items:center;height:40px;padding:0 18px;border-radius:10px;background:#d9b45f;color:#0e0e0e;font-weight:500;font-size:14px;border:0;cursor:pointer;text-decoration:none}
+.sx-cp .sx-val{word-break:break-all;user-select:all;color:#a39c8c;font-size:13px}
+.sx-cp .sx-rt{flex:1 1 200px}
+.st-back,.st-h{display:none!important}
+@media(max-width:860px){.sx-nav{flex:1 1 100%;flex-direction:row;overflow-x:auto;position:static}.sx-nav a{white-space:nowrap}.sx-main .st-c{padding:20px 16px 4px!important}}
+
+</style>
+<link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body data-root="https://frenchfries777.com/games/">
 <div class="ffx-root" style="background:#0e0e0e;color:#ece6d8;min-height:2600px;display:flex;flex-wrap:wrap;align-items:stretch">
@@ -547,7 +592,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261109a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">SETTINGS</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Settings</h1>
@@ -557,7 +602,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <div hidden>
   <header>
     <a class="logo" href="../"><span class="fry" aria-hidden="true">🍟</span><span>FRENCHFRIES<b>777</b></span></a>
-    <div class="swr"><span class="sw" data-notr><a class="on" href="../" aria-current="page">Hub</a><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a></span><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button></div>
+    <div class="swr"><span class="sw" data-notr><a class="on" href="../" aria-current="page">Hub</a><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a></span><button type="button" class="srx-btn" data-x="srx" aria-label="검색" title="검색">🔍</button></div>
     <div class="right"><nav><a href="../wiki/">위키</a><a href="../community/">커뮤니티</a><a href="../lounge/">라운지</a><a href="./">설정</a></nav><div class="tb"><span class="cchip"><button type="button" class="cc-b" id="coinChip" title="Hub Coin" aria-haspopup="true"><span aria-hidden="true">🪙</span><b id="coinChipN" data-notr>0</b></button><div class="cc-dd" id="coinDd" hidden><div class="coinbar" id="coinBar"></div></div></span><span data-ff-account></span></div></div>
   </header>
   <div data-x="annBar"></div>
@@ -571,14 +616,10 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
     <p data-notr id="stSub"></p>
     </div>
   </section></div>
-  <section class="stwrap" data-notr id="stBody">
-    <div class="st-c" id="display"></div>
-    <div class="st-c" id="language"></div>
-    <div class="st-c" id="account"></div>
-    <div class="st-c" id="perf"></div>
-    <div class="st-c" id="notify"></div>
-    <div class="st-c" id="devlogin"></div>
-  </section>
+  <div class="sx-chips" id="sxChips"></div>
+<section class="stwrap sx-wrap" data-notr id="stBody"><nav class="sx-nav" id="sxNav"></nav><div class="sx-main">
+<div class="st-c" id="display"></div><div class="st-c" id="language"></div><div class="st-c" id="account"></div><div class="st-c" id="perf"></div><div class="st-c" id="notify"></div><div class="st-c" id="devlogin"></div>
+</div></section>
   <script>
   (function(){ function boot(){
   var T={
@@ -643,35 +684,55 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
   $('stBackT').textContent=t.back; $('stSub').textContent=t.sub;
   /* back: to the page we came from when it is one of our sites, else the hub */
   (function(){ var r=''; try{ r=document.referrer||''; }catch(e){} if(/^https:\/\/frenchfries777mc\.github\.io\//.test(r)&&r.indexOf('/settings/')<0) $('stBack').href=r; })();
-  function theme(){ var c=window.FFTheme?FFTheme.get():{theme:'dark',size:'m'}; $('display').innerHTML='<h2>'+esc(t.disp)+'</h2><h3>'+esc(t.theme)+'</h3><div class="st-g">'+['dark','light'].map(function(k){ return '<button type="button" data-th="'+k+'">'+esc(t[k])+'</button>'; }).join('')+'</div>'+
-    '<h3>'+esc(t.size)+'</h3><div class="st-g">'+(window.FFTheme?FFTheme.sizes:['s','m','l','xl']).map(function(z){ return '<button type="button" data-sz="'+z+'">'+esc(t[z]||z)+'</button>'; }).join('')+'</div>';
-    [].forEach.call($('display').querySelectorAll('[data-th]'),function(x){ x.classList.toggle('on',x.getAttribute('data-th')===c.theme); x.onclick=function(){ FFTheme.set(x.getAttribute('data-th')); theme(); }; });
-    [].forEach.call($('display').querySelectorAll('[data-sz]'),function(x){ x.classList.toggle('on',x.getAttribute('data-sz')===c.size); x.onclick=function(){ FFTheme.set(null,x.getAttribute('data-sz')); theme(); }; }); }
-  function langs(){ var VIRT={nw:1,gk:1,au:1,sg:1,em:1}, CUR=(window.FFLang&&FFLang.pick)?FFLang.pick():L; function btns(v){ return LANGS.filter(function(x){ return !VIRT[x[0]]===!v; }).map(function(x){ return '<button type="button" data-lg="'+x[0]+'">'+esc(x[1])+'</button>'; }).join(''); }
-    $('language').innerHTML='<h2>'+esc(t.lang)+'</h2><div class="st-g">'+btns(0)+'</div><h3 style="margin-top:16px">'+esc(t.vlang)+'</h3><div class="st-g">'+btns(1)+'</div><p>'+esc(t.langN)+'</p>';
-    [].forEach.call($('language').querySelectorAll('[data-lg]'),function(x){ var l=x.getAttribute('data-lg'); x.classList.toggle('on',l===CUR); x.onclick=function(){ if(l===CUR) return; try{ localStorage.setItem('arenaClashLang',l); }catch(e){} try{ if(window.FFLang) FFLang.set(l); }catch(e){} location.reload(); }; }); }
+  var IC={"disp": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" stroke=\"#1a1408\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M8 20h8M12 16v4\"/></svg>", "lang": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" stroke=\"#1a1408\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"><circle cx=\"11\" cy=\"11\" r=\"6\"/><path d=\"M16 16l4 4\"/></svg>", "acct": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" stroke=\"#1a1408\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7\"/></svg>", "perf": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" stroke=\"#1a1408\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"3\"/><path d=\"M10 9l5 3-5 3z\"/></svg>", "note": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" stroke=\"#1a1408\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M3 7l9 6 9-6\"/></svg>", "dev": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" stroke=\"#1a1408\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"><path d=\"M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16\"/></svg>"};
+  var X={ko:{dispN:'허브, 게임, 교육, 도구에 같이 적용돼요.',themeD:'사이트 전체 색을 바꿔요.',sizeD:'글씨가 작거나 크게 보이면 바꿔요.',siteLang:'사이트 언어',acctT:'Frenchfries777 계정',acctD:'한 계정으로 모든 곳에 로그인돼요.',acctIn:'닉네임·아이디·비밀번호·프로필 테두리는 프로필 페이지에서 바꿔요.',openProf:'프로필 설정 열기',device:'기기',deviceD:'컴퓨터와 모바일 중 골라요.',pc:'컴퓨터',mobile:'모바일',dev:'앱 연동',yellow:'노랑',red:'빨강',blue:'파랑',dark:'다크',light:'라이트'},
+   en:{dispN:'Applies to the hub, games, educations and tools.',themeD:'Changes the colours of the whole site.',sizeD:'Change it if text looks too small or too big.',siteLang:'Site language',acctT:'Frenchfries777 account',acctD:'One account signs you in everywhere.',acctIn:'Change your nickname, username, password and profile frame on the profile page.',openProf:'Open profile settings',device:'Device',deviceD:'Choose computer or mobile.',pc:'Computer',mobile:'Mobile',dev:'App sign-in',yellow:'Yellow',red:'Red',blue:'Blue',dark:'Dark',light:'Light'}};
+  function x(k){ return (L==='ko'?X.ko[k]:(X.en[k]||X.ko[k])); }
+  function head(k,title,sub){ return '<div class="sx-h"><span class="sx-i">'+IC[k]+'</span><span class="sx-hh"><b>'+esc(title)+'</b>'+(sub?'<span>'+esc(sub)+'</span>':'')+'</span></div>'; }
+  function row(title,sub,ctl,cls){ return '<div class="sx-r'+(cls?' '+cls:'')+'"><span class="sx-rt"><b>'+esc(title)+'</b>'+(sub?'<span>'+esc(sub)+'</span>':'')+'</span><span class="sx-rc">'+ctl+'</span></div>'; }
+  function seg(attrs,items,cur){ return '<span class="sx-seg">'+items.map(function(i){ return '<button type="button" '+attrs+'="'+i[0]+'"'+(String(i[0])===String(cur)?' class="on"':'')+'>'+esc(i[1])+'</button>'; }).join('')+'</span>'; }
+  function sw(attr,on,label){ return '<button type="button" class="sx-sw'+(on?' on':'')+'" '+attr+' role="switch" aria-checked="'+(on?'true':'false')+'" aria-label="'+esc(label)+'"></button>'; }
+  var SW={dark:['#0e0e0e','#d9b45f','#d9b45f'],light:['#f3ecdc','#b8892a','#3a3530'],yellow:['#f0cf3a','#1a1814','#3a3530'],red:['#c0392b','#fff','#3a3530'],blue:['#2f6fc2','#fff','#3a3530']};
+  function theme(){ var c=window.FFTheme?FFTheme.get():{theme:'dark',size:'m'};
+    var ths=['dark','light','yellow','red','blue'].map(function(k){ var v=SW[k]; return '<button type="button" class="sx-th'+(c.theme===k?' on':'')+'" data-th="'+k+'"><span class="sx-sw2" style="background:'+v[0]+'"><i style="background:'+v[1]+'"></i></span><span>'+esc(x(k))+'</span></button>'; }).join('');
+    $('display').innerHTML=head('disp',t.disp,x('dispN'))+row(t.theme,x('themeD'),'<span class="sx-ths">'+ths+'</span>')+row(t.size,x('sizeD'),seg('data-sz',(window.FFTheme?FFTheme.sizes:['s','m','l','xl']).map(function(z){ return [z,t[z]||z]; }),c.size));
+    [].forEach.call($('display').querySelectorAll('[data-th]'),function(b){ b.onclick=function(){ FFTheme.set(b.getAttribute('data-th')); theme(); }; });
+    [].forEach.call($('display').querySelectorAll('[data-sz]'),function(b){ b.onclick=function(){ FFTheme.set(null,b.getAttribute('data-sz')); theme(); }; }); }
+  function langs(){ var VIRT={nw:1,gk:1,au:1,sg:1,em:1}, CUR=(window.FFLang&&FFLang.pick)?FFLang.pick():L;
+    function list(v){ return LANGS.filter(function(q){ return !VIRT[q[0]]===!v; }).map(function(q){ return [q[0],q[1]]; }); }
+    $('language').innerHTML=head('lang',t.lang,t.langN)+row(x('siteLang'),'',seg('data-lg',list(0),CUR),'sx-wide')+row(t.vlang,'',seg('data-lg',list(1),CUR),'sx-wide');
+    [].forEach.call($('language').querySelectorAll('[data-lg]'),function(b){ var l=b.getAttribute('data-lg'); b.onclick=function(){ if(l===CUR) return; try{ localStorage.setItem('arenaClashLang',l); }catch(e){} try{ if(window.FFLang) FFLang.set(l); }catch(e){} location.reload(); }; }); }
   function acct(){ var A=window.FFAuth, u=A&&A.user&&A.user(); var box=$('account');
-    if(!u){ box.innerHTML='<h2>'+esc(t.acct)+'</h2><div class="st-login"><p style="margin:0">'+esc(t.needLogin)+'</p><button type="button" class="ffa-btn" id="stLogin">🍟 '+esc(t.login)+'</button></div>'; $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
-    box.innerHTML='<h2>'+esc(t.acct)+'</h2><p style="margin:0 0 12px">닉네임·아이디·비밀번호·프로필 테두리는 프로필 페이지에서 바꿔요.</p><a class="ffa-btn" href="../profile/">프로필 설정 열기</a>'; }
+    if(!u){ box.innerHTML=head('acct',t.acct,t.needLogin)+row(x('acctT'),x('acctD'),'<button type="button" class="sx-btn" id="stLogin">'+esc(t.login)+'</button>'); $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
+    box.innerHTML=head('acct',t.acct,x('acctIn'))+row(x('acctT'),x('acctD'),'<a class="sx-btn" href="../profile/">'+esc(x('openProf'))+'</a>'); }
   function notes(){ var P=(window.FFAuth&&FFAuth.notePrefs)?FFAuth.notePrefs.get():{};
-    var rows=KINDS.concat(['toast']).map(function(k){ return '<div class="st-t"><div><b>'+esc(t[k])+'</b><span>'+esc(t[k+'D'])+'</span></div><button type="button" class="st-sw'+(P[k]===false?'':' on')+'" data-k="'+k+'" role="switch" aria-checked="'+(P[k]===false?'false':'true')+'" aria-label="'+esc(t[k])+'"></button></div>'; }).join('');
-    $('notify').innerHTML='<h2>'+esc(t.note)+'</h2>'+rows+'<p>'+esc(t.noteN)+'</p>';
-    [].forEach.call($('notify').querySelectorAll('.st-sw'),function(b){ b.onclick=function(){ var on=!b.classList.contains('on'); b.classList.toggle('on',on); b.setAttribute('aria-checked',on?'true':'false'); if(window.FFAuth&&FFAuth.notePrefs) FFAuth.notePrefs.set(b.getAttribute('data-k'),on); try{ window.dispatchEvent(new Event('ffnoteprefs')); }catch(e){} }; }); }
+    $('notify').innerHTML=head('note',t.note,t.noteN)+KINDS.concat(['toast']).map(function(k){ return row(t[k],t[k+'D'],sw('data-k="'+k+'"',P[k]!==false,t[k])); }).join('');
+    [].forEach.call($('notify').querySelectorAll('.sx-sw'),function(b){ b.onclick=function(){ var on=!b.classList.contains('on'); b.classList.toggle('on',on); b.setAttribute('aria-checked',on?'true':'false'); if(window.FFAuth&&FFAuth.notePrefs) FFAuth.notePrefs.set(b.getAttribute('data-k'),on); try{ window.dispatchEvent(new Event('ffnoteprefs')); }catch(e){} }; }); }
   function perf(){ var P=window.FFPerf?FFPerf.get():{low:false,fx:'high',fps:0}; if(!window.FFPerf){ $('perf').style.display='none'; return; }
-    function grp(key,vals){ return '<div class="st-g">'+vals.map(function(v){ return '<button type="button" data-pk="'+key+'" data-pv="'+v+'"'+(String(P[key])===String(v)?' class="on"':'')+'>'+esc(t[key==='fx'?'fx'+v:'fps'+v])+'</button>'; }).join('')+'</div>'; }
-    $('perf').innerHTML='<h2>'+esc(t.perf)+'</h2><div class="st-t"><div><b>'+esc(t.low)+'</b><span>'+esc(t.lowD)+'</span></div><button type="button" class="st-sw'+(P.low?' on':'')+'" id="perfLow" role="switch" aria-checked="'+P.low+'" aria-label="'+esc(t.low)+'"></button></div>'+
-      '<h3>'+esc(t.fx)+'</h3><p style="margin:0 0 8px">'+esc(t.fxD)+'</p>'+grp('fx',['high','mid','low'])+'<h3 style="margin-top:16px">'+esc(t.fps)+'</h3><p style="margin:0 0 8px">'+esc(t.fpsD)+'</p>'+grp('fps',[0,60,30])+'<p>'+esc(t.perfN)+'</p>';
+    var dv='pc'; try{ dv=localStorage.getItem('ff_device')==='mobile'?'mobile':'pc'; }catch(e){}
+    $('perf').innerHTML=head('perf',t.perf,t.perfN)+row(x('device'),x('deviceD'),seg('data-dv',[['pc',x('pc')],['mobile',x('mobile')]],dv))+row(t.low,t.lowD,sw('id="perfLow"',P.low,t.low))+
+      row(t.fx,t.fxD,seg('data-pk="fx" data-pv',['high','mid','low'].map(function(v){ return [v,t['fx'+v]]; }),P.fx))+row(t.fps,t.fpsD,seg('data-pk="fps" data-pv',[0,60,30].map(function(v){ return [v,t['fps'+v]]; }),P.fps));
     $('perfLow').onclick=function(){ var on=!P.low; FFPerf.set(on?{low:true,fx:'low',fps:30}:{low:false,fx:'high',fps:0}); perf(); };
+    [].forEach.call($('perf').querySelectorAll('[data-dv]'),function(b){ b.onclick=function(){ var v=b.getAttribute('data-dv'), was=dv==='mobile'; try{ localStorage.setItem('ff_device',v); }catch(e){} var mob=v==='mobile'; if(mob||was) FFPerf.set(mob?{low:true,fx:'low',fps:30}:{low:false,fx:'high',fps:0}); perf(); }; });
     [].forEach.call($('perf').querySelectorAll('[data-pk]'),function(b){ b.onclick=function(){ var o={}, k=b.getAttribute('data-pk'), v=b.getAttribute('data-pv'); o[k]=k==='fps'?+v:v; FFPerf.set(o); perf(); }; }); }
   function devlogin(){
     var ko=L==='ko', B='https://kebsbuvuutilitwlvxzv.supabase.co/auth/v1/';
     var rows=[[ko?'앱 이름':'App name','Frenchfries777'],['Client ID','73832fa7-a386-4576-9634-e9e7d2ef811b'],[ko?'로그인 시작 주소':'Authorization URL',B+'oauth/authorize'],[ko?'토큰 주소':'Token URL',B+'oauth/token'],
       [ko?'키 주소 (JWKS)':'JWKS URL',B+'.well-known/jwks.json'],[ko?'자동 설정 주소 (OIDC)':'OIDC discovery',B+'.well-known/openid-configuration'],[ko?'가져올 정보 (scope)':'Scope','openid email profile'],[ko?'방식':'Flow','Authorization Code + PKCE (Public client)'],[ko?'로고':'Logo','https://frenchfries777.com/icon-512.png']];
-    $('devlogin').innerHTML='<h2>'+(ko?'내 앱에서 Frenchfries777 계정으로 로그인':'Sign in with Frenchfries777 in your app')+'</h2><p style="margin:0 0 12px">'+(ko?'다른 사이트나 앱이 Frenchfries777 계정으로 로그인하게 만들 때 쓰는 값이에요.':'Values for letting another site or app sign in with a Frenchfries777 account.')+'</p>'+
-      rows.map(function(r,i){ return '<div class="st-t" style="gap:10px"><div style="min-width:0"><b>'+esc(r[0])+'</b><span style="word-break:break-all;user-select:all" data-notr>'+esc(r[1])+'</span></div><button type="button" class="ffa-btn" data-cp="'+i+'">'+(ko?'복사':'Copy')+'</button></div>'; }).join('');
+    $('devlogin').innerHTML=head('dev',ko?'내 앱에서 Frenchfries777 계정으로 로그인':'Sign in with Frenchfries777 in your app',ko?'다른 사이트나 앱이 Frenchfries777 계정으로 로그인하게 만들 때 쓰는 값이에요.':'Values for letting another site or app sign in with a Frenchfries777 account.')+
+      rows.map(function(r,i){ return row(r[0],'','<button type="button" class="sx-btn" data-cp="'+i+'">'+(ko?'복사':'Copy')+'</button>','sx-cp').replace('</span></span></div>','</span></span></div>').replace('<b>'+esc(r[0])+'</b>','<b>'+esc(r[0])+'</b><span class="sx-val" data-notr>'+esc(r[1])+'</span>'); }).join('');
     [].forEach.call($('devlogin').querySelectorAll('[data-cp]'),function(b){ b.onclick=function(){ var v=rows[+b.getAttribute('data-cp')][1]; var done=function(){ var o=b.textContent; b.textContent=ko?'복사됨':'Copied'; setTimeout(function(){ b.textContent=o; },1200); };
       try{ navigator.clipboard.writeText(v).then(done,function(){}); }catch(e){} }; }); }
-  theme(); langs(); perf(); notes(); acct(); devlogin();
+  function navs(){ var items=[['display',t.disp],['language',t.lang],['account',t.acct],['perf',t.perf],['notify',t.note],['devlogin',x('dev')]];
+    $('sxNav').innerHTML=items.map(function(i,n){ return '<a href="#'+i[0]+'"'+(n?'':' class="on"')+'>'+esc(i[1])+'</a>'; }).join('');
+    $('sxChips').innerHTML=items.slice(0,5).map(function(i,n){ return '<a href="#'+i[0]+'"'+(n?'':' class="on"')+'>'+esc(i[1])+'</a>'; }).join('');
+    function go(e){ var a=e.target.closest('a[href^="#"]'); if(!a) return; var el=$(a.getAttribute('href').slice(1)); if(!el) return; e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+    $('sxNav').onclick=go; $('sxChips').onclick=go;
+    function spy(){ var cur=items[0][0]; items.forEach(function(i){ var el=$(i[0]); if(el&&el.getBoundingClientRect().top<160) cur=i[0]; });
+      [].forEach.call(document.querySelectorAll('#sxNav a,#sxChips a'),function(a){ a.classList.toggle('on',a.getAttribute('href')==='#'+cur); }); }
+    window.addEventListener('scroll',spy,{passive:true}); }
+
+  theme(); langs(); perf(); notes(); acct(); devlogin(); navs();
   window.addEventListener('fftheme',theme);
   function wire(){ if(window.FFAuth){ FFAuth.ready.then(function(){ acct(); }); FFAuth.onChange(function(){ acct(); }); } else setTimeout(wire,200); } wire();
   if(location.hash&&$(location.hash.slice(1))) setTimeout(function(){ $(location.hash.slice(1)).scrollIntoView(); },300);
