@@ -20,9 +20,10 @@
   }
   function build(){
     if(!d.body||d.querySelector('.ffs-side'))return;
-    if(!d.querySelector('link[href*="ff-shell.css"]')){var css=d.createElement('link'); css.rel='stylesheet'; css.href='/ff-shell.css?v=1'; d.head.appendChild(css);}
-    root.classList.add('ffs'); d.body.classList.add('ffs');
+    if(!d.querySelector('link[href*="ff-shell.css"]')){var css=d.createElement('link'); css.rel='stylesheet'; css.href='/ff-shell.css?v=5'; d.head.appendChild(css);}
+    root.classList.add('ffsh'); d.body.classList.add('ffsh');
     if(path==='/'||path==='')d.body.classList.add('ffs-hub');
+    if(/^\/(games|educations|tools)\/$/.test(path))d.body.classList.add('ffs-front');
     var bg=d.createElement('div'); bg.className='ffs-bg'; bg.setAttribute('aria-hidden','true');
     d.body.insertBefore(bg,d.body.firstChild);
     var nav=d.createElement('nav'); nav.className='ffs-side'; nav.setAttribute('aria-label','Frenchfries777');
