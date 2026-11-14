@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="copyright" content="© 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)">
+<title>앱 소개 · Frenchfries777 앱 스토어</title>
+<meta name="theme-color" content="#0e0e0e">
+<link rel="icon" href="https://apps.frenchfries777.com/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../store.css?v=1">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="https://apps.frenchfries777.com/"><img src="https://apps.frenchfries777.com/favicon.svg" alt="" width="30" height="30"><span>FRENCHFRIES<b>777</b> 앱 스토어</span></a>
+    <nav class="nav"><a href="https://apps.frenchfries777.com/">스토어</a><a href="../submit/">앱 올리기</a><span data-ff-account></span></nav>
+  </header>
+  <main id="main"><p class="note">불러오는 중…</p></main>
+  <footer class="foot">
+    <span>Created by Frenchfries777 · <a href="https://frenchfries777.com/">허브로 가기</a></span>
+    <span>© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span>
+  </footer>
+</div>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h"></script>
+<script src="../ffstore.js?v=1"></script>
+<script>
+(function(){
+'use strict';
+var S=window.FFStore, el=S.el, main=document.getElementById('main');
+var CAT={games:'게임',educations:'교육',tools:'도구',social:'소통'};
+var IMG=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/]+=*$/;
+var id=new URLSearchParams(location.search).get('id')||'';
+function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function fail(t){main.textContent='';main.appendChild(el('p','note',t));main.appendChild(Object.assign(el('a','btn g','스토어로 가기'),{href:'https://apps.frenchfries777.com/'}))}
+function safeHttps(u){try{var x=new URL(u);return x.protocol==='https:'?x.href:null}catch(e){return null}}
+
+async function go(){
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id))return fail('찾는 앱이 없어요.');
+  var a;try{a=await S.rpc('app_store_get',{p_id:id})}catch(e){return fail('불러오지 못했어요. 새로고침해 보세요.')}
+  if(!a)return fail('찾는 앱이 없거나 아직 공개되지 않았어요.');
+  document.title=a.name+' · Frenchfries777 앱 스토어';
+  main.textContent='';
+  if(a.status!=='approved'){
+    var w=el('div','warn');
+    w.textContent=a.status==='pending'?'아직 공개 전이에요. 오너가 확인 중이라 나와 오너만 이 페이지를 볼 수 있어요.'
+      :(a.status==='rejected'?'반려됐어요. 이유: ':'스토어에서 내려갔어요. 이유: ')+(a.reject_reason||'(이유 없음)');
+    main.appendChild(w);
+  }
+  var hero=el('div','hero');var ic=el('span','ic big');var h=hue(a.id);ic.style.setProperty('--a','hsl('+h+' 60% 52%)');ic.style.setProperty('--b','hsl('+((h+40)%360)+' 55% 28%)');
+  if(IMG.test(a.icon||'')){var im=document.createElement('img');im.alt='';im.src=a.icon;ic.appendChild(im)}else ic.textContent=(a.name||'?').charAt(0).toUpperCase();
+  hero.appendChild(ic);
+  var hd=el('div');var l=el('div');l.appendChild(el('span','badge','커뮤니티 앱'));l.appendChild(el('span','badge p',CAT[a.category]||''));hd.appendChild(l);
+  hd.appendChild(el('h1',null,a.name));hd.appendChild(el('div','note',a.dev+' 님이 올렸어요'));
+  var sm=el('div','note');sm.id='sm';hd.appendChild(sm);hero.appendChild(hd);main.appendChild(hero);
+  main.appendChild(el('p','lead',a.tagline));
+
+  var url=safeHttps(a.url);
+  var bt=el('div','btns');
+  if(url){var o=el('a','btn','앱 열기');o.href=url;o.target='_blank';o.rel='noopener noreferrer nofollow';bt.appendChild(o)}
+  main.appendChild(bt);
+  main.appendChild(el('p','note','“앱 열기”를 누르면 새 탭에서 앱 주인의 주소로 이동해요. 이 앱은 Frenchfries777이 만든 앱이 아니고, Frenchfries777 계정과 연결되어 있지 않아요. 오너가 소개 내용을 확인한 뒤 올라왔어요.'));
+
+  var shots=(a.screenshots||[]).filter(function(s){return IMG.test(s)});
+  if(shots.length){
+    var big=el('img','bigshot');big.alt='스크린샷 1';big.src=shots[0];main.appendChild(big);
+    if(shots.length>1){var sh=el('div','shots');shots.forEach(function(s,i){var b=el('button');b.type='button';b.setAttribute('aria-pressed',i===0?'true':'false');b.setAttribute('aria-label','스크린샷 '+(i+1));var t=document.createElement('img');t.alt='';t.src=s;b.appendChild(t);
+      b.addEventListener('click',function(){big.src=s;big.alt='스크린샷 '+(i+1);[].forEach.call(sh.children,function(c){c.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true')});sh.appendChild(b)});main.appendChild(sh)}
+  }
+  var c1=el('div','card');c1.appendChild(el('h2',null,'앱 소개'));c1.appendChild(el('div','desc',a.description));main.appendChild(c1);
+  if(a.howto){var c2=el('div','card');c2.appendChild(el('h2',null,'조작법 · 사용법'));c2.appendChild(el('div','desc',a.howto));main.appendChild(c2)}
+  var c3=el('div','card');var dl=el('dl','facts');
+  function fact(k,v){dl.appendChild(el('dt',null,k));dl.appendChild(el('dd',null,v))}
+  fact('분류',CAT[a.category]||'');fact('올린 사람',a.dev);fact('올린 날짜',S.fmtDate(a.approved_at||a.created_at));
+  if(url){try{fact('주소',new URL(url).host)}catch(e){}}
+  c3.appendChild(dl);
+  if((a.tags||[]).length){var tg=el('div');a.tags.forEach(function(t){tg.appendChild(el('span','tag',t))});c3.appendChild(tg)}
+  main.appendChild(c3);
+
+  if(a.status==='approved'){
+    var rv=el('div','card');main.appendChild(rv);
+    S.lazyReviews(rv,a.id,{onStats:function(avg,n){var s=document.getElementById('sm');s.textContent=n?'★ '+avg.toFixed(1)+' · 리뷰 '+n+'개':'아직 별점이 없어요'}});
+  }
+}
+go();
+})();
+</script>
+</body>
+</html>
