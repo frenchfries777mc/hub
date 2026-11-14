@@ -157,13 +157,13 @@ var TI='https://frenchfries777.com/tools/icons/ai/';
 var ICO={'account/lounge':['img/lounge/patchnotes.svg','img/lounge/gallery.svg','img/lounge/music.svg','img/lounge/prototypes.svg','img/lounge/github.svg','img/lounge/ai.svg'],'account/music-room':['img/lounge/music.svg'],'tools/ff777-models':[TI+'tarius.svg',TI+'lectus.svg',TI+'premus.svg']};
 function icoStrip(g,s){ var a=ICO[g+'/'+s]; return a?'<div class="ico">'+a.map(function(u){ return '<img src="'+u+'" alt="" width="56" height="56" loading="lazy">'; }).join('')+'</div>':''; }
 function head(title,cls){ return '<div class="ph"><h1>'+esc(title)+'</h1><span class="lg"></span></div>'; }
-function putLang(){ var s=$('#page .lg'); if(s&&langSel) s.appendChild(langSel); }
+function putLang(){ var s=$('#page .lg')||$('#wkLang'); if(s&&langSel) s.appendChild(langSel); }
 function table(ps){ return '<table class="wt"><tr><th>'+esc(t('colP'))+'</th><th>'+esc(t('colD'))+'</th></tr>'+ps.map(function(p){ return '<tr><td><a href="#'+p.game+'/'+esc(p.slug)+'">'+esc(titleOf(p))+'</a></td><td>'+esc(descOf(p))+'</td></tr>'; }).join('')+'</table>'; }
 
 /* ---- 화면 ---- */
 async function paint(){
   paintSide(); document.body.classList.remove('navOpen'); var A=$('#page');
-  document.body.setAttribute('data-g',(!query&&!sp)?game:'');
+  document.body.setAttribute('data-g',(!query&&!sp)?game:''); document.body.classList.toggle('wk-home',sp==='main'&&!query); wchips();
   if(query) return paintSearch();
   if(sp==='main') return paintMain();
   if(sp==='recent') return paintRecent();
@@ -189,10 +189,33 @@ async function paint(){
     '<div class="pn">'+(i>0?'<a href="#'+game+'/'+esc(ps[i-1].slug)+'"><small>← '+esc(t('pv'))+'</small>'+esc(titleOf(ps[i-1]))+'</a>':'')+(i<ps.length-1?'<a class="nx" href="#'+game+'/'+esc(ps[i+1].slug)+'"><small>'+esc(t('nx'))+' →</small>'+esc(titleOf(ps[i+1]))+'</a>':'')+'</div>';
   putLang();
 }
+var WK={ko:{first:'처음이라면',all:'모든 글',cAll:'전체',cGames:'게임',cEdu:'교육',cTools:'도구',cAcct:'계정',gT:'게임',eT:'교육',tT:'도구',aT:'계정과 라운지',hT:'허브',f1:'허브 사이트 안내',f1s:'처음 오셨다면 여기부터',f2:'교육 시작하기',f2s:'교실에서 쓰는 법',f3:'도구 시작하기',f3s:'도구 사용법',f4:'설정과 프로필',f4s:'계정, 언어, 설정'},
+ en:{first:'New here?',all:'All articles',cAll:'All',cGames:'Games',cEdu:'Education',cTools:'Tools',cAcct:'Account',gT:'Games',eT:'Education',tT:'Tools',aT:'Account & Lounge',hT:'Hub',f1:'About the hub',f1s:'Start here if you are new',f2:'Getting started with Education',f2s:'Using it in class',f3:'Getting started with Tools',f3s:'How to use the tools',f4:'Settings & profile',f4s:'Account, language, settings'}};
+function w(k){ return (WK[lang]&&WK[lang][k])||((lang==='ko'||lang==='gk')?WK.ko[k]:(WK.en[k]||WK.ko[k])); }
+var wcat='all';
+var SV={doc:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',edu:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>',tool:'<path d="M14 6a4 4 0 0 0 5 5l-9 9a2 2 0 0 1-3-3l9-9z"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>',play:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M10 9l5 3-5 3z"/>'};
+function wico(k){ return '<span class="wk-ic"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">'+SV[k]+'</svg></span>'; }
+function wchips(){
+  var box=$('#wkChips'); if(!box) return;
+  var C=[['all','cAll'],['games','cGames'],['edu','cEdu'],['tools','cTools'],['acct','cAcct']];
+  box.innerHTML=C.map(function(c){ return '<button type="button" class="wk-chip'+(wcat===c[0]?' on':'')+'" data-wc="'+c[0]+'">'+esc(w(c[1]))+'</button>'; }).join('');
+}
 function paintMain(){
-  var A=$('#page'); setHash(); paintTabs('main'); A.className='page';
-  A.innerHTML=head(t('mainT'))+'<div class="txt"><p>'+esc(t('mainIntro'))+'</p>'+
-    GAMES.map(function(g){ var ps=pagesOf(g[0]); return '<h3 class="g-'+g[0]+'"><span><a href="#'+g[0]+'" style="color:var(--g);text-decoration:none">'+esc(gameName(g[0]))+'</a></span><span class="se">'+esc(t('count',ps.length))+'</span></h3>'+(ps.length?table(ps):'<div class="e">'+esc(t('empty'))+'</div>'); }).join('')+'</div>';
+  var A=$('#page'); setHash(); paintTabs('main'); A.className='page wk-main';
+  function pg(g,slug){ return pagesOf(g).filter(function(p){ return p.slug===slug; })[0]; }
+  var first=[['f1','doc','hub','about'],['f2','edu','educations','getting-started'],['f3','tool','tools','getting-started'],['f4','user','account','settings']].map(function(f){
+    return '<a class="wk-f" href="#'+f[2]+'/'+f[3]+'">'+wico(f[1])+'<span class="wk-ft"><b>'+esc(w(f[0]))+'</b><span>'+esc(w(f[0]+'s'))+'</span></span></a>'; }).join('');
+  var gameIds=GAMES.map(function(g){ return g[0]; }).filter(function(g){ return ['tools','educations','account','hub'].indexOf(g)<0; });
+  function chips(g){ return pagesOf(g).map(function(p){ return '<a class="wk-cp" href="#'+g+'/'+esc(p.slug)+'">'+esc(titleOf(p))+'</a>'; }).join(''); }
+  var cards=[
+    ['games','gT','play','/img/home/games.webp','<div class="wk-cc">'+gameIds.map(function(g){ return '<a class="wk-cp" href="#'+g+'">'+esc(gameName(g))+'</a>'; }).join('')+'</div>'],
+    ['edu','eT','edu','/img/home/educations.webp','<div class="wk-cc">'+chips('educations')+'</div>'],
+    ['tools','tT','tool','/img/home/tools.webp','<div class="wk-cc">'+chips('tools')+'</div>'],
+    ['acct','aT','user','/img/pixel-bg.png','<div class="wk-cc">'+chips('account')+'</div>'],
+    ['acct','hT','doc','/img/pixel-bg.png','<div class="wk-cc">'+chips('hub')+'</div>']
+  ].filter(function(c){ return wcat==='all'||c[0]===wcat; }).map(function(c){
+    return '<div class="wk-card"><img src="'+c[3]+'" alt="" loading="lazy"><div class="wk-cb"><div class="wk-ch">'+wico(c[2])+'<b>'+esc(w(c[1]))+'</b></div>'+c[4]+'</div></div>'; }).join('');
+  A.innerHTML='<section class="wk-s"><h2>'+esc(w('first'))+'</h2><div class="wk-first">'+first+'</div></section><section class="wk-s"><h2>'+esc(w('all'))+'</h2><div class="wk-cards">'+cards+'</div></section>';
   putLang();
 }
 function paintGame(){
@@ -262,6 +285,7 @@ function paintSearch(){
 /* ---- 이벤트 ---- */
 function clearQ(){ query=''; $('#q').value=''; }
 document.addEventListener('click',function(e){
+  var wc=e.target.closest('[data-wc]'); if(wc){ wcat=wc.getAttribute('data-wc'); if(sp==='main'&&!query) paint(); else { location.hash='#main'; } return; }
   var b=e.target.closest('[data-v]'); if(b){ var v=b.getAttribute('data-v'), p=curPage(); if(!p) return;
     if(v!=='read') return; view=v; paint(); window.scrollTo(0,0); return; }
   b=e.target.closest('[data-rand]'); if(b){ if(!all.length) return; var p=all[Math.floor(Math.random()*all.length)]; clearQ(); location.hash='#'+p.game+'/'+p.slug; return; }

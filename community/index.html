@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
    The pages are written in Korean; this file translates their text in place. Whole text nodes are looked up first (S: site strings),
@@ -485,6 +485,10 @@ img{max-width:100%}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
+.srx-btn{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;color:#ece6d8;font-size:16px;cursor:pointer;padding:0}
+.srx-btn:hover{border-color:#d9b45f}
+.ffx-foot{padding:26px 0 48px;margin-top:10px;border-top:1px solid #2e2b25;font-size:13px;color:#8d877a;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.ffx-foot a{color:#a39c8c;text-decoration:none}.ffx-foot a:hover{color:#f0cf7e}
 .ffx-nav a:hover{background:#1c1a16}
 @media(max-width:860px){
   .ffx-root{flex-direction:column!important;flex-wrap:nowrap!important}
@@ -505,6 +509,17 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 .ffx-c .cm-post{border-left:1px solid #2e2b25!important}
 .ffx-c h1,.ffx-c .rh-h1{border-left:0!important;padding-left:0!important}
 </style>
+<style id="cmx">
+#cmx-home{padding:28px 0 20px;display:flex;flex-direction:column;gap:22px}
+#cmx-home .cmx-h{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#cmx-home h2{margin:0;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:28px;letter-spacing:.04em}
+.cmx-msg{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #d9b45f;color:#f0cf7e;font-weight:500;font-size:14px}
+#cmx-home a[data-cmo]:hover{border-color:#d9b45f!important}
+#cmx-back{display:none;margin:0 0 14px;padding:8px 16px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.55);color:#c9c2b0;font-size:14px;font-weight:500;cursor:pointer}
+body.cmx-o #cmx-back{display:inline-block}
+body:not(.cmx-o) #community{display:none}
+body.cmx-o #cmx-home{display:none}
+</style><link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body data-root="https://frenchfries777.com/games/" data-hub="../">
 <div class="ffx-root" style="background:#0e0e0e;color:#ece6d8;min-height:1700px;display:flex;flex-wrap:wrap;align-items:stretch">
@@ -533,14 +548,15 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261109a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">COMMUNITY</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Community</h1>
 <p style="margin:0;max-width:640px;min-height:61px;font-size:18px;line-height:1.7;color:#ece4d0">게시판, 채팅, 친구 소식, 같이 하기, 갤러리, 피드백이 있어요.</p>
 </div>
 <div class="ffx-c">
-<section class="cm" id="community">
+<div id="cmx-home"><div class="cmx-h"><h2>커뮤니티</h2><a class="cmx-msg" href="https://frenchfries777.com/chat/">✉️ 메신저</a></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px"><a href="#cm-open" data-cmo="board" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">게시판</b><span style="font-size:14px;line-height:1.55;color:#a39c8c">글을 쓰고 댓글과 좋아요를 달아요.</span></span><span style="color:#d9b45f;font-size:20px">→</span></a><a href="#cm-open" data-cmo="chat" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8 10h8M8 13h5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">채팅</b><span style="font-size:14px;line-height:1.55;color:#a39c8c">로그인하면 채팅할 수 있어요.</span></span><span style="color:#d9b45f;font-size:20px">→</span></a><a href="#cm-open" data-cmo="feed" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c3 0 5 1.5 5 4.5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">친구 소식</b><span style="font-size:14px;line-height:1.55;color:#a39c8c">친구가 올린 글을 모아 봐요.</span></span><span style="color:#d9b45f;font-size:20px">→</span></a><a href="#cm-open" data-cmo="lfg" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="3" y="8" width="18" height="9" rx="4.5"/><path d="M8 10.5v4M6 12.5h4"/><circle cx="15.5" cy="11.5" r=".9"/><circle cx="18" cy="14" r=".9"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">같이 하기</b><span style="font-size:14px;line-height:1.55;color:#a39c8c">친구를 불러 같이 해요.</span></span><span style="color:#d9b45f;font-size:20px">→</span></a><a href="#cm-open" data-cmo="gal" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 17l5-4 4 3 3-2 6 5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">갤러리</b><span style="font-size:14px;line-height:1.55;color:#a39c8c">각 게임의 멋진 장면을 모아 봐요.</span></span><span style="color:#d9b45f;font-size:20px">→</span></a><a href="#cm-open" data-cmo="fb" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">피드백 · 버그 신고</b><span style="font-size:14px;line-height:1.55;color:#a39c8c">고쳤으면 하는 점, 버그, 새 아이디어를 보내 주세요.</span></span><span style="color:#d9b45f;font-size:20px">→</span></a></div>
+</div><section class="cm" id="community"><button type="button" id="cmx-back">← 커뮤니티</button>
     
     <div class="cm-tabs"><button data-t="board" class="on">📋 게시판</button><button data-t="chat">💬 채팅</button><button data-t="feed">👥 친구 소식</button><button data-t="lfg">🎮 같이 하기</button><button data-t="gal">🖼️ 갤러리</button><button data-t="fb">📮 피드백 · 버그 신고</button><a class="cm-chatlink" href="https://frenchfries777.com/chat/">✉️ 메신저</a></div>
     <div class="cm-p" data-p="board"></div>
@@ -554,7 +570,14 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
   
 </div>
 </div></main></div>
-<script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h"></script>
+<script>(function(){var d=document,b=d.body;
+function open(t){b.classList.add('cmx-o'); var x=d.querySelector('.cm-tabs [data-t="'+t+'"]'); if(x&&!x.classList.contains('on')) x.click();}
+function auto(){return /[?&]post=\d+/.test(location.search)||/^#(feedback|lfg|gallery|friends|chat|community)$/.test(location.hash);}
+d.addEventListener('click',function(e){var a=e.target.closest('[data-cmo]'); if(a){e.preventDefault(); open(a.getAttribute('data-cmo')); window.scrollTo(0,0); return;}
+ if(e.target.closest('#cmx-back')){b.classList.remove('cmx-o'); window.scrollTo(0,0);}});
+if(auto()) b.classList.add('cmx-o');
+window.addEventListener('hashchange',function(){ if(auto()) b.classList.add('cmx-o'); });
+})();</script><script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h"></script>
 <script src="https://frenchfries777.com/games/hub.js?v=20261109a"></script>
 </body>
 </html>

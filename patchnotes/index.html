@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <style>
   :root{ --bg:#0e0e0e; --panel:#171717; --line:#2e2b25; --text:#ece6d8; --dim:#a39c8c; --fry:#d9b45f; --fry2:#b8923a; --g0:#ff8fc2; --g1:#3ee0c4; --g2:#e8c25a; --g3:#ffae5a; --g4:#6aa8ff; }
   html[data-ff-theme=light]{ --bg:#f6f3ec; --panel:#ffffff; --line:#e2dccf; --text:#1f1b14; --dim:#6d6658; --g0:#b8326f; --g1:#0f8a77; --g2:#8a6c14; --g3:#a0600c; --g4:#1f5fbf; }
@@ -61,6 +61,10 @@ img{max-width:100%}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
+.srx-btn{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;color:#ece6d8;font-size:16px;cursor:pointer;padding:0}
+.srx-btn:hover{border-color:#d9b45f}
+.ffx-foot{padding:26px 0 48px;margin-top:10px;border-top:1px solid #2e2b25;font-size:13px;color:#8d877a;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.ffx-foot a{color:#a39c8c;text-decoration:none}.ffx-foot a:hover{color:#f0cf7e}
 .ffx-nav a:hover{background:#1c1a16}
 @media(max-width:860px){
   .ffx-root{flex-direction:column!important;flex-wrap:nowrap!important}
@@ -81,6 +85,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 .ffx-c .cm-post{border-left:1px solid #2e2b25!important}
 .ffx-c h1,.ffx-c .rh-h1{border-left:0!important;padding-left:0!important}
 </style>
+<link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body>
 <div class="ffx-root" style="background:#0e0e0e;color:#ece6d8;min-height:1500px;display:flex;flex-wrap:wrap;align-items:stretch">
@@ -109,7 +114,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261109a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">PATCH NOTES</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Patchnotes</h1>
