@@ -30,6 +30,10 @@ img{max-width:100%}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
+.srx-btn{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;color:#ece6d8;font-size:16px;cursor:pointer;padding:0}
+.srx-btn:hover{border-color:#d9b45f}
+.ffx-foot{padding:26px 0 48px;margin-top:10px;border-top:1px solid #2e2b25;font-size:13px;color:#8d877a;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.ffx-foot a{color:#a39c8c;text-decoration:none}.ffx-foot a:hover{color:#f0cf7e}
 .ffx-nav a:hover{background:#1c1a16}
 @media(max-width:860px){
   .ffx-root{flex-direction:column!important;flex-wrap:nowrap!important}
@@ -40,6 +44,7 @@ img{max-width:100%}
   .ffx-root>main>div{padding-left:18px!important;padding-right:18px!important}
 }
 </style>
+<link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body data-root="https://frenchfries777.com/games/" data-hub="">
 <div class="ffx-root" style="background:#0e0e0e;color:#ece6d8;min-height:2400px;display:flex;flex-wrap:wrap;align-items:stretch">
@@ -73,7 +78,7 @@ img{max-width:100%}
 <div style="position:relative;min-height:720px;display:flex;flex-direction:column;overflow:hidden">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.15) 0%,rgba(14,14,14,0) 35%,rgba(14,14,14,.82) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column;flex:1">
-<div id="ffTop"><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261109a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="margin-top:auto;padding:80px 0 52px;display:flex;flex-direction:column;gap:20px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">BY FRENCHFRIES777 · WITH CLAUDE AI</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(56px,9vw,128px);line-height:.92;letter-spacing:.01em">Frenchfries777</h1>
@@ -177,10 +182,11 @@ img{max-width:100%}
 
 </div>
 </section>
+<div class="ffx-foot"><nav class="seo-nav" data-notr aria-label="Frenchfries777 sites"><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a><a href="https://frenchfries777.com/lounge/">Lounge</a><a href="https://frenchfries777.com/wiki/">Wiki</a><a href="https://frenchfries777.com/community/">Community</a></nav> <span>Made by Frenchfries777 with Claude AI</span> <span data-notr>Created by Frenchfries777</span> · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></div>
 </div>
 </main>
 </div>
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
    The pages are written in Korean; this file translates their text in place. Whole text nodes are looked up first (S: site strings),

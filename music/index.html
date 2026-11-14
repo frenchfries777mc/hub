@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h" defer></script>
 <style>
   :root{ --bg:#0e0e0e; --panel:#171717; --line:#2e2b25; --text:#ece6d8; --dim:#a39c8c; --fry:#d9b45f; --fry2:#b8923a; }
@@ -78,6 +78,10 @@ img{max-width:100%}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
+.srx-btn{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;color:#ece6d8;font-size:16px;cursor:pointer;padding:0}
+.srx-btn:hover{border-color:#d9b45f}
+.ffx-foot{padding:26px 0 48px;margin-top:10px;border-top:1px solid #2e2b25;font-size:13px;color:#8d877a;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.ffx-foot a{color:#a39c8c;text-decoration:none}.ffx-foot a:hover{color:#f0cf7e}
 .ffx-nav a:hover{background:#1c1a16}
 @media(max-width:860px){
   .ffx-root{flex-direction:column!important;flex-wrap:nowrap!important}
@@ -98,6 +102,31 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 .ffx-c .cm-post{border-left:1px solid #2e2b25!important}
 .ffx-c h1,.ffx-c .rh-h1{border-left:0!important;padding-left:0!important}
 </style>
+<style id="mucss">
+body{background-image:none!important;padding-bottom:0!important}
+.mu-chips{display:flex;flex-wrap:wrap;gap:10px;padding:6px 0 22px}
+.mu-chip{padding:8px 16px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.55);color:#c9c2b0;font-size:14px;font-weight:500;cursor:pointer}
+.mu-chip.on{border-color:#d9b45f;background:#26221a;color:#f0cf7e}
+.mu-h{margin:14px 0 22px!important;display:block!important;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:28px!important;letter-spacing:.04em;color:#ece6d8}
+#games{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px;align-items:start}
+.favBar{margin:0 0 18px}
+.favBar button{padding:8px 16px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.55);color:#c9c2b0;cursor:pointer;font-weight:500;font-size:14px}
+.favBar button.on{border-color:#ff5a7a;color:#ff5a7a}
+.gs{border-radius:16px;overflow:hidden;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0;padding-bottom:10px}
+.gs-cv{width:100%;aspect-ratio:1200/630;object-fit:cover;display:block}
+.gs h2{display:flex!important;align-items:center;gap:10px;margin:0!important;padding:16px 24px 6px;font-size:17px!important;color:#ece6d8}
+.gs h2 a{margin-left:auto;font-size:13px;color:#f0cf7e}
+.gs .list{display:flex;flex-direction:column;gap:0;padding:0 24px}
+.gs .tr{background:transparent!important;border:0!important;border-top:1px solid #2e2b25!important;border-radius:0!important;box-shadow:none!important;padding:12px 0!important;grid-template-columns:36px minmax(0,1fr) auto auto 32px!important;gap:14px!important}
+.gs .tr:first-child{border-top:0!important}
+.gs .tr.on .nm{color:#f0cf7e}
+.gs .pb{width:36px;height:36px;border-radius:50%;border:1.5px solid #d9b45f;background:transparent;color:#d9b45f;font-size:12px}
+.gs .nm{font-size:15px;color:#ece6d8}.gs .ds{font-size:12px;color:#a39c8c}
+.gs .vg{margin:0 24px 8px}.gs .vg>summary{background:rgba(14,14,14,.4);border-color:#2e2b25}.gs .vg .list{padding:0}
+@media(max-width:560px){#games{grid-template-columns:1fr}.gs .list{padding:0 14px}.gs h2{padding:14px 14px 6px}}
+
+</style>
+<link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body>
 <div class="ffx-root" style="background:#0e0e0e;color:#ece6d8;min-height:2300px;display:flex;flex-wrap:wrap;align-items:stretch">
@@ -126,7 +155,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261109a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">MUSIC</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Music</h1>
@@ -137,7 +166,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
   <div class="t" id="barT"></div>
   <input type="range" id="seek" min="0" max="1000" value="0" aria-label="seek">
   <div class="ctl"><span class="tm" id="barTm">0:00</span><button id="loopBtn" data-u="loop">반복</button><button id="nextBtn" data-u="next">다음 ▶</button></div>
-</div></div><div id="games"></div>
+</div></div><div class="mu-chips" id="muChips"></div><h2 class="mu-h">음악 감상실</h2><div id="games"></div>
   <p style="font-size:11px;opacity:.7;margin:0 0 10px;line-height:1.6">Music: Crusade, Oppressive Gloom by Kevin MacLeod (<a href="https://incompetech.com" target="_blank" rel="noopener">incompetech.com</a>)<br>Licensed under Creative Commons: By Attribution 4.0 License</p>
   
 </div>
@@ -257,7 +286,7 @@ function tt(ko,en){ return lang==='ko'?ko:en; }
 function dlName(g,n){ return ('Frenchfries777 - '+g+' - '+n).replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim()+'.mp3'; }
 var all=[], box=document.getElementById('games'), h='';
 GAMES.forEach(function(g){
-  h+='<section class="gs"><h2><img src="'+g.img+'" alt="">'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2>';
+  h+='<section class="gs" data-g="'+g.id+'"><img class="gs-cv" alt="" loading="lazy" src="'+(g.id==='shared'?'/img/pixel-bg.png':SITE+'og/'+g.id+'.jpg')+'"><h2>'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2>';
   /* 버전이 붙은 곡(v)이 하나라도 있으면 버전별로 접어서 묶고, 맨 앞 버전만 펼쳐요. v가 없는 곡은 "오리지널" */
   var ORI=g.ori||'오리지널', hasV=g.tracks.some(function(tk){ return tk.v; });
   var vers=g.vers||[]; if(hasV){ g.tracks.forEach(function(tk){ var v=tk.v||ORI; if(vers.indexOf(v)<0) vers.push(v); }); } else vers=[null];
@@ -272,6 +301,9 @@ GAMES.forEach(function(g){
   h+='</section>';
 });
 box.innerHTML=h;
+(function(){ var c=document.getElementById('muChips'), cur='all'; var items=[['all',tt('전체','All')]].concat(GAMES.map(function(g){ return [g.id,t(g.name)]; }));
+  c.innerHTML=items.map(function(i){ return '<button type="button" class="mu-chip'+(i[0]==='all'?' on':'')+'" data-g="'+i[0]+'">'+esc(i[1])+'</button>'; }).join('');
+  c.onclick=function(e){ var b=e.target.closest('.mu-chip'); if(!b) return; cur=b.getAttribute('data-g'); [].forEach.call(c.children,function(x){ x.classList.toggle('on',x===b); }); [].forEach.call(box.querySelectorAll('.gs'),function(s){ s.style.display=(cur==='all'||s.getAttribute('data-g')===cur)?'':'none'; }); }; })();
 /* 즐겨찾는 곡: 하트를 눌러 두고 "♥ 내 곡만" 으로 따로 들어요 (이 기기에 저장돼요) */
 var FK='ff.music.fav', fav={}, favOnly=false; try{ fav=JSON.parse(localStorage.getItem(FK)||'{}')||{}; }catch(e){ fav={}; }
 function favSave(){ try{ localStorage.setItem(FK,JSON.stringify(fav)); }catch(e){} }
