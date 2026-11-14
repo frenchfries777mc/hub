@@ -1,7 +1,7 @@
 /* Frenchfries777 shared shell: left menu + pixel-art background (hub-side pages) */
-html.ffs{background:#0e0e0e!important;background-image:none!important}
-html.ffs body.ffs,html.ffs[data-ff-theme] body.ffs,body.ffs{background:transparent!important;position:relative;padding-left:232px;min-height:100vh}
-body.ffs .bg{display:none!important}
+html.ffsh{background:#0e0e0e!important;background-image:none!important}
+html.ffsh body.ffsh,html.ffsh[data-ff-theme] body.ffsh,body.ffsh{background:transparent!important;position:relative;padding-left:232px;min-height:100vh}
+body.ffsh .bg{display:none!important}
 
 /* pixel-art background (scrolls with the page, same size on every page) */
 .ffs-bg{position:absolute;z-index:-1;left:232px;right:0;top:0;height:calc((100vw - 232px) * 4400 / 1920);max-height:4400px;pointer-events:none;
@@ -24,38 +24,65 @@ body.ffs-hub .ffs-bg{background:linear-gradient(180deg,rgba(14,14,14,.12) 0,rgba
 .ffs-side .ffs-foot a{color:#8d877a}
 
 /* the old top header becomes a slim bar at the right; logo, site switch and nav move to the left menu */
-body.ffs header .logo,body.ffs header .swr,body.ffs header .right nav{display:none!important}
-body.ffs header{justify-content:flex-end;border-bottom:0!important;padding-bottom:0!important}
-body.ffs .hero h1{border-left:0!important;padding-left:0!important;font-weight:700!important}
-body.ffs header .right{margin-left:auto}
-body.ffs .wrap{max-width:1180px;padding-left:40px;padding-right:40px}
+body.ffsh header .logo,body.ffsh header .swr,body.ffsh header .right nav{display:none!important}
+body.ffsh header{justify-content:flex-end;border-bottom:0!important;padding-bottom:0!important}
+body.ffsh .hero h1{border-left:0!important;padding-left:0!important;font-weight:700!important}
+body.ffsh header .right{margin-left:auto}
+body.ffsh .wrap{max-width:1180px;padding-left:40px;padding-right:40px}
 
 /* narrow screens: the menu becomes a scrollable bar on top */
 @media(max-width:860px){
-  html.ffs body.ffs,html.ffs[data-ff-theme] body.ffs{padding-left:0!important;padding-top:56px}
+  html.ffsh body.ffsh,html.ffsh[data-ff-theme] body.ffsh{padding-left:0!important;padding-top:56px}
   .ffs-bg{left:0;height:calc(100vw * 4400 / 1920)}
   .ffs-side{right:0;bottom:auto;width:auto;height:56px;flex-direction:row;align-items:center;gap:2px;padding:0 10px;border-right:0;border-bottom:1px solid #2e2b25;overflow-x:auto;overflow-y:hidden}
   .ffs-side .ffs-logo{padding:0 10px 0 4px;font-size:18px}
   .ffs-side .ffs-m{padding:8px 11px;font-size:14px;white-space:nowrap;gap:8px}
   .ffs-side .ffs-foot{display:none}
-  body.ffs .wrap{padding-left:18px;padding-right:18px}
+  body.ffsh .wrap{padding-left:18px;padding-right:18px}
 }
 
 /* new look overrides for the old gold-bar "rich" layer */
-html[data-ff-theme=dark] body.ffs .st-c,body.ffs .cm-p,body.ffs .pf-box,body.ffs .pf-me,body.ffs .lz-c,body.ffs .rk-c,body.ffs .hn-b,body.ffs .card,body.ffs .tr,body.ffs .ans .note,body.ffs:not(.ffs-hub) .page,
-html[data-ff-theme] body.ffs .hn-b,html[data-ff-theme] body.ffs .cc-dd,html[data-ff-theme] body.ffs .mn-box,html[data-ff-theme] body.ffs .cal-tip{
+html[data-ff-theme=dark] body.ffsh .st-c,body.ffsh .cm-p,body.ffsh .pf-box,body.ffsh .pf-me,body.ffsh .lz-c,body.ffsh .rk-c,body.ffsh .hn-b,body.ffsh .card,body.ffsh .tr,body.ffsh .ans .note,body.ffsh:not(.ffs-hub) .page,
+html[data-ff-theme] body.ffsh .hn-b,html[data-ff-theme] body.ffsh .cc-dd,html[data-ff-theme] body.ffsh .mn-box,html[data-ff-theme] body.ffsh .cal-tip{
   background:rgba(23,23,23,.92)!important;border:1px solid #2e2b25!important;border-left:1px solid #2e2b25!important;border-radius:16px!important}
-html[data-ff-theme=dark] body.ffs .lz-c:hover,body.ffs .card:hover{border-color:#d9b45f!important}
-html[data-ff-theme=dark] body.ffs .hero h1,body.ffs .rh-h1,body.ffs .wrap>h1,body.ffs .ph h1,body.ffs .ans h1{border-left:0!important;padding-left:0!important;text-transform:none}
-html[data-ff-theme=dark] body.ffs .cm-post{border-left:1px solid #2e2b25!important}
-html[data-ff-theme=dark] body.ffs footer{border-top:1px solid #2e2b25!important;background:transparent!important}
-html[data-ff-theme=dark] body.ffs .tb{border:1px solid #3a3530!important;background:rgba(14,14,14,.6)!important;border-radius:10px!important}
+html[data-ff-theme=dark] body.ffsh .lz-c:hover,body.ffsh .card:hover{border-color:#d9b45f!important}
+html[data-ff-theme=dark] body.ffsh .hero h1,body.ffsh .rh-h1,body.ffsh .wrap>h1,body.ffsh .ph h1,body.ffsh .ans h1{border-left:0!important;padding-left:0!important;text-transform:none}
+html[data-ff-theme=dark] body.ffsh .cm-post{border-left:1px solid #2e2b25!important}
+html[data-ff-theme=dark] body.ffsh footer{border-top:1px solid #2e2b25!important;background:transparent!important}
+html[data-ff-theme=dark] body.ffsh .tb{border:1px solid #3a3530!important;background:rgba(14,14,14,.6)!important;border-radius:10px!important}
 
 /* light theme: keep the left menu, drop the dark picture */
-html.ffs[data-ff-theme=light]{background:var(--bg,#f6f3ec)!important}
+html.ffsh[data-ff-theme=light]{background:var(--bg,#f6f3ec)!important}
 html[data-ff-theme=light] .ffs-bg{display:none}
 html[data-ff-theme=light] .ffs-side{background:var(--panel,#fff);border-color:var(--line,#ddd)}
 html[data-ff-theme=light] .ffs-side .ffs-logo,html[data-ff-theme=light] .ffs-side .ffs-m{color:var(--text,#222)}
 html[data-ff-theme=light] .ffs-side .ffs-m:hover{background:rgba(0,0,0,.05)}
 html[data-ff-theme=light] .ffs-side .ffs-m.on{background:rgba(217,180,95,.25);color:#7a5a10}
 html[data-ff-theme=light] .ffs-side .ffs-foot,html[data-ff-theme=light] .ffs-side .ffs-foot a{color:var(--dim,#666)}
+
+/* Games / Educations / Tools front pages */
+body.ffs-front .hero .hero-bg{display:none!important}
+body.ffs-front .hero .hero-t{max-width:none!important}
+body.ffs-front .hero{padding-top:48px!important}
+html[data-ff-theme=dark] body.ffs-front .hstats{background:rgba(23,23,23,.88)!important;border:1px solid #2e2b25!important;border-radius:16px!important}
+html[data-ff-theme=dark] body.ffs-front .hstats div{border-left:1px solid #2e2b25!important}
+html[data-ff-theme=dark] body.ffs-front .hstats div:first-child{border-left:0!important}
+body.ffs-front .games{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+body.ffs-front .games .game{min-height:300px!important;border:1px solid #2e2b25!important;border-left:1px solid #2e2b25!important;border-radius:16px!important;background:#171717!important;box-shadow:none!important}
+body.ffs-front .games .game:hover{border-color:#d9b45f!important;box-shadow:none!important}
+body.ffs-front .games .game::before{display:none!important}
+body.ffs-front .games .game .shot::before{display:none!important}
+body.ffs-front .games .game .shot::after{background:linear-gradient(0deg,rgba(14,14,14,.94) 0,rgba(14,14,14,.55) 55%,rgba(14,14,14,.05) 100%)!important}
+body.ffs-front .games .game .body{display:flex!important;flex-direction:column;justify-content:flex-end;min-height:300px;padding:0 22px 20px!important;transform:none!important}
+body.ffs-front .games .game:hover .body,body.ffs-front .games .game:hover .badge{transform:none!important}
+body.ffs-front .games .game .badge{left:22px!important;top:18px!important}
+body.ffs-front .games .game h2,body.ffs-front .games .game h2 *{font-size:30px!important}
+html[data-ff-theme=dark] body.ffs-front .wi-go,html[data-ff-theme=dark] body.ffs-front .hn-b{background:rgba(23,23,23,.92)!important;border:1px solid #2e2b25!important;border-left:1px solid #2e2b25!important}
+@media(max-width:1100px){body.ffs-front .games{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){body.ffs-front .games{grid-template-columns:1fr}}
+body.ffs-front .games .game{display:flex!important;flex-direction:column;justify-content:flex-end}
+body.ffs-front .games .game .body{position:relative!important;min-height:0!important}
+html[data-ff-theme=dark] body.ffsh .sh,html[data-ff-theme=dark] body.ffsh h2.sh{border-left:0!important;padding-left:0!important}
+body.ffs-front .games .game{min-height:340px!important}
+body.ffs-front .games .game .body{position:absolute!important;left:0;right:0;bottom:0;top:auto!important;padding:0 22px 20px!important;pointer-events:auto}
+body.ffs-front .games .game .shot::after{background:linear-gradient(0deg,rgba(14,14,14,.96) 0,rgba(14,14,14,.82) 45%,rgba(14,14,14,.1) 80%)!important}
