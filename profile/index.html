@@ -652,25 +652,25 @@ body{background-image:none!important}
   function esc(x){ return String(x).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   (function(){ var r=''; try{ r=document.referrer||''; }catch(e){} if(/^https:\/\/frenchfries777mc\.github\.io\//.test(r)&&r.indexOf('/profile/')<0) $('stBack').href=r; })();
   var GN={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',isleport:'Isleport',tumblecrown:'Tumble Crown',vowkeep:'Vowkeep',dummyparty:'Dummy Party'};
-  var PLAYED={}, ACH={}, CARD=null, UN='', owned=null, cur='', filt='all', U=null, SB=null, NICK='', PK=null, PIMG=null, PSTATS={}, pfilt='all';
+  var PLAYED={}, ACH={}, CARD=null, UN='', owned=null, cur='', filt='all', U=null, SB=null, VID=null, NOTF=false, NICK='', PK=null, PIMG=null, PSTATS={}, pfilt='all';
   [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(b){ b.onclick=function(){ [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(x){ x.classList.toggle('on',x===b); }); $('pane-ph').classList.toggle('on',b.getAttribute('data-t')==='ph'); $('pane-bd').classList.toggle('on',b.getAttribute('data-t')==='bd'); $('pane-ac').classList.toggle('on',b.getAttribute('data-t')==='ac'); }; });
   function acct(){ var A=window.FFAuth, box=$('account');
     if(!U){ box.innerHTML='<p style="margin:0 0 12px;color:var(--dim)">로그인하면 닉네임과 비밀번호를 바꿀 수 있어요.</p><button type="button" class="ffa-btn" id="stLogin">🍟 로그인</button>'; $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
     box.innerHTML='<div id="stAcct"></div>'; A.openAcct($('stAcct')); }
   var GL=[['stickseum','Stickseum'],['crownenvoy','Crown Envoy'],['beaconfall','Beaconfall'],['isleport','Isleport'],['tumblecrown','Tumble Crown'],['dummyparty','Dummy Party'],['vowkeep','Vowkeep'],['gatecrash','Gatecrash']];
   function me(){ var B=window.FFBorders, box=$('pfMe');
-    if(!U){ var e0=document.querySelector('.ffx-root h1'); e0=e0&&e0.previousElementSibling; if(e0) e0.textContent='PROFILE'; box.innerHTML='<div class="px-card"><div class="px-ci"><b>로그인이 필요해요</b><button type="button" class="px-pri" id="meLogin">로그인</button></div></div>'; $('meLogin').onclick=function(){ FFAuth.openLogin(); }; return; }
-    var eb=document.querySelector('.ffx-root h1'); eb=eb&&eb.previousElementSibling; if(eb) eb.textContent='PROFILE · '+(NICK||''); var ic=B?B.preview(cur&&B.get(cur)?cur:'',352,PIMG):'', nm=NICK||U.email||'';
+    if(NOTF){ box.innerHTML='<div class="px-card"><div class="px-ci"><b>이 사람을 찾을 수 없어요</b></div></div>'; return; }
+    if(!U&&!VID){ var e0=document.querySelector('.ffx-root h1'); e0=e0&&e0.previousElementSibling; if(e0) e0.textContent='PROFILE'; box.innerHTML='<div class="px-card"><div class="px-ci"><b>로그인이 필요해요</b><button type="button" class="px-pri" id="meLogin">로그인</button></div></div>'; $('meLogin').onclick=function(){ FFAuth.openLogin(); }; return; }
+    var eb=document.querySelector('.ffx-root h1'); eb=eb&&eb.previousElementSibling; if(eb) eb.textContent='PROFILE · '+(NICK||''); var ic=B?B.preview(cur&&B.get(cur)?cur:'',352,PIMG):'', nm=NICK||(U&&U.email)||'';
     var played=Object.keys(PLAYED).length, ach=0; Object.keys(ACH).forEach(function(k){ ach+=ACH[k][0]||0; });
     var fav=CARD&&CARD.fav; GL.forEach(function(g){ if(g[0]===fav) fav=g[1]; });
     box.innerHTML='<div class="px-card"><div class="px-ci"><span class="px-av">'+(ic?'<img alt="" src="'+ic+'">':'<i>'+esc((nm||'F').charAt(0).toUpperCase())+'</i>')+'</span><b class="px-nm">'+esc(nm)+'</b><span class="px-bd">'+(cur&&B?esc(B.name(cur,'ko')):'테두리 없음')+'</span>'+
       (CARD&&CARD.bio?'<span class="px-bio">'+esc(CARD.bio)+'</span>':'')+(fav?'<span class="px-fav">대표 게임 · '+esc(fav)+'</span>':'')+
       '<div class="px-st"><span><b>'+played+'</b><span>플레이한 게임</span></span><span><b>'+ach+'</b><span>도전과제</span></span></div></div></div>'+
-      '<div class="px-act"><button type="button" class="px-pri" id="meCard">내 프로필 카드 보기</button><div class="px-two"><button type="button" id="meLink">링크 복사</button></div></div>';
-    $('meCard').onclick=function(){ FFAuth.openProfile&&FFAuth.openProfile(U.id); };
-    $('meLink').onclick=function(){ if(!UN) return; var b=$('meLink'), u='https://frenchfries777.com/games/?card='+encodeURIComponent(UN), o=b.textContent; try{ navigator.clipboard.writeText(u).then(function(){ b.textContent='✓ 복사했어요'; setTimeout(function(){ b.textContent=o; },1600); }); }catch(e){} }; }
+      '<div class="px-act" id="pxAct"></div>';
+    mountAct(); }
   function games(){
-    $('pxGames').innerHTML=GL.map(function(g){ var n=PLAYED[g[0]]; return '<div class="px-g"><img alt="'+esc(g[1])+'" loading="lazy" src="https://frenchfries777.com/games/og/'+g[0]+'.jpg"><span>'+(U?(n?n+'회':'아직 안 해봤어요'):'—')+'</span></div>'; }).join('');
+    $('pxGames').innerHTML=GL.map(function(g){ var n=PLAYED[g[0]]; return '<div class="px-g"><img alt="'+esc(g[1])+'" loading="lazy" src="https://frenchfries777.com/games/og/'+g[0]+'.jpg"><span>'+(U||VID?(n?n+'회':'아직 안 해봤어요'):'—')+'</span></div>'; }).join('');
     $('pxAch').innerHTML=GL.map(function(g){ var A=ACH[g[0]]||[0,0], pct=A[1]?Math.round(A[0]/A[1]*100):0; return '<div class="px-a"><img alt="" loading="lazy" src="https://frenchfries777.com/games/og/'+g[0]+'.jpg"><div><div class="px-ar"><b>'+esc(g[1])+'</b><span>'+(A[1]?A[0]+' / '+A[1]:'—')+'</span></div><div class="px-bar"><i data-w="'+pct+'"></i></div></div></div>'; }).join('');
     [].forEach.call(document.querySelectorAll('.px-bar i'),function(i){ i.style.width=i.getAttribute('data-w')+'%'; }); }
 
@@ -697,7 +697,19 @@ body{background-image:none!important}
     $('bdOff').onclick=function(){ set(''); };
     [].forEach.call(box.querySelectorAll('[data-g]'),function(b){ b.onclick=function(){ filt=b.getAttribute('data-g'); borders(); }; });
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
-  var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261104a'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
+  var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261114a'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
+  function mountAct(){ var h=$('pxAct'); if(!h) return; var go=function(){ if(window.FFPfAct) FFPfAct.mount(h,{sb:SB,me:U,uid:VID||(U&&U.id),un:UN,own:!VID}); };
+    if(window.FFPfAct) return go(); var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-pfact.js?v=20261114a'; sc.onload=go; document.head.appendChild(sc); }
+  async function other(){ VID=null; NOTF=false; var ed=$('pxEdit'); if(ed) ed.style.display=''; var q=''; try{ q=(new URLSearchParams(location.search).get('u')||'').trim(); }catch(e){}
+    if(!q||!SB||(UN&&q.toLowerCase()===UN.toLowerCase())) return;
+    try{ var r=await SB.from('profiles').select('id,display_name,username').ilike('username',q.replace(/[%_\\]/g,'\\$&')).limit(1), p=r&&r.data&&r.data[0];
+      if(!p){ NOTF=true; if(ed) ed.style.display='none'; return; } if(U&&p.id===U.id) return;
+      VID=p.id; NICK=p.display_name||p.username||''; UN=p.username||''; PLAYED={}; ACH={}; CARD=null; cur=''; PK=null; PIMG=null; if(ed) ed.style.display='none';
+      var pl=await SB.from('ff_played').select('game,plays,ach_done,ach_total').eq('user_id',VID); ((pl&&pl.data)||[]).forEach(function(x){ PLAYED[x.game]=x.plays||1; if(x.ach_total>0) ACH[x.game]=[x.ach_done||0,x.ach_total]; });
+      try{ var cd=await SB.from('ff_card').select('bio,fav').eq('user_id',VID).limit(1); CARD=(cd&&!cd.error&&cd.data&&cd.data[0])||null; }catch(e){}
+      try{ if(window.FFBorders) cur=await FFBorders.equipped(SB,VID); }catch(e){}
+      try{ var ap=await SB.from('ff_avatar').select('pick').eq('user_id',VID).limit(1); PK=(ap&&!ap.error&&ap.data&&ap.data[0]&&ap.data[0].pick)||null; }catch(e){}
+      await libP(); await loadPhoto(); }catch(e){} }
   async function load(){ var A=window.FFAuth; U=A&&A.user&&A.user(); SB=A&&A.client&&A.client(); owned=[]; cur=''; NICK='';
     if(U&&SB){ try{ var pr=await SB.from('profiles').select('display_name,username').eq('id',U.id).limit(1); if(pr&&pr.data&&pr.data[0]) NICK=pr.data[0].display_name||pr.data[0].username||''; UN=pr.data[0].username||''; }catch(e){}
       try{ var pl=await SB.from('ff_played').select('game,plays,ach_done,ach_total').eq('user_id',U.id); PLAYED={}; ACH={}; ((pl&&pl.data)||[]).forEach(function(r){ PLAYED[r.game]=r.plays||1; if(r.ach_total>0) ACH[r.game]=[r.ach_done||0,r.ach_total]; }); }catch(e){}
@@ -706,7 +718,7 @@ body{background-image:none!important}
       try{ var ap=await SB.from('ff_avatar').select('pick').eq('user_id',U.id).limit(1); PK=(ap&&!ap.error&&ap.data&&ap.data[0]&&ap.data[0].pick)||null; }catch(e){}
       try{ var ps=await SB.from('profiles').select('stats').eq('id',U.id).limit(1); PSTATS=(ps&&ps.data&&ps.data[0]&&ps.data[0].stats)||{}; }catch(e){}
       await libP(); await loadPhoto(); }
-    me(); games(); photos(); borders(); acct(); }
+    await other(); me(); games(); photos(); borders(); acct(); }
   var s=document.createElement('script'); s.src='https://frenchfries777.com/games/ff-borders.js?v=20261104a'; s.onload=load; document.head.appendChild(s);
   function wire(){ if(window.FFAuth){ FFAuth.ready.then(load); FFAuth.onChange(load); } else setTimeout(wire,200); } wire();
   } if(document.readyState==='complete') boot(); else window.addEventListener('load',boot);
