@@ -683,7 +683,7 @@ function imageBox(meta){
 /* ---------- 🖼 프로필 사진: 허브에서 고른 사진(ff_avatar), 없으면 게임 캐릭터 ---------- */
 var AVB='https://frenchfries777.com/games/', avs={}, avWant={}, profLoad=null;
 function avUrlOf(pick){ return /^[a-z0-9_-]{1,30}$/i.test(pick)?AVB+'avatars/'+pick+(/^(stk|ce|bf|ip|dp|vk)_/.test(pick)?'.png':'.svg'):''; }
-function profileLib(){ if(window.FFProfile) return Promise.resolve(true); if(!profLoad) profLoad=loadScript(AVB+'ff-profile.js?v=20261104a').then(function(){ return !!window.FFProfile; },function(){ return false; }); return profLoad; }
+function profileLib(){ if(window.FFProfile) return Promise.resolve(true); if(!profLoad) profLoad=loadScript(AVB+'ff-profile.js?v=20261114a').then(function(){ return !!window.FFProfile; },function(){ return false; }); return profLoad; }
 var avTimer=null;
 function avRepaint(){ clearTimeout(avTimer); avTimer=setTimeout(function(){ paintList(); if(cur){ var keepY=$('#msgs'); paintHead(); paintMsgs(false); } },60); }
 async function loadAvatars(ids){
