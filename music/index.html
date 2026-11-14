@@ -108,7 +108,8 @@ body{background-image:none!important;padding-bottom:0!important}
 .mu-chip{padding:8px 16px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.55);color:#c9c2b0;font-size:14px;font-weight:500;cursor:pointer}
 .mu-chip.on{border-color:#d9b45f;background:#26221a;color:#f0cf7e}
 .mu-h{margin:14px 0 22px!important;display:block!important;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:28px!important;letter-spacing:.04em;color:#ece6d8}
-#games{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px;align-items:start}
+#games{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:16px;align-items:stretch}
+.gs-b{height:420px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3a3530 transparent}
 .favBar{margin:0 0 18px}
 .favBar button{padding:8px 16px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.55);color:#c9c2b0;cursor:pointer;font-weight:500;font-size:14px}
 .favBar button.on{border-color:#ff5a7a;color:#ff5a7a}
@@ -286,7 +287,7 @@ function tt(ko,en){ return lang==='ko'?ko:en; }
 function dlName(g,n){ return ('Frenchfries777 - '+g+' - '+n).replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim()+'.mp3'; }
 var all=[], box=document.getElementById('games'), h='';
 GAMES.forEach(function(g){
-  h+='<section class="gs" data-g="'+g.id+'"><img class="gs-cv" alt="" loading="lazy" src="'+(g.id==='shared'?'/img/pixel-bg.png':SITE+'og/'+g.id+'.jpg')+'"><h2>'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2>';
+  h+='<section class="gs" data-g="'+g.id+'"><img class="gs-cv" alt="" loading="lazy" src="'+(g.id==='shared'?'/img/pixel-bg.png':SITE+'og/'+g.id+'.jpg')+'"><h2>'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2><div class="gs-b">';
   /* 버전이 붙은 곡(v)이 하나라도 있으면 버전별로 접어서 묶고, 맨 앞 버전만 펼쳐요. v가 없는 곡은 "오리지널" */
   var ORI=g.ori||'오리지널', hasV=g.tracks.some(function(tk){ return tk.v; });
   var vers=g.vers||[]; if(hasV){ g.tracks.forEach(function(tk){ var v=tk.v||ORI; if(vers.indexOf(v)<0) vers.push(v); }); } else vers=[null];
@@ -298,7 +299,7 @@ GAMES.forEach(function(g){
     h+='<div class="tr" id="tr'+i+'"><button class="pb" data-i="'+i+'" aria-label="'+esc(t('play'))+'">▶</button><div><div class="nm">'+esc(t(tk.n))+'</div><div class="ds">'+esc(t(tk.d))+'</div></div><span class="tm" id="tm'+i+'">–:––</span><button type="button" class="fv" data-i="'+i+'" aria-label="즐겨찾기" title="즐겨찾기">♡</button><a class="dl" href="'+esc(tk.ext||tk.f)+'"'+(tk.ext?' target="_blank" rel="noopener"':' download="'+esc(dlName(g.name,tk.n))+'"')+' aria-label="'+esc(tt('다운로드','Download'))+'" title="'+esc(tt('다운로드','Download'))+'">⬇</a></div>'; });
     h+='</div>'; if(hasV) h+='</details>';
   });
-  h+='</section>';
+  h+='</div></section>';
 });
 box.innerHTML=h;
 (function(){ var c=document.getElementById('muChips'), cur='all'; var items=[['all',tt('전체','All')]].concat(GAMES.map(function(g){ return [g.id,t(g.name)]; }));
