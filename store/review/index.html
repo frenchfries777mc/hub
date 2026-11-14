@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="copyright" content="© 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)">
+<title>검토 · Frenchfries777 앱 스토어</title>
+<meta name="theme-color" content="#0e0e0e">
+<link rel="icon" href="https://apps.frenchfries777.com/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../store.css?v=1">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="https://apps.frenchfries777.com/"><img src="https://apps.frenchfries777.com/favicon.svg" alt="" width="30" height="30"><span>FRENCHFRIES<b>777</b> 앱 스토어</span></a>
+    <nav class="nav"><a href="https://apps.frenchfries777.com/">스토어</a><a href="../submit/">앱 올리기</a><a href="./" aria-current="page">검토</a><span data-ff-account></span></nav>
+  </header>
+  <main>
+    <h1>앱 검토</h1>
+    <div id="gate" class="card" hidden><p id="gateMsg"></p><button class="btn" id="goLogin" type="button" hidden>로그인</button></div>
+    <div id="panel" hidden>
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <div class="card" id="list"></div>
+    </div>
+  </main>
+  <footer class="foot">
+    <span>Created by Frenchfries777 · <a href="https://frenchfries777.com/">허브로 가기</a></span>
+    <span>© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span>
+  </footer>
+</div>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h"></script>
+<script src="../ffstore.js?v=1"></script>
+<script>
+(function(){
+'use strict';
+/* 이 화면은 오너만 열 수 있어요. 숨기는 것만이 아니라, 서버의 모든 검토 함수가 ff_is_admin() 으로 다시 확인해요. */
+var S=window.FFStore, el=S.el, $=function(i){return document.getElementById(i)};
+var TABS=[['pending','대기'],['approved','공개 중'],['rejected','반려'],['removed','내림'],['reports','신고된 리뷰']];
+var CAT={games:'게임',educations:'교육',tools:'도구',social:'소통'};
+var IMG=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/]+=*$/;
+var tab='pending';
+function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function icon(a){var ic=el('span','ic');var h=hue(a.id);ic.style.setProperty('--a','hsl('+h+' 60% 52%)');ic.style.setProperty('--b','hsl('+((h+40)%360)+' 55% 28%)');
+  if(IMG.test(a.icon||'')){var im=document.createElement('img');im.alt='';im.src=a.icon;ic.appendChild(im)}else ic.textContent=(a.name||'?').charAt(0);return ic}
+function gate(t,login){$('gate').hidden=false;$('panel').hidden=true;$('gateMsg').textContent=t;$('goLogin').hidden=!login}
+function httpsHref(u){try{var x=new URL(u);return x.protocol==='https:'?x.href:null}catch(e){return null}}
+
+function paintTabs(counts){
+  var t=$('tabs');t.textContent='';
+  TABS.forEach(function(x){var b=el('button',null,x[1]+(counts&&counts[x[0]]!=null?' '+counts[x[0]]:''));b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',x[0]===tab?'true':'false');
+    b.addEventListener('click',function(){tab=x[0];load()});t.appendChild(b)});
+}
+
+function appItem(a,reload){
+  var it=el('div','item');it.appendChild(icon(a));
+  var t=el('div','t');t.appendChild(el('b',null,a.name));
+  t.appendChild(el('span',null,(CAT[a.category]||a.category)+' · '+a.tagline));
+  t.appendChild(el('span',null,'올린 사람: '+a.dev+' ('+a.user_tag+') · '+S.fmtDate(a.created_at)));
+  var href=httpsHref(a.url);t.appendChild(el('span',null,'주소: '+a.url));
+  if(a.reject_reason)t.appendChild(el('div','why','이유: '+a.reject_reason));
+  var bt=el('div','btns');
+  var v=el('a','btn g s','소개 페이지 미리보기');v.href='../app/?id='+encodeURIComponent(a.id);v.target='_blank';v.rel='noopener';bt.appendChild(v);
+  if(href){
+    var o=el('a','btn g s','새 탭에서 열기');o.href=href;o.target='_blank';o.rel='noopener noreferrer nofollow';bt.appendChild(o);
+    var pv=el('button','btn g s','여기서 미리보기');pv.type='button';var fr=null;
+    pv.addEventListener('click',function(){
+      if(fr){fr.remove();fr=null;pv.textContent='여기서 미리보기';return}
+      /* 격리된 프레임: allow-same-origin 이 없어서 이 사이트의 로그인·저장소에 접근할 수 없어요 */
+      fr=document.createElement('iframe');fr.className='pv';fr.setAttribute('sandbox','allow-scripts allow-forms allow-pointer-lock');fr.setAttribute('referrerpolicy','no-referrer');fr.setAttribute('loading','lazy');fr.setAttribute('allow','');fr.title='앱 미리보기';fr.src=href;
+      t.appendChild(fr);pv.textContent='미리보기 닫기';
+    });bt.appendChild(pv);
+  }
+  t.appendChild(bt);
+  var act=el('div','btns');var msg=el('span','msg');msg.setAttribute('role','status');
+  function reasonBox(label,status){
+    var wrap=el('span');var inp=document.createElement('input');inp.type='text';inp.maxLength=300;inp.placeholder='이유 (제출자에게 보여요)';inp.setAttribute('aria-label','이유');inp.style.width='260px';
+    var ok=el('button','btn d s',label+' 확정');ok.type='button';var no=el('button','btn g s','취소');no.type='button';
+    wrap.appendChild(inp);wrap.appendChild(ok);wrap.appendChild(no);no.addEventListener('click',function(){wrap.remove();show.hidden=false});
+    ok.addEventListener('click',async function(){
+      if(inp.value.trim().length<2){msg.textContent='이유를 2자 이상 써 주세요.';msg.className='msg err';return}
+      ok.disabled=true;try{await S.rpc('app_set_status',{p_id:a.id,p_status:status,p_reason:inp.value});reload()}catch(e){msg.textContent=S.msgOf(e);msg.className='msg err';ok.disabled=false}});
+    return wrap;
+  }
+  var show;
+  async function setS(status){try{await S.rpc('app_set_status',{p_id:a.id,p_status:status,p_reason:null});reload()}catch(e){msg.textContent=S.msgOf(e);msg.className='msg err'}}
+  if(a.status!=='approved'){var ap=el('button','btn s','승인');ap.type='button';ap.addEventListener('click',function(){ap.disabled=true;setS('approved')});act.appendChild(ap)}
+  if(a.status==='pending'||a.status==='removed'){show=el('button','btn d s','반려');show.type='button';show.addEventListener('click',function(){show.hidden=true;act.insertBefore(reasonBox('반려','rejected'),msg)});act.appendChild(show)}
+  if(a.status==='approved'){show=el('button','btn d s','스토어에서 내리기');show.type='button';show.addEventListener('click',function(){show.hidden=true;act.insertBefore(reasonBox('내리기','removed'),msg)});act.appendChild(show)}
+  if(a.status==='rejected'){var rp=el('button','btn g s','다시 대기로');rp.type='button';rp.addEventListener('click',function(){setS('pending')});act.appendChild(rp)}
+  act.appendChild(msg);t.appendChild(act);it.appendChild(t);return it;
+}
+function reviewItem(r,reload){
+  var it=el('div','item');var t=el('div','t');
+  var b=el('b');if(r.hidden)b.appendChild(el('span','badge bad','숨겨짐'));b.appendChild(document.createTextNode(r.app_name+' · '+S.stars(r.rating)+' · '+r.dev));t.appendChild(b);
+  t.appendChild(el('span',null,'신고 '+r.reports+'건 ('+(r.reasons||'-')+') · '+S.fmtDate(r.created_at)));
+  t.appendChild(el('div','why',r.body||'(글 없음)'));
+  var bt=el('div','btns');var msg=el('span','msg');
+  var del=el('button','btn d s','리뷰 삭제');del.type='button';var armed=false;
+  del.addEventListener('click',async function(){
+    if(!armed){armed=true;del.textContent='정말 삭제? 한 번 더';setTimeout(function(){armed=false;del.textContent='리뷰 삭제'},4000);return}
+    try{var sb=await S.client();var x=await sb.from('app_reviews').delete().eq('id',r.id);if(x.error)throw x.error;reload()}catch(e){msg.textContent=S.msgOf(e)}});
+  var rs=el('button','btn g s','신고 무시(복원)');rs.type='button';rs.addEventListener('click',async function(){try{await S.rpc('app_review_restore',{p_id:r.id});reload()}catch(e){msg.textContent=S.msgOf(e)}});
+  bt.appendChild(del);bt.appendChild(rs);bt.appendChild(msg);t.appendChild(bt);it.appendChild(t);return it;
+}
+async function load(){
+  var list=$('list');list.textContent='불러오는 중…';
+  try{
+    var counts={};
+    if(tab==='reports'){var rows=await S.rpc('app_review_admin_list');paintTabs(counts);list.textContent='';
+      if(!rows.length)list.appendChild(el('p','note','신고되거나 숨겨진 리뷰가 없어요.'));rows.forEach(function(r){list.appendChild(reviewItem(r,load))});return}
+    var rs=await S.rpc('app_admin_list',{p_status:tab});
+    var p=tab==='pending'?rs.length:null;if(p!=null)counts.pending=p;
+    paintTabs(counts);list.textContent='';
+    if(!rs.length)list.appendChild(el('p','note',tab==='pending'?'검토할 앱이 없어요.':'비어 있어요.'));
+    rs.forEach(function(a){list.appendChild(appItem(a,load))});
+  }catch(e){list.textContent='';list.appendChild(el('p','msg err',S.msgOf(e)))}
+}
+async function start(){
+  var u=await S.user();
+  if(!u)return gate('로그인이 필요해요.',true);
+  if(!(await S.isAdmin()))return gate('이 화면은 오너만 볼 수 있어요.',false);
+  $('gate').hidden=true;$('panel').hidden=false;paintTabs();load();
+}
+$('goLogin').addEventListener('click',function(){S.login()});
+S.client().then(function(sb){sb.auth.onAuthStateChange(function(ev){if(ev==='SIGNED_IN'||ev==='SIGNED_OUT')start()})}).catch(function(){});
+start();
+})();
+</script>
+</body>
+</html>

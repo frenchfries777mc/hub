@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="copyright" content="© 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)">
+<title>앱 올리기 · Frenchfries777 앱 스토어</title>
+<meta name="theme-color" content="#0e0e0e">
+<link rel="icon" href="https://apps.frenchfries777.com/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../store.css?v=1">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="https://apps.frenchfries777.com/"><img src="https://apps.frenchfries777.com/favicon.svg" alt="" width="30" height="30"><span>FRENCHFRIES<b>777</b> 앱 스토어</span></a>
+    <nav class="nav"><a href="https://apps.frenchfries777.com/">스토어</a><a href="./" aria-current="page">앱 올리기</a><a href="../review/" id="navRev" hidden>검토</a><span data-ff-account></span></nav>
+  </header>
+
+  <main>
+    <h1>내 앱 올리기</h1>
+    <p class="lead">앱을 소개하는 내용을 쓰면 오너가 먼저 확인해요. <b>확인하고 승인하기 전에는 아무에게도 보이지 않아요.</b> 승인되면 스토어에 “커뮤니티 앱”으로 올라가요.</p>
+
+    <div id="gate" class="card" hidden>
+      <p>앱을 올리려면 Frenchfries777 계정으로 로그인해야 해요. (계정을 만든 지 24시간이 지나야 해요)</p>
+      <button class="btn" id="goLogin" type="button">로그인</button>
+    </div>
+
+    <form id="form" class="card" novalidate hidden autocomplete="off">
+      <div class="warn">올린 앱은 Frenchfries777 안에서 실행되지 않아요. 스토어는 <b>소개 페이지</b>만 보여 주고, 앱은 새 탭에서 앱 주인의 주소로 열려요. 설치 파일(apk, exe)은 만들어 주지 않아요.</div>
+      <div class="two">
+        <label class="f"><span>앱 이름</span><input type="text" id="name" maxlength="30" required><small>2~30자</small></label>
+        <label class="f"><span>분류</span><select id="cat" required><option value="">골라 주세요</option><option value="games">게임</option><option value="educations">교육</option><option value="tools">도구</option><option value="social">소통</option></select></label>
+      </div>
+      <label class="f"><span>한 줄 소개</span><input type="text" id="tag" maxlength="80" required><small>스토어 목록에 보여요. 5~80자</small></label>
+      <label class="f"><span>자세한 설명</span><textarea id="desc" maxlength="3000" required></textarea><small>어떤 앱인지, 특징이 뭔지 써 주세요. 20~3000자 <span id="cd">0/3000</span></small></label>
+      <label class="f"><span>조작법 · 사용법 (선택)</span><textarea id="how" maxlength="1500"></textarea><small>1500자까지</small></label>
+      <label class="f"><span>태그 (선택)</span><input type="text" id="tags" maxlength="120"><small>쉼표로 나눠서 5개까지. 예: 퍼즐, 2D, 혼자하기</small></label>
+      <label class="f"><span>실행 주소 (플레이/열기 링크)</span><input type="url" id="url" maxlength="300" placeholder="https://" required><small>https:// 로 시작해야 해요. 이 주소가 새 탭에서 열려요.</small></label>
+      <label class="f"><span>아이콘</span><input type="file" id="icon" accept="image/png,image/jpeg,image/webp"><small>정사각형이 좋아요. 자동으로 작게 줄여요. (PNG/JPG/WEBP)</small></label>
+      <div id="iconPrev"></div>
+      <label class="f"><span>스크린샷 (선택, 3장까지)</span><input type="file" id="shots" accept="image/png,image/jpeg,image/webp" multiple><small>자동으로 줄여서 올려요.</small></label>
+      <div class="shots" id="shotPrev"></div>
+      <div class="hp" aria-hidden="true"><label>웹사이트<input type="text" id="hp" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn" id="send" type="submit">검토 요청하기</button>
+      <div class="msg" id="msg" role="status"></div>
+    </form>
+
+    <section id="mineBox" hidden>
+      <h2>내가 올린 앱</h2>
+      <div class="card" id="mine"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Created by Frenchfries777 · <a href="https://frenchfries777.com/">허브로 가기</a></span>
+    <span>© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span>
+  </footer>
+</div>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h"></script>
+<script src="../ffstore.js?v=1"></script>
+<script>
+(function(){
+'use strict';
+var S=window.FFStore, el=S.el, $=function(i){return document.getElementById(i)};
+var icon=null, shots=[], busy=false;
+var STAT={pending:['검토 중','p'],approved:['공개됨','ok'],rejected:['반려됨','bad'],removed:['내려감','bad']};
+var CAT={games:'게임',educations:'교육',tools:'도구',social:'소통'};
+
+function say(t,cls){var m=$('msg');m.textContent=t||'';m.className='msg'+(cls?' '+cls:'')}
+function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+
+/* 이미지 줄이기: 브라우저에서 작게 만들어 안전한 PNG/JPG/WEBP 데이터로 바꿔요 */
+function loadImg(file){
+  return new Promise(function(res,rej){
+    if(!/^image\/(png|jpeg|webp)$/.test(file.type)){rej(new Error('PNG, JPG, WEBP 이미지만 올릴 수 있어요.'));return}
+    if(file.size>15*1024*1024){rej(new Error('이미지가 너무 커요(15MB 이하).'));return}
+    var u=URL.createObjectURL(file),im=new Image();
+    im.onload=function(){URL.revokeObjectURL(u);res(im)};im.onerror=function(){URL.revokeObjectURL(u);rej(new Error('이미지를 읽지 못했어요.'))};im.src=u;
+  });
+}
+async function makeIcon(file){
+  var im=await loadImg(file),side=Math.min(im.naturalWidth,im.naturalHeight);
+  for(var size=128;size>=64;size-=32){
+    var c=document.createElement('canvas');c.width=c.height=size;var x=c.getContext('2d');
+    x.drawImage(im,(im.naturalWidth-side)/2,(im.naturalHeight-side)/2,side,side,0,0,size,size);
+    var d=c.toDataURL('image/webp',0.9);
+    if(d.length<=38000)return d;
+  }
+  throw new Error('아이콘이 너무 복잡해요. 더 단순한 이미지를 써 주세요.');
+}
+async function makeShot(file){
+  var im=await loadImg(file),w=im.naturalWidth,h=im.naturalHeight,max=1280;
+  var k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);
+  for(var q=0.82,tries=0;tries<6;tries++,q-=0.12,w=Math.round(w*0.85),h=Math.round(h*0.85)){
+    var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);
+    var d=c.toDataURL('image/jpeg',Math.max(q,0.4));
+    if(d.length<=420000)return d;
+  }
+  throw new Error('스크린샷이 너무 커요. 더 작은 이미지를 써 주세요.');
+}
+$('icon').addEventListener('change',async function(e){
+  icon=null;$('iconPrev').textContent='';var f=e.target.files[0];if(!f)return;
+  try{icon=await makeIcon(f);var s=el('span','ic');var im=document.createElement('img');im.alt='';im.src=icon;s.appendChild(im);$('iconPrev').appendChild(s);say('')}catch(er){say(er.message,'err');e.target.value=''}
+});
+$('shots').addEventListener('change',async function(e){
+  shots=[];$('shotPrev').textContent='';var fs=[].slice.call(e.target.files,0,3);
+  if(e.target.files.length>3)say('스크린샷은 3장까지만 올라가요.','err');
+  try{for(var i=0;i<fs.length;i++){var d=await makeShot(fs[i]);shots.push(d);var im=document.createElement('img');im.alt='';im.src=d;$('shotPrev').appendChild(im)}}
+  catch(er){say(er.message,'err');shots=[];$('shotPrev').textContent='';e.target.value=''}
+});
+$('desc').addEventListener('input',function(){$('cd').textContent=$('desc').value.length+'/3000'});
+
+$('form').addEventListener('submit',async function(ev){
+  ev.preventDefault();if(busy)return;
+  if($('hp').value){return}
+  var name=$('name').value.trim(),tag=$('tag').value.trim(),desc=$('desc').value.trim(),url=$('url').value.trim(),cat=$('cat').value;
+  var tags=$('tags').value.split(',').map(function(x){return x.trim()}).filter(Boolean);
+  if(name.length<2||name.length>30)return say('앱 이름은 2~30자로 써 주세요.','err');
+  if(!cat)return say('분류를 골라 주세요.','err');
+  if(tag.length<5||tag.length>80)return say('한 줄 소개는 5~80자로 써 주세요.','err');
+  if(desc.length<20)return say('자세한 설명을 20자 이상 써 주세요.','err');
+  if(!/^https:\/\/[^\s]+$/i.test(url))return say('실행 주소는 https:// 로 시작해야 해요.','err');
+  if(tags.length>5)return say('태그는 5개까지예요.','err');
+  if(!icon)return say('아이콘 이미지를 골라 주세요.','err');
+  busy=true;$('send').disabled=true;say('올리는 중…');
+  try{
+    var sb=await S.client();
+    var r=await sb.from('app_submissions').insert({name:name,tagline:tag,description:desc,howto:$('how').value.trim(),category:cat,tags:tags,url:url,icon:icon,screenshots:shots});
+    if(r.error)throw r.error;
+    say('제출했어요! 오너가 확인한 뒤에 결과를 아래 “내가 올린 앱”에서 알려 드려요.','ok');
+    $('form').reset();icon=null;shots=[];$('iconPrev').textContent='';$('shotPrev').textContent='';$('cd').textContent='0/3000';
+    loadMine();
+  }catch(e){say(S.msgOf(e),'err')}
+  busy=false;$('send').disabled=false;
+});
+
+async function loadMine(){
+  var sb=await S.client();
+  var r=await sb.from('app_submissions').select('id,name,tagline,category,status,reject_reason,created_at,reviewed_at,icon').neq('status','withdrawn').order('created_at',{ascending:false}).limit(50);
+  var box=$('mine');box.textContent='';
+  if(r.error||!r.data||!r.data.length){$('mineBox').hidden=true;return}
+  $('mineBox').hidden=false;
+  r.data.forEach(function(a){
+    var it=el('div','item');var ic=el('span','ic');var h=hue(a.id);ic.style.setProperty('--a','hsl('+h+' 60% 52%)');ic.style.setProperty('--b','hsl('+((h+40)%360)+' 55% 28%)');
+    if(/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/]+=*$/.test(a.icon)){var im=document.createElement('img');im.alt='';im.src=a.icon;ic.appendChild(im)}else ic.textContent=a.name.charAt(0);
+    it.appendChild(ic);
+    var t=el('div','t');var b=el('b');var st=STAT[a.status]||[a.status,'p'];b.appendChild(el('span','badge '+st[1],st[0]));b.appendChild(document.createTextNode(a.name));t.appendChild(b);
+    t.appendChild(el('span',null,(CAT[a.category]||'')+' · '+a.tagline));
+    t.appendChild(el('span',null,'제출 '+S.fmtDate(a.created_at)+(a.reviewed_at&&a.status!=='pending'?' · 확인 '+S.fmtDate(a.reviewed_at):'')));
+    if(a.status==='pending')t.appendChild(el('div','why','오너가 확인하는 중이에요. 승인되기 전에는 나와 오너만 볼 수 있어요.'));
+    if(a.status==='approved')t.appendChild(el('div','why','스토어에 올라갔어요! 소개 페이지에서 별점과 리뷰를 볼 수 있어요.'));
+    if(a.status==='rejected'||a.status==='removed')t.appendChild(el('div','why',(a.status==='rejected'?'반려 이유: ':'내려간 이유: ')+(a.reject_reason||'(이유 없음)')));
+    var bt=el('div','btns');
+    var v=el('a','btn g s','소개 페이지 보기');v.href='../app/?id='+encodeURIComponent(a.id);bt.appendChild(v);
+    var w=el('button','btn d s',a.status==='approved'?'스토어에서 내리기':'철회');w.type='button';var armed=false;
+    w.addEventListener('click',async function(){
+      if(!armed){armed=true;w.textContent='정말요? 한 번 더 누르세요';setTimeout(function(){armed=false;w.textContent=a.status==='approved'?'스토어에서 내리기':'철회'},4000);return}
+      try{await S.rpc('app_withdraw',{p_id:a.id});loadMine()}catch(e){w.textContent=S.msgOf(e)}
+    });bt.appendChild(w);t.appendChild(bt);it.appendChild(t);box.appendChild(it);
+  });
+}
+
+async function start(){
+  var u=await S.user();
+  if(!u){$('gate').hidden=false;$('form').hidden=true;$('mineBox').hidden=true;return}
+  $('gate').hidden=true;$('form').hidden=false;loadMine();
+  S.isAdmin().then(function(a){$('navRev').hidden=!a});
+}
+$('goLogin').addEventListener('click',function(){S.login()});
+S.client().then(function(sb){sb.auth.onAuthStateChange(function(ev){if(ev==='SIGNED_IN'||ev==='SIGNED_OUT')start()})}).catch(function(){});
+start();
+})();
+</script>
+</body>
+</html>
