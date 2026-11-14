@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <style>
   :root{ --bg:#0e0e0e; --panel:#171717; --panel2:var(--panel2); --line:#2e2b25; --text:#ece6d8; --dim:#a39c8c; --fry:#d9b45f; --fry2:#b8923a; --g1:#3ee0c4; --g2:#e8c25a; --g3:#ffae5a; --g4:#6aa8ff; --g5:#9be564; --g6:#ff8fc2; --g7:#b79bff; }
   html[data-ff-theme=light]{ --bg:#f6f3ec; --panel:#ffffff; --panel2:#faf8f3; --line:#e2dccf; --text:#1f1b14; --dim:#6d6658; --g1:#0f8a77; --g2:#8a6c14; --g3:#a0600c; --g4:#1f5fbf; --g5:#3f7d12; --g6:#b8326f; --g7:#6a45c4; }
@@ -153,26 +153,138 @@
   .ibox{box-shadow:0 8px 24px rgba(0,0,0,.18);} .toc{border-left:4px solid var(--fry);}
   .res a,.pn a{transition:transform .12s,border-color .12s;} .res a:hover,.pn a:hover{transform:translateY(-1px);}
 </style>
-<link rel="stylesheet" href="../hub-rich.css?v=3">
-<link rel="stylesheet" href="/ff-shell.css?v=6">
-<script src="/ff-shell.js?v=6" defer></script>
+<style id="ffx">
+:root{--bg:#0e0e0e;--panel:#171717;--line:#2e2b25;--text:#ece6d8;--dim:#a39c8c;--fry:#d9b45f;--fry2:#b8923a;--hb-panel:rgba(14,14,14,.6);--hb-line:#3a3530}
+*{box-sizing:border-box}
+html,body{margin:0;background:#0e0e0e;color:#ece6d8}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+[hidden]{display:none!important}
+img{max-width:100%}
+#ffTop{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-end;gap:14px;padding:20px 0;height:84px;box-sizing:border-box}
+#onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
+#onlineBar:empty{display:none}
+#ffTop .tb{margin:0}
+.srx-btn{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;color:#ece6d8;font-size:16px;cursor:pointer;padding:0}
+.srx-btn:hover{border-color:#d9b45f}
+.ffx-foot{padding:26px 0 48px;margin-top:10px;border-top:1px solid #2e2b25;font-size:13px;color:#8d877a;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.ffx-foot a{color:#a39c8c;text-decoration:none}.ffx-foot a:hover{color:#f0cf7e}
+.ffx-nav a:hover{background:#1c1a16}
+@media(max-width:860px){
+  .ffx-root{flex-direction:column!important;flex-wrap:nowrap!important}
+  .ffx-root>aside{flex:0 0 auto!important;width:100%!important;flex-direction:row!important;align-items:center;overflow-x:auto;padding:8px 10px!important;border-right:0!important;border-bottom:1px solid #2e2b25}
+  .ffx-root>aside>a:first-child{padding:0 10px 0 4px!important;font-size:18px!important}
+  .ffx-root>aside>a{white-space:nowrap;padding:8px 11px!important}
+  .ffx-root>aside>div{display:none!important}
+  .ffx-root>main>div{padding-left:18px!important;padding-right:18px!important}
+}
+</style><style id="ffx2">
+html,body{background:#0e0e0e!important}
+body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hidden;max-width:none!important;display:block!important}
+.ffx-root{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif!important;line-height:normal}
+.ffx-c{max-width:none!important;width:100%;margin:0!important;padding:0 0 72px!important;color:#ece6d8;line-height:1.6}
+.ffx-c .wrap{max-width:none!important;padding:0!important}
+.ffx-c header,.ffx-c>footer{display:none!important}
+.ffx-c .st-c,.ffx-c .cm-p,.ffx-c .pf-box,.ffx-c .pf-me,.ffx-c .lz-c,.ffx-c .rk-c,.ffx-c .card,.ffx-c .tr,.ffx-c .pn,.ffx-c .page{background:rgba(23,23,23,.92)!important;border:1px solid #2e2b25!important;border-left:1px solid #2e2b25!important;border-radius:16px!important;box-shadow:none!important}
+.ffx-c .cm-post{border-left:1px solid #2e2b25!important}
+.ffx-c h1,.ffx-c .rh-h1{border-left:0!important;padding-left:0!important}
+</style>
+<style id="wkcss">
+body{background-image:none!important}
+.ffx-c{padding:0 0 72px!important}
+.wk-tools{display:flex;flex-direction:column;gap:14px;padding:6px 0 4px}
+.wk-chips{display:flex;flex-wrap:wrap;gap:10px}
+body:not(.wk-home) .wk-chips{display:none}
+.wk-chip{padding:8px 16px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.55);color:#c9c2b0;font-size:14px;font-weight:500;cursor:pointer}
+.wk-chip.on{border-color:#d9b45f;background:#26221a;color:#f0cf7e}
+.wk-sr{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.wk-search{display:flex;align-items:center;gap:10px;flex:1 1 320px;max-width:520px;height:52px;padding:0 18px;border-radius:12px;background:rgba(14,14,14,.7);border:1px solid #3a3530;color:#8d877a;font-size:15px}
+.wk-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:#ece6d8;font:inherit}
+.wk-sr .langSel{height:44px}
+.menuBtn{display:none}
+.wk-grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:20px;align-items:start;margin-top:22px}
+body.wk-home .wk-grid{grid-template-columns:minmax(0,1fr)}
+body.wk-home .side{display:none}
+.wk-grid .side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;padding:0;display:flex;flex-direction:column;gap:12px}
+.wk-grid .box{background:rgba(23,23,23,.92);border:1px solid #2e2b25;border-radius:16px;padding:8px}
+.wk-grid .page{background:rgba(23,23,23,.92)!important;border:1px solid #2e2b25!important;border-radius:16px!important}
+body.wk-home .page.wk-main{background:none!important;border:0!important;padding:0!important;box-shadow:none!important;min-height:0}
+.ptabs{margin-top:0}
+.wk-s{padding:6px 0 24px;display:flex;flex-direction:column;gap:22px}
+.wk-s h2{margin:0;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:28px;letter-spacing:.04em}
+.wk-first{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.wk-f{display:flex;align-items:center;gap:14px;padding:16px;border-radius:14px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;color:#ece6d8;text-decoration:none}
+.wk-f:hover,.wk-card:hover{border-color:#d9b45f}
+.wk-ic{flex:none;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center}
+.wk-ft{display:flex;flex-direction:column;gap:2px}.wk-ft b{font-size:16px}.wk-ft span{font-size:13px;color:#a39c8c}
+.wk-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;align-items:start}
+.wk-card{display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0}
+.wk-card img{width:100%;aspect-ratio:1200/630;object-fit:cover;display:block}
+.wk-cb{display:flex;flex-direction:column;gap:16px;padding:24px}
+.wk-ch{display:flex;align-items:center;gap:14px}.wk-ch b{font-size:20px}
+.wk-cc{display:flex;flex-wrap:wrap;gap:8px}
+.wk-cp{padding:8px 14px;border-radius:999px;border:1px solid #3a3530;background:rgba(14,14,14,.4);color:#c9c2b0;font-size:14px;text-decoration:none}
+.wk-cp:hover{border-color:#d9b45f;color:#f0cf7e}
+@media(max-width:860px){
+  .ffx-c{padding:0 0 56px!important}
+  .wk-grid{grid-template-columns:1fr}
+  .wk-grid .side{display:none;position:static;max-height:none}
+  body.navOpen .wk-grid .side{display:flex}
+  body.wk-home .menuBtn{display:none}
+  .menuBtn{display:block;background:rgba(14,14,14,.6);color:#ece6d8;border:1px solid #3a3530;border-radius:10px;height:44px;padding:0 14px}
+  .wk-cards{grid-template-columns:1fr}
+}
+body.wk-home .ptabs{display:none}
+#ffTop{--fry:#d9b45f;--fry2:#b8923a}
+
+</style>
+<link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body>
-<div class="shell">
-  <aside class="side" id="side"><a class="logo" href="#main"><span class="fry"><img src="img/wiki.svg" alt="" width="64" height="64"></span><span>FRENCHFRIES<b>777</b><i>WIKI</i></span></a></aside>
-  <div class="mainc">
-    <div class="top">
-      <button type="button" class="menuBtn" id="menuBtn" aria-label="menu">☰</button>
-      <a class="hubBtn" href="../" data-u="hub">허브</a>
-      <label class="srch"><input id="q" type="search" autocomplete="off" placeholder="위키 검색"></label>
-      <span data-ff-account data-ff-nohub></span>
-    </div>
-    <div class="ptabs"><div class="grp" id="tabsL"></div><div class="grp" id="tabsR"></div></div>
-    <main class="page" id="page"><div class="e" data-u="loading">불러오는 중…</div></main>
-    <footer>Frenchfries777 Wiki · <a href="../">frenchfries777.com</a>  · <span data-notr>Created by Frenchfries777</span> · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
-  </div>
+<div class="ffx-root" style="background:#0e0e0e;color:#ece6d8;min-height:2400px;display:flex;flex-wrap:wrap;align-items:stretch">
+<aside style="flex:0 0 232px;box-sizing:border-box;background:#141414;border-right:1px solid #2e2b25;padding:24px 16px;display:flex;flex-direction:column;gap:6px;min-width:0">
+<a href="/" style="display:block;padding:4px 10px 22px;font-family:'Oswald',sans-serif;font-size:21px;line-height:1;letter-spacing:.03em;white-space:nowrap"><span style="font-weight:500">FRENCH</span><span style="font-weight:700">FRIES</span><span style="font-weight:700;color:#d9b45f">777</span></a>
+
+<a href="/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0"><span style="width:8px;height:8px;border-radius:2px;background:#4a463d"></span>Hub</a>
+
+<a href="/games/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0"><span style="width:8px;height:8px;border-radius:2px;background:#4a463d"></span>Games</a>
+
+<a href="/educations/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0"><span style="width:8px;height:8px;border-radius:2px;background:#4a463d"></span>Educations</a>
+
+<a href="/tools/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0"><span style="width:8px;height:8px;border-radius:2px;background:#4a463d"></span>Tools</a>
+
+<a href="/wiki/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:#26221a;color:#f0cf7e"><span style="width:8px;height:8px;border-radius:2px;background:#d9b45f"></span>위키</a>
+
+<a href="/community/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0"><span style="width:8px;height:8px;border-radius:2px;background:#4a463d"></span>커뮤니티</a>
+
+<a href="/lounge/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0"><span style="width:8px;height:8px;border-radius:2px;background:#4a463d"></span>라운지</a>
+
+<a href="/settings/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#c9c2b0"><span style="width:8px;height:8px;border-radius:2px;background:#4a463d"></span>설정</a>
+
+<div style="margin-top:auto;padding:14px 12px;border-top:1px solid #2e2b25;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#8d877a"><span>Made by Frenchfries777 with Claude AI</span><span>© 2026 Frenchfries777 · CC BY-NC-ND 4.0</span></div>
+</aside>
+<main style="position:relative;overflow:hidden;flex:1 1 640px;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;background:#0e0e0e">
+<img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
+<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
+<div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261109a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
+<div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
+<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">WIKI</span>
+<h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Wiki</h1>
+<p style="margin:0;max-width:640px;min-height:61px;font-size:18px;line-height:1.7;color:#ece4d0">게임, 교육, 도구, 계정까지 사이트 전체 설명이 있어요. 누구나 읽을 수 있어요.</p>
 </div>
+<div class="ffx-c">
+<div class="wk-tools"><div class="wk-chips" id="wkChips"></div><div class="wk-sr"><label class="wk-search">검색<input id="q" type="search" autocomplete="off" placeholder="위키 검색"></label><span id="wkLang"></span><button type="button" class="menuBtn" id="menuBtn" aria-label="menu">☰</button></div></div>
+<div class="wk-grid"><aside class="side" id="side"><a class="logo" href="#main" hidden></a></aside>
+<div class="mainc"><div class="ptabs"><div class="grp" id="tabsL"></div><div class="grp" id="tabsR"></div></div>
+<main class="page" id="page"><div class="e" data-u="loading">불러오는 중…</div></main></div></div>
+<footer>Frenchfries777 Wiki · <a href="../">frenchfries777.com</a>  · <span data-notr>Created by Frenchfries777</span> · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261107h"></script>
-<script src="wiki.js?v=20261108a"></script>
+<script src="wiki.js?v=20261114a"></script>
+</div>
+
+</div>
+</div></main></div>
 </body>
 </html>

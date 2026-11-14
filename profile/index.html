@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261109c"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
    The pages are written in Korean; this file translates their text in place. Whole text nodes are looked up first (S: site strings),
@@ -522,6 +522,10 @@ img{max-width:100%}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
+.srx-btn{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;color:#ece6d8;font-size:16px;cursor:pointer;padding:0}
+.srx-btn:hover{border-color:#d9b45f}
+.ffx-foot{padding:26px 0 48px;margin-top:10px;border-top:1px solid #2e2b25;font-size:13px;color:#8d877a;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.ffx-foot a{color:#a39c8c;text-decoration:none}.ffx-foot a:hover{color:#f0cf7e}
 .ffx-nav a:hover{background:#1c1a16}
 @media(max-width:860px){
   .ffx-root{flex-direction:column!important;flex-wrap:nowrap!important}
@@ -542,6 +546,47 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 .ffx-c .cm-post{border-left:1px solid #2e2b25!important}
 .ffx-c h1,.ffx-c .rh-h1{border-left:0!important;padding-left:0!important}
 </style>
+<style id="pxcss">
+body{background-image:none!important}
+body{background-image:none!important}
+.px-wrap{display:flex!important;flex-wrap:wrap;gap:24px;align-items:flex-start;padding:28px 0 72px;margin:0!important;max-width:none!important}
+.px-left{flex:0 0 380px;max-width:100%;position:sticky;top:20px}
+.px-right{flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.px-c{display:flex;flex-direction:column;gap:18px;padding:26px 28px;border-radius:18px;background:rgba(23,23,23,.92);border:1px solid #2e2b25;min-width:0}
+.px-c .sx-h{padding-bottom:0}
+#pfMe{display:flex;flex-direction:column;gap:16px;background:none!important;border:0!important;padding:0!important;box-shadow:none!important}
+.px-card{border-radius:22px;padding:4px;background:linear-gradient(135deg,#f0cf7e,#c9972e)}
+.px-ci{border-radius:19px;padding:30px 26px;background:linear-gradient(160deg,#3a2810,#17120a);display:flex;flex-direction:column;align-items:center;gap:14px}
+.px-av{width:104px;height:104px;border-radius:50%;background:#0e0e0e;border:3px solid #f0cf7e;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:'Oswald',sans-serif;font-weight:700;font-size:48px;color:#f0cf7e}
+.px-av img{width:100%;height:100%;object-fit:cover;display:block}.px-av i{font-style:normal}
+.px-nm{font-size:26px;color:#ece6d8}
+.px-bd{padding:5px 14px;border-radius:999px;background:#26221a;border:1px solid #d9b45f;color:#f0cf7e;font-size:13px}
+.px-bio{font-size:14px;color:#d8d1c0;text-align:center}.px-fav{font-size:13px;color:#a39c8c}
+.px-st{display:flex;gap:12px;width:100%}
+.px-st>span{flex:1;padding:12px;border-radius:12px;background:rgba(0,0,0,.3);text-align:center;display:flex;flex-direction:column;gap:2px}
+.px-st b{font-size:20px;color:#ece6d8}.px-st span span{font-size:12px;color:#a39c8c}
+.px-act{display:flex;flex-direction:column;gap:10px}
+.px-pri{text-align:center;padding:13px 14px;border-radius:10px;background:#d9b45f;color:#0e0e0e;font-weight:700;font-size:15px;border:0;cursor:pointer}
+.px-two{display:flex;gap:10px}.px-two button{flex:1;text-align:center;padding:10px 14px;border-radius:10px;border:1px solid #2e2b25;background:none;font-size:13px;color:#a39c8c;cursor:pointer}
+.px-games{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.px-g{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1px solid #2e2b25;background:#141414}
+.px-g img{width:100%;aspect-ratio:1200/630;object-fit:cover;display:block}.px-g span{padding:10px 14px;font-size:13px;color:#a39c8c}
+.px-ach{display:flex;flex-direction:column}
+.px-a{display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid #2e2b25}
+.px-a img{flex:none;width:84px;height:44px;border-radius:10px;object-fit:cover}
+.px-a>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.px-ar{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#a39c8c}.px-ar b{font-size:16px;color:#ece6d8}
+.px-bar{height:8px;border-radius:4px;background:#2a261f;overflow:hidden}.px-bar i{display:block;height:100%;background:#d9b45f;border-radius:4px}
+.pf-main{display:block!important}
+.st-back,.st-h{display:none!important}
+@media(max-width:860px){.px-left{position:static;flex:1 1 100%}.px-c{padding:20px 16px}}
+.sx-h{display:flex;align-items:center;gap:16px;padding-bottom:18px}
+.sx-i{flex:none;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#f0cf7e,#c9972e);display:flex;align-items:center;justify-content:center}
+.sx-hh{display:flex;flex-direction:column;gap:3px}.sx-hh b{font-size:22px;color:#ece6d8}.sx-hh span{font-size:13px;color:#a39c8c}
+.pf-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+</style>
+<link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body data-root="https://frenchfries777.com/games/">
 <div class="ffx-root" style="background:#0e0e0e;color:#ece6d8;min-height:2300px;display:flex;flex-wrap:wrap;align-items:stretch">
@@ -570,7 +615,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261109a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">PROFILE · [닉네임]</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Profile</h1>
@@ -580,7 +625,7 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <div hidden>
   <header>
     <a class="logo" href="../"><span class="fry" aria-hidden="true">🍟</span><span>FRENCHFRIES<b>777</b></span></a>
-    <div class="swr"><span class="sw" data-notr><a class="on" href="../" aria-current="page">Hub</a><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a></span><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button></div>
+    <div class="swr"><span class="sw" data-notr><a class="on" href="../" aria-current="page">Hub</a><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a></span><button type="button" class="srx-btn" data-x="srx" aria-label="검색" title="검색">🔍</button></div>
     <div class="right"><nav><a href="../wiki/">위키</a><a href="../community/">커뮤니티</a><a href="../lounge/">라운지</a><a href="../settings/">설정</a></nav><div class="tb"><span class="cchip"><button type="button" class="cc-b" id="coinChip" title="Hub Coin" aria-haspopup="true"><span aria-hidden="true">🪙</span><b id="coinChipN" data-notr>0</b></button><div class="cc-dd" id="coinDd" hidden><div class="coinbar" id="coinBar"></div></div></span><span data-ff-account></span></div></div>
   </header>
   <div data-x="annBar"></div>
@@ -593,31 +638,42 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
     <h1><span>프로필</span></h1>
     </div>
   </section></div>
-  <section class="pf" id="pf">
-    <aside class="pf-me" id="pfMe"></aside>
-    <div class="pf-main">
-      <div class="pf-tabs"><button type="button" class="on" data-t="ph">프로필 사진</button><button type="button" data-t="bd">테두리</button><button type="button" data-t="ac">계정 정보</button></div>
+  <section class="px-wrap" id="pf"><div class="px-left"><aside id="pfMe"></aside></div><div class="px-right">
+<div class="px-c"><div class="sx-h"><span class="sx-i"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M10 9l5 3-5 3z"/></svg></span><span class="sx-hh"><b>플레이한 게임</b><span>게임별 플레이 횟수예요. 아직 하지 않은 게임은 안 해봤다고 나와요.</span></span></div><div class="px-games" id="pxGames"></div></div>
+<div class="px-c"><div class="sx-h"><span class="sx-i"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></span><span class="sx-hh"><b>도전과제</b><span>게임별로 달성한 도전과제예요.</span></span></div><div class="px-ach" id="pxAch"></div></div>
+<div class="px-c" id="pxEdit"><div class="sx-h"><span class="sx-i"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="sx-hh"><b>프로필 꾸미기</b><span>사진, 테두리, 계정 정보를 바꿔요.</span></span></div><div class="pf-main"><div class="pf-tabs"><button type="button" class="on" data-t="ph">프로필 사진</button><button type="button" data-t="bd">테두리</button><button type="button" data-t="ac">계정 정보</button></div>
       <div class="pf-pane on" id="pane-ph"></div>
       <div class="pf-pane" id="pane-bd"></div>
-      <div class="pf-pane" id="pane-ac"><div class="pf-box" id="account"></div></div>
-    </div>
-  </section>
+      <div class="pf-pane" id="pane-ac"><div class="pf-box" id="account"></div></div></div></div>
+</div></section>
   <script>
   (function(){ function boot(){
   function $(i){ return document.getElementById(i); }
   function esc(x){ return String(x).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   (function(){ var r=''; try{ r=document.referrer||''; }catch(e){} if(/^https:\/\/frenchfries777mc\.github\.io\//.test(r)&&r.indexOf('/profile/')<0) $('stBack').href=r; })();
   var GN={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',isleport:'Isleport',tumblecrown:'Tumble Crown',vowkeep:'Vowkeep',dummyparty:'Dummy Party'};
-  var owned=null, cur='', filt='all', U=null, SB=null, NICK='', PK=null, PIMG=null, PSTATS={}, pfilt='all';
+  var PLAYED={}, ACH={}, CARD=null, UN='', owned=null, cur='', filt='all', U=null, SB=null, NICK='', PK=null, PIMG=null, PSTATS={}, pfilt='all';
   [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(b){ b.onclick=function(){ [].forEach.call(document.querySelectorAll('.pf-tabs button'),function(x){ x.classList.toggle('on',x===b); }); $('pane-ph').classList.toggle('on',b.getAttribute('data-t')==='ph'); $('pane-bd').classList.toggle('on',b.getAttribute('data-t')==='bd'); $('pane-ac').classList.toggle('on',b.getAttribute('data-t')==='ac'); }; });
   function acct(){ var A=window.FFAuth, box=$('account');
     if(!U){ box.innerHTML='<p style="margin:0 0 12px;color:var(--dim)">로그인하면 닉네임과 비밀번호를 바꿀 수 있어요.</p><button type="button" class="ffa-btn" id="stLogin">🍟 로그인</button>'; $('stLogin').onclick=function(){ A&&A.openLogin(); }; return; }
     box.innerHTML='<div id="stAcct"></div>'; A.openAcct($('stAcct')); }
+  var GL=[['stickseum','Stickseum'],['crownenvoy','Crown Envoy'],['beaconfall','Beaconfall'],['isleport','Isleport'],['tumblecrown','Tumble Crown'],['dummyparty','Dummy Party'],['vowkeep','Vowkeep'],['gatecrash','Gatecrash']];
   function me(){ var B=window.FFBorders, box=$('pfMe');
-    if(!U){ box.innerHTML='<div class="pf-nm">로그인이 필요해요</div><button type="button" class="ffa-btn" id="meLogin">🍟 로그인</button>'; $('meLogin').onclick=function(){ FFAuth.openLogin(); }; return; }
-    var ic=B?B.preview(cur&&B.get(cur)?cur:'',352,PIMG):'', nm=NICK||U.email||'';
-    box.innerHTML='<img class="pf-av" alt="" src="'+(ic||'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==')+'"><div class="pf-nm">'+esc(nm)+'</div><div class="pf-bn">'+(cur&&B?esc(B.name(cur,'ko')):'테두리 없음')+'</div><button type="button" class="ffa-btn" id="meCard">내 프로필 카드 보기</button>';
-    $('meCard').onclick=function(){ FFAuth.openProfile&&FFAuth.openProfile(U.id); }; }
+    if(!U){ var e0=document.querySelector('.ffx-root h1'); e0=e0&&e0.previousElementSibling; if(e0) e0.textContent='PROFILE'; box.innerHTML='<div class="px-card"><div class="px-ci"><b>로그인이 필요해요</b><button type="button" class="px-pri" id="meLogin">로그인</button></div></div>'; $('meLogin').onclick=function(){ FFAuth.openLogin(); }; return; }
+    var eb=document.querySelector('.ffx-root h1'); eb=eb&&eb.previousElementSibling; if(eb) eb.textContent='PROFILE · '+(NICK||''); var ic=B?B.preview(cur&&B.get(cur)?cur:'',352,PIMG):'', nm=NICK||U.email||'';
+    var played=Object.keys(PLAYED).length, ach=0; Object.keys(ACH).forEach(function(k){ ach+=ACH[k][0]||0; });
+    var fav=CARD&&CARD.fav; GL.forEach(function(g){ if(g[0]===fav) fav=g[1]; });
+    box.innerHTML='<div class="px-card"><div class="px-ci"><span class="px-av">'+(ic?'<img alt="" src="'+ic+'">':'<i>'+esc((nm||'F').charAt(0).toUpperCase())+'</i>')+'</span><b class="px-nm">'+esc(nm)+'</b><span class="px-bd">'+(cur&&B?esc(B.name(cur,'ko')):'테두리 없음')+'</span>'+
+      (CARD&&CARD.bio?'<span class="px-bio">'+esc(CARD.bio)+'</span>':'')+(fav?'<span class="px-fav">대표 게임 · '+esc(fav)+'</span>':'')+
+      '<div class="px-st"><span><b>'+played+'</b><span>플레이한 게임</span></span><span><b>'+ach+'</b><span>도전과제</span></span></div></div></div>'+
+      '<div class="px-act"><button type="button" class="px-pri" id="meCard">내 프로필 카드 보기</button><div class="px-two"><button type="button" id="meLink">링크 복사</button></div></div>';
+    $('meCard').onclick=function(){ FFAuth.openProfile&&FFAuth.openProfile(U.id); };
+    $('meLink').onclick=function(){ if(!UN) return; var b=$('meLink'), u='https://frenchfries777.com/games/?card='+encodeURIComponent(UN), o=b.textContent; try{ navigator.clipboard.writeText(u).then(function(){ b.textContent='✓ 복사했어요'; setTimeout(function(){ b.textContent=o; },1600); }); }catch(e){} }; }
+  function games(){
+    $('pxGames').innerHTML=GL.map(function(g){ var n=PLAYED[g[0]]; return '<div class="px-g"><img alt="'+esc(g[1])+'" loading="lazy" src="https://frenchfries777.com/games/og/'+g[0]+'.jpg"><span>'+(U?(n?n+'회':'아직 안 해봤어요'):'—')+'</span></div>'; }).join('');
+    $('pxAch').innerHTML=GL.map(function(g){ var A=ACH[g[0]]||[0,0], pct=A[1]?Math.round(A[0]/A[1]*100):0; return '<div class="px-a"><img alt="" loading="lazy" src="https://frenchfries777.com/games/og/'+g[0]+'.jpg"><div><div class="px-ar"><b>'+esc(g[1])+'</b><span>'+(A[1]?A[0]+' / '+A[1]:'—')+'</span></div><div class="px-bar"><i data-w="'+pct+'"></i></div></div></div>'; }).join('');
+    [].forEach.call(document.querySelectorAll('.px-bar i'),function(i){ i.style.width=i.getAttribute('data-w')+'%'; }); }
+
   var PG=[['all','전체'],['site','사이트'],['stk','Stickseum'],['ce','Crown Envoy'],['bf','Beaconfall'],['ip','Isleport'],['dp','Dummy Party'],['vk','Vowkeep']];
   function loadPhoto(){ return new Promise(function(res){ PIMG=null; if(!PK||!window.FFProfile) return res(); var im=new Image(); im.crossOrigin='anonymous'; im.onload=function(){ PIMG=im; res(); }; im.onerror=function(){ res(); }; im.src=FFProfile.avatarUrl(PK); }); }
   function photos(){ var P=window.FFProfile, box=$('pane-ph');
@@ -643,12 +699,14 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
   var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261104a'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
   async function load(){ var A=window.FFAuth; U=A&&A.user&&A.user(); SB=A&&A.client&&A.client(); owned=[]; cur=''; NICK='';
-    if(U&&SB){ try{ var pr=await SB.from('profiles').select('display_name,username').eq('id',U.id).limit(1); if(pr&&pr.data&&pr.data[0]) NICK=pr.data[0].display_name||pr.data[0].username||''; }catch(e){}
+    if(U&&SB){ try{ var pr=await SB.from('profiles').select('display_name,username').eq('id',U.id).limit(1); if(pr&&pr.data&&pr.data[0]) NICK=pr.data[0].display_name||pr.data[0].username||''; UN=pr.data[0].username||''; }catch(e){}
+      try{ var pl=await SB.from('ff_played').select('game,plays,ach_done,ach_total').eq('user_id',U.id); PLAYED={}; ACH={}; ((pl&&pl.data)||[]).forEach(function(r){ PLAYED[r.game]=r.plays||1; if(r.ach_total>0) ACH[r.game]=[r.ach_done||0,r.ach_total]; }); }catch(e){}
+      try{ var cd=await SB.from('ff_card').select('bio,fav').eq('user_id',U.id).limit(1); CARD=(cd&&!cd.error&&cd.data&&cd.data[0])||null; }catch(e){}
       if(window.FFBorders){ owned=await FFBorders.mine(SB); cur=await FFBorders.equipped(SB,U.id); }
       try{ var ap=await SB.from('ff_avatar').select('pick').eq('user_id',U.id).limit(1); PK=(ap&&!ap.error&&ap.data&&ap.data[0]&&ap.data[0].pick)||null; }catch(e){}
       try{ var ps=await SB.from('profiles').select('stats').eq('id',U.id).limit(1); PSTATS=(ps&&ps.data&&ps.data[0]&&ps.data[0].stats)||{}; }catch(e){}
       await libP(); await loadPhoto(); }
-    me(); photos(); borders(); acct(); }
+    me(); games(); photos(); borders(); acct(); }
   var s=document.createElement('script'); s.src='https://frenchfries777.com/games/ff-borders.js?v=20261104a'; s.onload=load; document.head.appendChild(s);
   function wire(){ if(window.FFAuth){ FFAuth.ready.then(load); FFAuth.onChange(load); } else setTimeout(wire,200); } wire();
   } if(document.readyState==='complete') boot(); else window.addEventListener('load',boot);
