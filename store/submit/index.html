@@ -28,7 +28,7 @@
     </div>
 
     <form id="form" class="card" novalidate hidden autocomplete="off">
-      <div class="warn">올린 앱은 Frenchfries777 안에서 실행되지 않아요. 스토어는 <b>소개 페이지</b>만 보여 주고, 앱은 새 탭에서 앱 주인의 주소로 열려요. 설치 파일(apk, exe)은 만들어 주지 않아요.</div>
+      <div class="warn">앱은 <b>zip 파일</b>로 올려요. 오너가 확인하고 승인하면 <b>apps.frenchfries777.com/앱번호/</b> 에서 실행돼요. 앱은 다른 앱·로그인과 분리된 칸 안에서 돌아가서, 이 사이트의 로그인이나 정보를 볼 수 없어요.</div>
       <div class="two">
         <label class="f"><span>앱 이름</span><input type="text" id="name" maxlength="30" required><small>2~30자</small></label>
         <label class="f"><span>분류</span><select id="cat" required><option value="">골라 주세요</option><option value="games">게임</option><option value="educations">교육</option><option value="tools">도구</option><option value="social">소통</option></select></label>
@@ -37,8 +37,9 @@
       <label class="f"><span>자세한 설명</span><textarea id="desc" maxlength="3000" required></textarea><small>어떤 앱인지, 특징이 뭔지 써 주세요. 20~3000자 <span id="cd">0/3000</span></small></label>
       <label class="f"><span>조작법 · 사용법 (선택)</span><textarea id="how" maxlength="1500"></textarea><small>1500자까지</small></label>
       <label class="f"><span>태그 (선택)</span><input type="text" id="tags" maxlength="120"><small>쉼표로 나눠서 5개까지. 예: 퍼즐, 2D, 혼자하기</small></label>
-      <label class="f"><span>실행 주소 (플레이/열기 링크)</span><input type="url" id="url" maxlength="300" placeholder="https://" required><small>https:// 로 시작해야 해요. 이 주소가 새 탭에서 열려요.</small></label>
-      <label class="f"><span>아이콘</span><input type="file" id="icon" accept="image/png,image/jpeg,image/webp"><small>정사각형이 좋아요. 자동으로 작게 줄여요. (PNG/JPG/WEBP)</small></label>
+      <label class="f"><span>앱 zip 파일</span><input type="file" id="zip" accept=".zip,application/zip,application/x-zip-compressed" required><small>웹 앱(html·css·js)을 zip 으로 묶어 주세요. 맨 위에 <b>index.html</b> 이 있어야 해요(폴더 하나로 감싸도 돼요). 8MB까지, 파일 400개까지. 이미지·소리·글꼴·wasm 은 되고, exe·php 같은 파일은 안 돼요.</small></label>
+      <div id="zipInfo" class="note"></div>
+<label class="f"><span>아이콘</span><input type="file" id="icon" accept="image/png,image/jpeg,image/webp"><small>정사각형이 좋아요. 자동으로 작게 줄여요. (PNG/JPG/WEBP)</small></label>
       <div id="iconPrev"></div>
       <label class="f"><span>스크린샷 (선택, 3장까지)</span><input type="file" id="shots" accept="image/png,image/jpeg,image/webp" multiple><small>자동으로 줄여서 올려요.</small></label>
       <div class="shots" id="shotPrev"></div>
@@ -59,12 +60,13 @@
   </footer>
 </div>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261114c"></script>
-<script src="../ffstore.js?v=1"></script>
+<script src="../ffstore.js?v=2"></script>
+<script src="../zip.js?v=1"></script>
 <script>
 (function(){
 'use strict';
 var S=window.FFStore, el=S.el, $=function(i){return document.getElementById(i)};
-var icon=null, shots=[], busy=false;
+var icon=null, shots=[], busy=false, zipFile=null, zipCount=0;
 var STAT={pending:['검토 중','p'],approved:['공개됨','ok'],rejected:['반려됨','bad'],removed:['내려감','bad']};
 var CAT={games:'게임',educations:'교육',tools:'도구',social:'소통'};
 
@@ -110,27 +112,41 @@ $('shots').addEventListener('change',async function(e){
   try{for(var i=0;i<fs.length;i++){var d=await makeShot(fs[i]);shots.push(d);var im=document.createElement('img');im.alt='';im.src=d;$('shotPrev').appendChild(im)}}
   catch(er){say(er.message,'err');shots=[];$('shotPrev').textContent='';e.target.value=''}
 });
+$('zip').addEventListener('change',async function(e){
+  zipFile=null;zipCount=0;$('zipInfo').textContent='';var f=e.target.files[0];if(!f)return;
+  try{
+    if(!/\.zip$/i.test(f.name))throw new Error('.zip 파일을 골라 주세요.');
+    $('zipInfo').textContent='파일을 확인하는 중…';
+    var r=await window.FFZip.inspect(await f.arrayBuffer());
+    zipFile=f;zipCount=r.count;
+    var rp=window.FFZip.report(r.files);
+    $('zipInfo').textContent='확인했어요: 파일 '+r.count+'개 · 풀면 '+window.FFZip.fmt(r.total)+(rp.hosts.length?' · 바깥 주소 '+rp.hosts.length+'곳을 부르는 앱이에요(오너가 확인해요)':'');
+  }catch(er){$('zipInfo').textContent='';say(er.message,'err');e.target.value=''}
+});
 $('desc').addEventListener('input',function(){$('cd').textContent=$('desc').value.length+'/3000'});
 
 $('form').addEventListener('submit',async function(ev){
   ev.preventDefault();if(busy)return;
   if($('hp').value){return}
-  var name=$('name').value.trim(),tag=$('tag').value.trim(),desc=$('desc').value.trim(),url=$('url').value.trim(),cat=$('cat').value;
+  var name=$('name').value.trim(),tag=$('tag').value.trim(),desc=$('desc').value.trim(),cat=$('cat').value;
   var tags=$('tags').value.split(',').map(function(x){return x.trim()}).filter(Boolean);
   if(name.length<2||name.length>30)return say('앱 이름은 2~30자로 써 주세요.','err');
   if(!cat)return say('분류를 골라 주세요.','err');
   if(tag.length<5||tag.length>80)return say('한 줄 소개는 5~80자로 써 주세요.','err');
   if(desc.length<20)return say('자세한 설명을 20자 이상 써 주세요.','err');
-  if(!/^https:\/\/[^\s]+$/i.test(url))return say('실행 주소는 https:// 로 시작해야 해요.','err');
+  if(!zipFile)return say('앱 zip 파일을 골라 주세요.','err');
   if(tags.length>5)return say('태그는 5개까지예요.','err');
   if(!icon)return say('아이콘 이미지를 골라 주세요.','err');
   busy=true;$('send').disabled=true;say('올리는 중…');
   try{
-    var sb=await S.client();
-    var r=await sb.from('app_submissions').insert({name:name,tagline:tag,description:desc,howto:$('how').value.trim(),category:cat,tags:tags,url:url,icon:icon,screenshots:shots});
+    var sb=await S.client(), me=await S.user();
+    var path=me.id+'/'+(crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}))+'.zip';
+    var up=await sb.storage.from('app-zips').upload(path,zipFile,{contentType:'application/zip',upsert:false});
+    if(up.error)throw up.error;
+    var r=await sb.from('app_submissions').insert({name:name,tagline:tag,description:desc,howto:$('how').value.trim(),category:cat,tags:tags,icon:icon,screenshots:shots,zip_path:path,files:zipCount});
     if(r.error)throw r.error;
     say('제출했어요! 오너가 확인한 뒤에 결과를 아래 “내가 올린 앱”에서 알려 드려요.','ok');
-    $('form').reset();icon=null;shots=[];$('iconPrev').textContent='';$('shotPrev').textContent='';$('cd').textContent='0/3000';
+    $('form').reset();icon=null;shots=[];zipFile=null;zipCount=0;$('zipInfo').textContent='';$('iconPrev').textContent='';$('shotPrev').textContent='';$('cd').textContent='0/3000';
     loadMine();
   }catch(e){say(S.msgOf(e),'err')}
   busy=false;$('send').disabled=false;
