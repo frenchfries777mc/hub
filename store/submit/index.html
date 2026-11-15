@@ -152,6 +152,62 @@ $('form').addEventListener('submit',async function(ev){
   busy=false;$('send').disabled=false;
 });
 
+
+/* 올린 뒤 소개·사진 고치기 */
+async function openEdit(a,host,btn){
+  if(host.firstChild){host.textContent='';return}
+  var d;try{d=await S.rpc('app_store_get',{p_id:a.id})}catch(e){host.textContent=S.msgOf(e);return}
+  if(!d){host.textContent='불러오지 못했어요.';return}
+  var cur={tagline:d.tagline,description:d.description,howto:d.howto||'',tags:(d.tags||[]).slice(),icon:d.icon,screenshots:(d.screenshots||[]).slice()};
+  var pe=d.pending_edit;if(pe&&typeof pe==='object'){['tagline','description','howto','tags','icon','screenshots'].forEach(function(k){if(pe[k]!==undefined)cur[k]=pe[k]})}
+  var box=el('div','card');box.style.marginTop='10px';
+  if(pe&&Object.keys(pe).length)box.appendChild(el('div','note','오너 확인을 기다리는 수정이 있어요. 아래에는 그 내용이 보여요.'));
+  function fld(lab,ctl,small){var l=el('label','f');l.appendChild(el('span',null,lab));l.appendChild(ctl);if(small)l.appendChild(el('small',null,small));box.appendChild(l);return ctl}
+  var iTag=document.createElement('input');iTag.type='text';iTag.maxLength=80;iTag.value=cur.tagline;fld('한 줄 소개',iTag,'5~80자');
+  var iDesc=document.createElement('textarea');iDesc.maxLength=3000;iDesc.value=cur.description;fld('자세한 설명',iDesc,'20~3000자');
+  var iHow=document.createElement('textarea');iHow.maxLength=1500;iHow.value=cur.howto;fld('조작법 · 사용법',iHow,'1500자까지');
+  var iTags=document.createElement('input');iTags.type='text';iTags.maxLength=120;iTags.value=cur.tags.join(', ');fld('태그',iTags,'쉼표로 나눠서 5개까지');
+  var icon2=cur.icon,shots2=cur.screenshots.slice();
+  var iconPrev=el('div');var iIcon=document.createElement('input');iIcon.type='file';iIcon.accept='image/png,image/jpeg,image/webp';fld('아이콘 바꾸기 (선택)',iIcon,'고르면 바로 아래에 새 아이콘이 보여요');
+  function showIcon(){iconPrev.textContent='';var sp=el('span','ic');if(icon2){var im=document.createElement('img');im.alt='';im.src=icon2;sp.appendChild(im)}iconPrev.appendChild(sp)}
+  box.appendChild(iconPrev);showIcon();
+  var msg=el('div','msg');msg.setAttribute('role','status');
+  iIcon.addEventListener('change',async function(){var f=iIcon.files[0];if(!f)return;try{icon2=await makeIcon(f);showIcon();msg.textContent=''}catch(er){msg.className='msg err';msg.textContent=er.message;iIcon.value=''}});
+  var shotBox=el('div','shots');
+  function showShots(){shotBox.textContent='';shots2.forEach(function(u,i){var w=el('span');w.style.cssText='position:relative;display:inline-block';var im=document.createElement('img');im.alt='';im.src=u;w.appendChild(im);
+    var x=el('button','btn d s','✕');x.type='button';x.style.cssText='position:absolute;top:4px;right:4px;padding:2px 8px';x.addEventListener('click',function(){shots2.splice(i,1);showShots()});w.appendChild(x);shotBox.appendChild(w)})}
+  var iShots=document.createElement('input');iShots.type='file';iShots.accept='image/png,image/jpeg,image/webp';iShots.multiple=true;fld('스크린샷 (3장까지)',iShots,'✕ 로 지우고, 아래에서 새로 골라 더할 수 있어요');
+  box.appendChild(shotBox);showShots();
+  iShots.addEventListener('change',async function(){
+    var fs=[].slice.call(iShots.files);iShots.value='';
+    try{for(var i=0;i<fs.length;i++){if(shots2.length>=3){msg.className='msg err';msg.textContent='스크린샷은 3장까지예요.';break}shots2.push(await makeShot(fs[i]))}showShots()}catch(er){msg.className='msg err';msg.textContent=er.message}
+  });
+  var row=el('div','btns');var ok=el('button','btn s','저장하기');ok.type='button';var no=el('button','btn g s','닫기');no.type='button';row.appendChild(ok);row.appendChild(no);box.appendChild(row);box.appendChild(msg);
+  no.addEventListener('click',function(){host.textContent=''});
+  ok.addEventListener('click',async function(){
+    var tg=iTags.value.split(',').map(function(x){return x.trim()}).filter(Boolean);
+    var patch={},tag=iTag.value.trim(),ds=iDesc.value.trim(),hw=iHow.value.trim();
+    if(tag!==cur.tagline)patch.tagline=tag;
+    if(ds!==cur.description)patch.description=ds;
+    if(hw!==cur.howto)patch.howto=hw;
+    if(tg.join('\n')!==cur.tags.join('\n'))patch.tags=tg;
+    if(icon2!==cur.icon)patch.icon=icon2;
+    if(shots2.join('\n')!==cur.screenshots.join('\n'))patch.screenshots=shots2;
+    if(!Object.keys(patch).length){msg.className='msg err';msg.textContent='바꾼 내용이 없어요.';return}
+    if(patch.tagline!==undefined&&(tag.length<5||tag.length>80)){msg.className='msg err';msg.textContent='한 줄 소개는 5~80자로 써 주세요.';return}
+    if(patch.description!==undefined&&ds.length<20){msg.className='msg err';msg.textContent='자세한 설명을 20자 이상 써 주세요.';return}
+    if(tg.length>5){msg.className='msg err';msg.textContent='태그는 5개까지예요.';return}
+    ok.disabled=true;msg.className='msg';msg.textContent='저장하는 중…';
+    try{
+      var res=await S.rpc('app_edit',{p_id:a.id,p_patch:patch});
+      if(res==='held'){msg.className='msg ok';msg.textContent='보냈어요! 공개 중인 앱이라 오너가 확인한 뒤에 바뀌어요.'}
+      else{msg.className='msg ok';msg.textContent=a.status==='rejected'?'저장했어요. 다시 검토를 받게 돼요.':'저장했어요.'}
+      setTimeout(loadMine,1400);
+    }catch(e){msg.className='msg err';msg.textContent=S.msgOf(e);ok.disabled=false}
+  });
+  host.appendChild(box);
+}
+
 async function loadMine(){
   var sb=await S.client();
   var r=await sb.from('app_submissions').select('id,name,tagline,category,status,reject_reason,created_at,reviewed_at,icon').neq('status','withdrawn').order('created_at',{ascending:false}).limit(50);
@@ -174,12 +230,15 @@ async function loadMine(){
     if(a.status==='approved')t.appendChild(el('div','why','스토어에 올라갔어요! 소개 페이지에서 별점과 리뷰를 볼 수 있어요.'));
     if(a.status==='rejected'||a.status==='removed')t.appendChild(el('div','why',(a.status==='rejected'?'반려 이유: ':'내려간 이유: ')+(a.reject_reason||'(이유 없음)')));
     var bt=el('div','btns');
+    var edHost=el('div');
     var v=el('a','btn g s','소개 페이지 보기');v.href='../app/?id='+encodeURIComponent(a.id);bt.appendChild(v);
     var w=el('button','btn d s',a.status==='approved'?'스토어에서 내리기':'철회');w.type='button';var armed=false;
     w.addEventListener('click',async function(){
       if(!armed){armed=true;w.textContent='정말요? 한 번 더 누르세요';setTimeout(function(){armed=false;w.textContent=a.status==='approved'?'스토어에서 내리기':'철회'},4000);return}
       try{await S.rpc('app_withdraw',{p_id:a.id});loadMine()}catch(e){w.textContent=S.msgOf(e)}
-    });bt.appendChild(w);t.appendChild(bt);it.appendChild(t);box.appendChild(it);
+    });
+    if(a.status==='pending'||a.status==='approved'||a.status==='rejected'){var ed=el('button','btn g s','소개·사진 고치기');ed.type='button';ed.addEventListener('click',function(){openEdit(a,edHost,ed)});bt.appendChild(ed)}
+    bt.appendChild(w);t.appendChild(bt);t.appendChild(edHost);it.appendChild(t);box.appendChild(it);
   });
 }
 
