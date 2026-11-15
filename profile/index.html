@@ -697,9 +697,9 @@ body{background-image:none!important}
     $('bdOff').onclick=function(){ set(''); };
     [].forEach.call(box.querySelectorAll('[data-g]'),function(b){ b.onclick=function(){ filt=b.getAttribute('data-g'); borders(); }; });
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
-  var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261115b'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
+  var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261115c'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
   function mountAct(){ var h=$('pxAct'); if(!h) return; var go=function(){ if(window.FFPfAct) FFPfAct.mount(h,{sb:SB,me:U,uid:VID||(U&&U.id),un:UN,own:!VID}); };
-    if(window.FFPfAct) return go(); var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-pfact.js?v=20261115b'; sc.onload=go; document.head.appendChild(sc); }
+    if(window.FFPfAct) return go(); var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-pfact.js?v=20261115c'; sc.onload=go; document.head.appendChild(sc); }
   async function other(){ VID=null; NOTF=false; var ed=$('pxEdit'); if(ed) ed.style.display=''; var q=''; try{ q=(new URLSearchParams(location.search).get('u')||'').trim(); }catch(e){}
     if(!q||!SB||(UN&&q.toLowerCase()===UN.toLowerCase())) return;
     try{ var r=await SB.from('profiles').select('id,display_name,username').ilike('username',q.replace(/[%_\\]/g,'\\$&')).limit(1), p=r&&r.data&&r.data[0];
@@ -728,7 +728,7 @@ body{background-image:none!important}
   
 </div>
 </div></main></div>
-<script src="https://frenchfries777.com/games/ff-auth.js?v=20261115c"></script>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261115d"></script>
 <script src="https://frenchfries777.com/games/hub.js?v=20261115c"></script>
 </body>
 </html>
