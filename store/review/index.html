@@ -39,7 +39,7 @@
 'use strict';
 /* 이 화면은 오너만 열 수 있어요. 숨기는 것만이 아니라, 서버의 모든 검토 함수가 ff_is_admin() 으로 다시 확인해요. */
 var S=window.FFStore, el=S.el, $=function(i){return document.getElementById(i)};
-var TABS=[['pending','대기'],['approved','공개 중'],['rejected','반려'],['removed','내림'],['reports','신고된 리뷰']];
+var TABS=[['pending','대기'],['edits','수정 대기'],['approved','공개 중'],['rejected','반려'],['removed','내림'],['reports','신고된 리뷰']];
 var CAT={games:'게임',educations:'교육',tools:'도구',social:'소통'};
 var IMG=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/]+=*$/;
 var tab='pending';
@@ -110,6 +110,27 @@ function appItem(a,reload){
   if(a.status==='rejected'){var rp=el('button','btn g s','다시 대기로');rp.type='button';rp.addEventListener('click',function(){setS('pending')});act.appendChild(rp)}
   act.appendChild(msg);t.appendChild(act);it.appendChild(t);return it;
 }
+function editItem(e,reload){
+  var it=el('div','item');it.appendChild(icon({id:e.id,name:e.name,icon:e.cur&&e.cur.icon}));
+  var t=el('div','t');t.appendChild(el('b',null,e.name));t.appendChild(el('span',null,'올린 사람: '+e.dev));
+  var p=e.patch||{},c=e.cur||{};
+  var L={tagline:'한 줄 소개',description:'자세한 설명',howto:'조작법',tags:'태그'};
+  Object.keys(L).forEach(function(k){
+    if(p[k]===undefined)return;
+    var a=Array.isArray(c[k])?c[k].join(', '):(c[k]||''),b=Array.isArray(p[k])?p[k].join(', '):p[k];
+    var w=el('div','why');w.appendChild(el('b',null,L[k]));
+    var o=el('div','note','지금: '+(a||'(비어 있음)'));o.style.whiteSpace='pre-wrap';w.appendChild(o);
+    var n=el('div',null,'바뀜: '+(b||'(비어 있음)'));n.style.whiteSpace='pre-wrap';w.appendChild(n);t.appendChild(w);
+  });
+  function imgs(list){var d=el('div','shots');(list||[]).forEach(function(u){if(!IMG.test(u))return;var im=document.createElement('img');im.alt='';im.src=u;d.appendChild(im)});return d}
+  if(p.icon!==undefined){var w=el('div','why');w.appendChild(el('b',null,'아이콘'));w.appendChild(el('div','note','지금'));w.appendChild(imgs([c.icon]));w.appendChild(el('div',null,'바뀜'));w.appendChild(imgs([p.icon]));t.appendChild(w)}
+  if(p.screenshots!==undefined){var w2=el('div','why');w2.appendChild(el('b',null,'스크린샷 ('+(p.screenshots.length)+'장)'));w2.appendChild(el('div','note','지금'));w2.appendChild(imgs(c.screenshots));w2.appendChild(el('div',null,'바뀜'));w2.appendChild(imgs(p.screenshots));t.appendChild(w2)}
+  var act=el('div','btns');var msg=el('span','msg');msg.setAttribute('role','status');
+  function decide(ok,btn){btn.disabled=true;S.rpc('app_edit_decide',{p_id:e.id,p_ok:ok}).then(reload,function(er){msg.textContent=S.msgOf(er);msg.className='msg err';btn.disabled=false})}
+  var ok=el('button','btn s','반영');ok.type='button';ok.addEventListener('click',function(){decide(true,ok)});
+  var no=el('button','btn d s','버리기');no.type='button';no.addEventListener('click',function(){decide(false,no)});
+  act.appendChild(ok);act.appendChild(no);act.appendChild(msg);t.appendChild(act);it.appendChild(t);return it;
+}
 function reviewItem(r,reload){
   var it=el('div','item');var t=el('div','t');
   var b=el('b');if(r.hidden)b.appendChild(el('span','badge bad','숨겨짐'));b.appendChild(document.createTextNode(r.app_name+' · '+S.stars(r.rating)+' · '+r.dev));t.appendChild(b);
@@ -129,6 +150,9 @@ async function load(){
     var counts={};
     if(tab==='reports'){var rows=await S.rpc('app_review_admin_list');paintTabs(counts);list.textContent='';
       if(!rows.length)list.appendChild(el('p','note','신고되거나 숨겨진 리뷰가 없어요.'));rows.forEach(function(r){list.appendChild(reviewItem(r,load))});return}
+    if(tab==='edits'){var es=await S.rpc('app_admin_edits');counts.edits=es.length;paintTabs(counts);list.textContent='';
+      if(!es.length)list.appendChild(el('p','note','확인할 수정이 없어요.'));es.forEach(function(x){list.appendChild(editItem(x,load))});return}
+    try{var en=await S.rpc('app_admin_edits');if(en&&en.length)counts.edits=en.length}catch(e2){}
     var rs=await S.rpc('app_admin_list',{p_status:tab});
     var p=tab==='pending'?rs.length:null;if(p!=null)counts.pending=p;
     paintTabs(counts);list.textContent='';
