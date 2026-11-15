@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
 <script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
+<script src="https://frenchfries777.com/games/ff-offline.js?v=20261115a"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
    The pages are written in Korean; this file translates their text in place. Whole text nodes are looked up first (S: site strings),
@@ -592,7 +593,7 @@ body{background-image:none!important}
 <img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261115b';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261115c';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#f0cf7e">SETTINGS</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Settings</h1>
@@ -711,10 +712,17 @@ body{background-image:none!important}
   function perf(){ var P=window.FFPerf?FFPerf.get():{low:false,fx:'high',fps:0}; if(!window.FFPerf){ $('perf').style.display='none'; return; }
     var dv='pc'; try{ dv=localStorage.getItem('ff_device')==='mobile'?'mobile':'pc'; }catch(e){}
     $('perf').innerHTML=head('perf',t.perf,t.perfN)+row(x('device'),x('deviceD'),seg('data-dv',[['pc',x('pc')],['mobile',x('mobile')]],dv))+row(t.low,t.lowD,sw('id="perfLow"',P.low,t.low))+
-      row(t.fx,t.fxD,seg('data-pk="fx" data-pv',['high','mid','low'].map(function(v){ return [v,t['fx'+v]]; }),P.fx))+row(t.fps,t.fpsD,seg('data-pk="fps" data-pv',[0,60,30].map(function(v){ return [v,t['fps'+v]]; }),P.fps));
+      row(t.fx,t.fxD,seg('data-pk="fx" data-pv',['high','mid','low'].map(function(v){ return [v,t['fx'+v]]; }),P.fx))+row(t.fps,t.fpsD,seg('data-pk="fps" data-pv',[0,60,30].map(function(v){ return [v,t['fps'+v]]; }),P.fps))+'<div id="offRow"></div>';
+    offPaint();
     $('perfLow').onclick=function(){ var on=!P.low; FFPerf.set(on?{low:true,fx:'low',fps:30}:{low:false,fx:'high',fps:0}); perf(); };
     [].forEach.call($('perf').querySelectorAll('[data-dv]'),function(b){ b.onclick=function(){ var v=b.getAttribute('data-dv'), was=dv==='mobile'; try{ localStorage.setItem('ff_device',v); }catch(e){} var mob=v==='mobile'; if(mob||was) FFPerf.set(mob?{low:true,fx:'low',fps:30}:{low:false,fx:'high',fps:0}); perf(); }; });
     [].forEach.call($('perf').querySelectorAll('[data-pk]'),function(b){ b.onclick=function(){ var o={}, k=b.getAttribute('data-pk'), v=b.getAttribute('data-pv'); o[k]=k==='fps'?+v:v; FFPerf.set(o); perf(); }; }); }
+  function offPaint(){ var h=$('offRow'); if(!h) return; if(!window.FFOffline||!FFOffline.ok){ h.remove(); return; } var ko=L==='ko';
+    var NM={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',isleport:'Isleport',vowkeep:'Vowkeep',tumblecrown:'Tumble Crown',dummyparty:'Dummy Party',gatecrash:'Gatecrash'};
+    FFOffline.state(function(st){ var sub=st.list.length?(ko?'저장됨: ':'Saved: ')+st.list.map(function(g){ return NM[g.game]||g.game; }).join(', '):(ko?'자주 하는 게임(최대 3개)을 연결 없이도 열 수 있게 저장해요. 게임을 2번 이상 열면 자동으로 저장되고, 인터넷이 필요한 기능은 오프라인에서 안 돼요.':'Saves up to 3 games you play often so they open without a connection. A game is saved after you open it twice. Online features do not work offline.');
+      h.innerHTML=row(ko?'오프라인 저장':'Offline play',sub,sw('id="offSw"',st.on,ko?'오프라인 저장':'Offline play')+(st.list.length?'<span class="sx-seg"><button type="button" id="offClr">'+(ko?'지우기':'Clear')+'</button></span>':''));
+      $('offSw').onclick=function(){ FFOffline.setOn(!st.on); setTimeout(offPaint,400); };
+      var c=$('offClr'); if(c) c.onclick=function(){ FFOffline.clear(); setTimeout(offPaint,500); }; }); }
   function devlogin(){
     var ko=L==='ko', B='https://kebsbuvuutilitwlvxzv.supabase.co/auth/v1/';
     var rows=[[ko?'앱 이름':'App name','Frenchfries777'],['Client ID','73832fa7-a386-4576-9634-e9e7d2ef811b'],[ko?'로그인 시작 주소':'Authorization URL',B+'oauth/authorize'],[ko?'토큰 주소':'Token URL',B+'oauth/token'],
@@ -744,6 +752,6 @@ body{background-image:none!important}
 </div>
 </div></main></div>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261114c"></script>
-<script src="https://frenchfries777.com/games/hub.js?v=20261115b"></script>
+<script src="https://frenchfries777.com/games/hub.js?v=20261115c"></script>
 </body>
 </html>
