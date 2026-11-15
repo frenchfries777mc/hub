@@ -158,6 +158,8 @@ async function loadMine(){
   var box=$('mine');box.textContent='';
   if(r.error||!r.data||!r.data.length){$('mineBox').hidden=true;return}
   $('mineBox').hidden=false;
+  /* 열린 횟수(숫자만): 아직 DB 변경 전이거나 실패하면 그냥 안 보여요 */
+  var stat={};try{(await S.rpc('app_my_stats')||[]).forEach(function(x){(stat[x.app_id]=stat[x.app_id]||{})[x.kind]=x})}catch(e){}
   r.data.forEach(function(a){
     var it=el('div','item');var ic=el('span','ic');var h=hue(a.id);ic.style.setProperty('--a','hsl('+h+' 60% 52%)');ic.style.setProperty('--b','hsl('+((h+40)%360)+' 55% 28%)');
     if(/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/]+=*$/.test(a.icon)){var im=document.createElement('img');im.alt='';im.src=a.icon;ic.appendChild(im)}else ic.textContent=a.name.charAt(0);
@@ -166,6 +168,9 @@ async function loadMine(){
     t.appendChild(el('span',null,(CAT[a.category]||'')+' · '+a.tagline));
     t.appendChild(el('span',null,'제출 '+S.fmtDate(a.created_at)+(a.reviewed_at&&a.status!=='pending'?' · 확인 '+S.fmtDate(a.reviewed_at):'')));
     if(a.status==='pending')t.appendChild(el('div','why','오너가 확인하는 중이에요. 승인되기 전에는 나와 오너만 볼 수 있어요.'));
+    if(a.status==='approved'){var sv=stat[a.id]||{},op=sv.open,ins=sv.install;
+      var line='열린 횟수 '+(op?op.total:0)+'회 (최근 7일 '+(op?op.last7:0)+'회 · 오늘 '+(op?op.today:0)+'회)'+(ins?' · 설치 '+ins.total+'회':'');
+      t.appendChild(el('span',null,line))}
     if(a.status==='approved')t.appendChild(el('div','why','스토어에 올라갔어요! 소개 페이지에서 별점과 리뷰를 볼 수 있어요.'));
     if(a.status==='rejected'||a.status==='removed')t.appendChild(el('div','why',(a.status==='rejected'?'반려 이유: ':'내려간 이유: ')+(a.reject_reason||'(이유 없음)')));
     var bt=el('div','btns');
