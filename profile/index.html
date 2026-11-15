@@ -560,6 +560,7 @@ body{background-image:none!important}
 .px-av{width:104px;height:104px;border-radius:50%;background:#0e0e0e;border:3px solid #f0cf7e;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:'Oswald',sans-serif;font-weight:700;font-size:48px;color:#f0cf7e}
 .px-av img{width:100%;height:100%;object-fit:cover;display:block}.px-av i{font-style:normal}
 .px-nm{font-size:26px;color:#ece6d8}
+.px-other #pxEdit{display:none!important}
 .px-bd{padding:5px 14px;border-radius:999px;background:#26221a;border:1px solid #d9b45f;color:#f0cf7e;font-size:13px}
 .px-bio{font-size:14px;color:#d8d1c0;text-align:center}.px-fav{font-size:13px;color:#a39c8c}
 .px-st{display:flex;gap:12px;width:100%}
@@ -676,35 +677,35 @@ body{background-image:none!important}
 
   var PG=[['all','전체'],['site','사이트'],['stk','Stickseum'],['ce','Crown Envoy'],['bf','Beaconfall'],['ip','Isleport'],['dp','Dummy Party'],['vk','Vowkeep']];
   function loadPhoto(){ return new Promise(function(res){ PIMG=null; if(!PK||!window.FFProfile) return res(); var im=new Image(); im.crossOrigin='anonymous'; im.onload=function(){ PIMG=im; res(); }; im.onerror=function(){ res(); }; im.src=FFProfile.avatarUrl(PK); }); }
-  function photos(){ var P=window.FFProfile, box=$('pane-ph');
+  function photos(){ var P=window.FFProfile, box=$('pane-ph'); if(VID||NOTF) return;
     if(!U){ box.innerHTML='<div class="pf-box"><p style="margin:0">로그인하면 프로필 사진을 고를 수 있어요.</p></div>'; return; }
     if(!P||!P.avatars){ box.innerHTML='<div class="pf-box"><p style="margin:0">불러오는 중이에요...</p></div>'; return; }
     var h='<div class="pf-chips">'+PG.map(function(g){ return '<button type="button" data-pg="'+g[0]+'" class="'+(pfilt===g[0]?'on':'')+'">'+g[1]+'</button>'; }).join('')+'<button type="button" id="phOff" style="margin-left:auto">기본 사진으로</button></div>';
     var l=P.avatars.filter(function(x){ return x.kind==='free'&&(pfilt==='all'||(pfilt==='site'?!x.grp:x.grp===pfilt)); });
     h+='<div class="pf-grid">'+l.map(function(x){ var lk=P.t2lock&&P.t2lock(x.id,PSTATS); return '<button type="button" class="pf-b ph'+(lk?' lock':'')+(PK===x.id?' on':'')+'" data-p="'+esc(x.id)+'"><img alt="" loading="lazy" src="'+esc(P.avatarUrl(x.id))+'">'+esc(x.n.ko||x.n.en)+'<small>'+(lk?'🔒 아직 없어요':(PK===x.id?'쓰는 중':''))+'</small></button>'; }).join('')+'</div><div class="pf-m" id="phM"></div>';
     box.innerHTML=h;
-    async function setP(id){ var m=$('phM'); try{ var r=await SB.rpc('ff_avatar_set',{p_id:id}); if(r&&r.error) throw r.error; PK=id; try{ window.dispatchEvent(new CustomEvent('ff-avatar',{detail:{pick:id}})); }catch(e){} await loadPhoto(); me(); photos(); $('phM').textContent=id?'프로필 사진을 바꿨어요!':'기본 사진으로 돌렸어요.'; }catch(e){ m.textContent='지금은 못 바꿔요. 잠시 후 다시 해 주세요.'; } }
+    async function setP(id){ var m=$('phM'); if(VID||NOTF) return; try{ var r=await SB.rpc('ff_avatar_set',{p_id:id}); if(r&&r.error) throw r.error; PK=id; try{ window.dispatchEvent(new CustomEvent('ff-avatar',{detail:{pick:id}})); }catch(e){} await loadPhoto(); me(); photos(); $('phM').textContent=id?'프로필 사진을 바꿨어요!':'기본 사진으로 돌렸어요.'; }catch(e){ m.textContent='지금은 못 바꿔요. 잠시 후 다시 해 주세요.'; } }
     $('phOff').onclick=function(){ setP(null); };
     [].forEach.call(box.querySelectorAll('[data-pg]'),function(b){ b.onclick=function(){ pfilt=b.getAttribute('data-pg'); photos(); }; });
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ if(b.classList.contains('lock')){ $('phM').textContent='이 사진은 그 스킨을 가지면 쓸 수 있어요.'; return; } setP(b.getAttribute('data-p')); }; }); }
-  function borders(){ var B=window.FFBorders, box=$('pane-bd');
+  function borders(){ var B=window.FFBorders, box=$('pane-bd'); if(VID||NOTF) return;
     if(!U||!B){ box.innerHTML='<div class="pf-box"><p style="margin:0">로그인하면 가진 테두리가 보여요.</p></div>'; return; }
     var h='<div class="pf-chips"><button type="button" data-g="all" class="'+(filt==='all'?'on':'')+'">전체</button><button type="button" data-g="mine" class="'+(filt==='mine'?'on':'')+'">가진 것 '+owned.length+'</button>'+Object.keys(GN).map(function(g){ return '<button type="button" data-g="'+g+'" class="'+(filt===g?'on':'')+'">'+GN[g]+'</button>'; }).join('')+'<button type="button" id="bdOff" style="margin-left:auto">테두리 벗기</button></div>';
     var l=B.LIST.filter(function(b){ return filt==='all'||(filt==='mine'?owned.indexOf(b.id)>=0:b.game===filt); });
     h+='<div class="pf-grid">'+l.map(function(b){ var has=owned.indexOf(b.id)>=0; return '<button type="button" class="pf-b'+(has?'':' lock')+(cur===b.id?' on':'')+'" data-b="'+b.id+'"><img alt="" src="'+B.preview(b.id,224)+'">'+esc(b.ko)+'<small>'+(has?(cur===b.id?'끼는 중':'가짐'):'🔒 '+GN[b.game]+'에서')+'</small></button>'; }).join('')+'</div><div class="pf-m" id="bdM">'+(l.length?'':'아직 가진 테두리가 없어요. 게임 상점에서 사 보세요.')+'</div>';
     box.innerHTML=h;
-    async function set(id){ var m=$('bdM'); try{ await B.equip(SB,id); cur=id; me(); borders(); $('bdM').textContent=id?'끼웠어요!':'벗었어요.'; }catch(e){ m.textContent='지금은 못 바꿔요. 잠시 후 다시 해 주세요.'; } }
+    async function set(id){ var m=$('bdM'); if(VID||NOTF) return; try{ await B.equip(SB,id); cur=id; me(); borders(); $('bdM').textContent=id?'끼웠어요!':'벗었어요.'; }catch(e){ m.textContent='지금은 못 바꿔요. 잠시 후 다시 해 주세요.'; } }
     $('bdOff').onclick=function(){ set(''); };
     [].forEach.call(box.querySelectorAll('[data-g]'),function(b){ b.onclick=function(){ filt=b.getAttribute('data-g'); borders(); }; });
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
   var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261115c'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
   function mountAct(){ var h=$('pxAct'); if(!h) return; var go=function(){ if(window.FFPfAct) FFPfAct.mount(h,{sb:SB,me:U,uid:VID||(U&&U.id),un:UN,own:!VID}); };
     if(window.FFPfAct) return go(); var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-pfact.js?v=20261115d'; sc.onload=go; document.head.appendChild(sc); }
-  async function other(){ VID=null; NOTF=false; var ed=$('pxEdit'); if(ed) ed.style.display=''; var q=''; try{ q=(new URLSearchParams(location.search).get('u')||'').trim(); }catch(e){}
+  async function other(){ VID=null; NOTF=false; var ed=null; document.documentElement.classList.remove('px-other'); var q=''; try{ q=(new URLSearchParams(location.search).get('u')||'').trim(); }catch(e){}
     if(!q||!SB||(UN&&q.toLowerCase()===UN.toLowerCase())) return;
     try{ var r=await SB.from('profiles').select('id,display_name,username').ilike('username',q.replace(/[%_\\]/g,'\\$&')).limit(1), p=r&&r.data&&r.data[0];
-      if(!p){ NOTF=true; if(ed) ed.style.display='none'; return; } if(U&&p.id===U.id) return;
-      VID=p.id; NICK=p.display_name||p.username||''; UN=p.username||''; PLAYED={}; ACH={}; CARD=null; cur=''; PK=null; PIMG=null; if(ed) ed.style.display='none';
+      if(!p){ NOTF=true; document.documentElement.classList.add('px-other'); return; } if(U&&p.id===U.id) return;
+      VID=p.id; NICK=p.display_name||p.username||''; UN=p.username||''; PLAYED={}; ACH={}; CARD=null; cur=''; PK=null; PIMG=null; document.documentElement.classList.add('px-other');
       var pl=await SB.from('ff_played').select('game,plays,ach_done,ach_total').eq('user_id',VID); ((pl&&pl.data)||[]).forEach(function(x){ PLAYED[x.game]=x.plays||1; if(x.ach_total>0) ACH[x.game]=[x.ach_done||0,x.ach_total]; });
       try{ var cd=await SB.from('ff_card').select('bio,fav').eq('user_id',VID).limit(1); CARD=(cd&&!cd.error&&cd.data&&cd.data[0])||null; }catch(e){}
       try{ if(window.FFBorders) cur=await FFBorders.equipped(SB,VID); }catch(e){}
