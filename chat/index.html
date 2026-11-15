@@ -16,7 +16,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="FF Chat">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-<script>try{ if(/[?&]ffinstall=1(&|$)/.test(location.search)) sessionStorage.setItem('ffInstall','1'); }catch(e){}</script>
+<script>try{ if(/[?&]ffinstall=1(&|$)/.test(location.search)) sessionStorage.setItem('ffInstall',String(Date.now())); }catch(e){}</script>
 <script>
 (function(){ var SUB='https://chat.frenchfries777.com/'; if(!/^(www\.)?frenchfries777\.com$/.test(location.hostname)||/[?&]nosub=1/.test(location.search)) return;
   try{ fetch(SUB+'manifest.webmanifest',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j&&j.short_name==='FF Chat') location.replace(SUB+location.search.replace(/^\?/,'?')+location.hash); }).catch(function(){}); }catch(e){} })();
@@ -842,16 +842,16 @@ function instPaint(){ var b=document.getElementById('instBtn'); if(!b) return; b
   toast(instIOS()?'공유 버튼 → 홈 화면에 추가를 눌러 주세요':'브라우저 메뉴에서 앱 설치를 눌러 주세요'); }; } }
 window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); instEv=e; instPaint(); });
 /* 앱 스토어의 "설치"로 들어왔을 때(?ffinstall=1)만 화면 아래에 설치 줄을 보여요 */
-(function(){ var want=/[?&]ffinstall=1(&|$)/.test(location.search); try{ if(sessionStorage.getItem('ffInstall')==='1'){ sessionStorage.removeItem('ffInstall'); want=true; } }catch(e){} if(!want||instStandalone()) return;
+(function(){ var want=/[?&]ffinstall=1(&|$)/.test(location.search); try{ var ft=+sessionStorage.getItem('ffInstall')||0; if(ft&&Date.now()-ft<120000) want=true; }catch(e){}   // 로그인 확인으로 화면이 다시 열려도 2분 동안은 설치 줄이 남아요 if(!want||instStandalone()) return;
   try{ history.replaceState(null,'',location.pathname+location.search.replace(/([?&])ffinstall=1(&|$)/,function(m,a,b){ return b?a:''; })+location.hash); }catch(e){}
   function bar(){ if(document.getElementById('ffInstBar')) return;
     var d=document.createElement('div'); d.id='ffInstBar'; d.style.cssText='position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:8px 10px 8px 14px;border-radius:999px;background:#171717;color:#ece6d8;border:1px solid #d9b45f;font:500 14px/1.3 system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.45)';
     var t=document.createElement('span'), b=document.createElement('button'), x=document.createElement('button');
     b.type=x.type='button'; b.textContent='⬇ 설치'; x.textContent='✕'; x.setAttribute('aria-label','close');
     b.style.cssText='border:0;border-radius:999px;padding:7px 16px;background:#d9b45f;color:#111;font:700 14px system-ui,sans-serif;cursor:pointer'; x.style.cssText='border:0;background:none;color:#a39c8c;font-size:16px;cursor:pointer;padding:4px 6px';
-    b.onclick=function(){ var e=instEv; if(e){ instEv=null; e.prompt(); e.userChoice.then(function(c){ if(c&&c.outcome==='accepted') d.remove(); },function(){}); return; }
+    b.onclick=function(){ var e=instEv; if(e){ instEv=null; e.prompt(); e.userChoice.then(function(c){ if(c&&c.outcome==='accepted'){ try{ sessionStorage.removeItem('ffInstall'); }catch(e){} d.remove(); } },function(){}); return; }
       t.textContent=instIOS()?'공유 버튼 → 홈 화면에 추가':'브라우저 메뉴(⋮) → 앱 설치'; };
-    x.onclick=function(){ d.remove(); };
+    x.onclick=function(){ try{ sessionStorage.removeItem('ffInstall'); }catch(e){} d.remove(); };
     d.appendChild(t); d.appendChild(b); d.appendChild(x); document.body.appendChild(d); }
   if(document.body) bar(); else document.addEventListener('DOMContentLoaded',bar);
   window.addEventListener('appinstalled',function(){ var d=document.getElementById('ffInstBar'); if(d) d.remove(); });
