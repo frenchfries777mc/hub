@@ -891,5 +891,23 @@ setInterval(instPaint,1500);
 boot();
 })();
 </script>
+<script>
+/* 설치한 채팅 앱 창에서 채팅 밖 링크를 누르면: 그 주소는 일반 브라우저 창으로 열고, 허브로 가는 링크면 채팅 창은 닫아요 */
+(function(){ try{
+  var app=(window.matchMedia&&(matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: window-controls-overlay)').matches))||navigator.standalone;
+  if(!app) return;
+  document.addEventListener('click',function(e){
+    if(e.defaultPrevented||e.button||e.ctrlKey||e.metaKey||e.shiftKey) return;
+    var a=e.target.closest&&e.target.closest('a[href]'); if(!a) return;
+    var u; try{ u=new URL(a.href,location.href); }catch(x){ return; }
+    if(!/^https?:$/.test(u.protocol)) return;
+    if(u.origin===location.origin&&(/^chat\./.test(location.hostname)||/^\/chat(\/|$)/.test(u.pathname))) return;
+    e.preventDefault();
+    var w=null; try{ w=window.open(u.href,'_blank'); }catch(x){}
+    if(!w){ location.href=u.href; return; }
+    if(/^(frenchfries777\.com|frenchfries777mc\.github\.io)$/.test(u.hostname)) setTimeout(function(){ try{ window.close(); }catch(x){} },300);
+  },true);
+}catch(e){} })();
+</script>
 </body>
 </html>
