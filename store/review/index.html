@@ -32,7 +32,8 @@
   </footer>
 </div>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261114c"></script>
-<script src="../ffstore.js?v=1"></script>
+<script src="../ffstore.js?v=2"></script>
+<script src="../zip.js?v=1"></script>
 <script>
 (function(){
 'use strict';
@@ -59,19 +60,36 @@ function appItem(a,reload){
   var t=el('div','t');t.appendChild(el('b',null,a.name));
   t.appendChild(el('span',null,(CAT[a.category]||a.category)+' · '+a.tagline));
   t.appendChild(el('span',null,'올린 사람: '+a.dev+' ('+a.user_tag+') · '+S.fmtDate(a.created_at)));
-  var href=httpsHref(a.url);t.appendChild(el('span',null,'주소: '+a.url));
+  var href=httpsHref(a.url);
+  if(a.zip_path)t.appendChild(el('span',null,'zip 앱: 파일 '+(a.files||'?')+'개 · '+(a.zip_bytes?window.FFZip.fmt(a.zip_bytes):'?')));
+  else t.appendChild(el('span',null,'주소: '+(a.url||'(없음)')));
   if(a.reject_reason)t.appendChild(el('div','why','이유: '+a.reject_reason));
   var bt=el('div','btns');
   var v=el('a','btn g s','소개 페이지 미리보기');v.href='../app/?id='+encodeURIComponent(a.id);v.target='_blank';v.rel='noopener';bt.appendChild(v);
-  if(href){
-    var o=el('a','btn g s','새 탭에서 열기');o.href=href;o.target='_blank';o.rel='noopener noreferrer nofollow';bt.appendChild(o);
-    var pv=el('button','btn g s','여기서 미리보기');pv.type='button';var fr=null;
-    pv.addEventListener('click',function(){
-      if(fr){fr.remove();fr=null;pv.textContent='여기서 미리보기';return}
-      /* 격리된 프레임: allow-same-origin 이 없어서 이 사이트의 로그인·저장소에 접근할 수 없어요 */
-      fr=document.createElement('iframe');fr.className='pv';fr.setAttribute('sandbox','allow-scripts allow-forms allow-pointer-lock');fr.setAttribute('referrerpolicy','no-referrer');fr.setAttribute('loading','lazy');fr.setAttribute('allow','');fr.title='앱 미리보기';fr.src=href;
-      t.appendChild(fr);pv.textContent='미리보기 닫기';
+  if(a.status==='approved'&&a.zip_path){var o2=el('a','btn g s','진짜 주소에서 열기');o2.href='https://apps.frenchfries777.com/'+encodeURIComponent(a.id)+'/';o2.target='_blank';o2.rel='noopener';bt.appendChild(o2)}
+  if(a.zip_path){
+    var pv=el('button','btn g s','파일 점검 + 미리보기');pv.type='button';var box=null,done=null;
+    pv.addEventListener('click',async function(){
+      if(box){box.remove();box=null;if(done)done();pv.textContent='파일 점검 + 미리보기';return}
+      pv.disabled=true;pv.textContent='내려받는 중…';
+      try{
+        var r=await fetch(S.storageUrl(a.zip_path));if(!r.ok)throw new Error('zip 을 받지 못했어요.');
+        var z=await window.FFZip.inspect(await r.arrayBuffer()),rp=window.FFZip.report(z.files);
+        box=el('div','why');
+        box.appendChild(el('div',null,'파일 '+z.count+'개 · 풀면 '+window.FFZip.fmt(z.total)));
+        var names=Object.keys(z.files).sort();box.appendChild(el('div','note','파일: '+names.slice(0,40).join(', ')+(names.length>40?' 외 '+(names.length-40)+'개':'')));
+        box.appendChild(el('div',null,'코드 안에 적힌 바깥 주소: '+(rp.hosts.length?rp.hosts.join(', '):'없음')));
+        box.appendChild(el('div',null,'눈여겨볼 코드: '+(rp.flags.length?rp.flags.join(', '):'없음')));
+        box.appendChild(el('div','note','미리보기는 단순한 앱 위주로 돼요(자바스크립트가 따로 불러오는 파일은 안 뜰 수 있어요). 저장은 안 되고, 로그인·이 사이트 정보에는 접근할 수 없어요. 승인하면 진짜 주소에서 제대로 열려요.'));
+        var pp=window.FFZip.previewHtml(z.files);done=pp.done;
+        var fr=document.createElement('iframe');fr.className='pv';
+        fr.setAttribute('sandbox','allow-scripts allow-forms allow-pointer-lock allow-modals');fr.setAttribute('referrerpolicy','no-referrer');fr.srcdoc=pp.html;
+        box.appendChild(fr);t.appendChild(box);pv.textContent='미리보기 닫기';
+      }catch(e){box=null;pv.textContent='파일 점검 + 미리보기';var m=el('div','msg err',e.message||'열지 못했어요.');t.appendChild(m);setTimeout(function(){m.remove()},5000)}
+      pv.disabled=false;
     });bt.appendChild(pv);
+  }else if(href){
+    var o=el('a','btn g s','새 탭에서 열기');o.href=href;o.target='_blank';o.rel='noopener noreferrer nofollow';bt.appendChild(o);
   }
   t.appendChild(bt);
   var act=el('div','btns');var msg=el('span','msg');msg.setAttribute('role','status');
