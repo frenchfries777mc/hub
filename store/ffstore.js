@@ -34,10 +34,13 @@ async function restRpc(name,args){
   if(!r.ok) throw new Error('http '+r.status); return r.json();
 }
 function stats(ids){return restRpc('app_rating_stats',{p_ids:ids||null}).then(function(rows){var m={};(rows||[]).forEach(function(x){m[x.app_id]={avg:Number(x.avg),n:x.n}});return m})}
+function storageUrl(p){return SB_URL+'/storage/v1/object/public/app-zips/'+String(p).split('/').map(encodeURIComponent).join('/')}
 function msgOf(e){
   if(e&&e.code==='P0001'&&e.message) return e.message;
   if(e&&(e.code==='42501'||e.code==='PGRST301')) return '권한이 없어요.';
   if(e&&e.code==='23505') return '이미 있어요.';
+  if(e&&/maximum allowed size|exceeded|too large/i.test(String(e.message||''))) return 'zip 파일이 너무 커요(8MB까지).';
+  if(e&&/row-level security|unauthorized|not allowed/i.test(String(e.message||''))) return '지금은 올릴 수 없어요. 계정을 만든 지 24시간이 지나야 하고, 하루에 올릴 수 있는 개수에도 한도가 있어요.';
   return '문제가 생겼어요. 잠시 뒤에 다시 해 주세요.';
 }
 async function login(){
@@ -207,5 +210,5 @@ function lazyReviews(box,appId,opts){
   io.observe(box);
 }
 
-window.FFStore={client:client,user:user,rpc:rpc,restRpc:restRpc,stats:stats,msgOf:msgOf,login:login,isAdmin:isAdmin,reviews:reviews,lazyReviews:lazyReviews,el:el,fmtDate:fmtDate,stars:stars};
+window.FFStore={client:client,user:user,rpc:rpc,restRpc:restRpc,stats:stats,msgOf:msgOf,login:login,isAdmin:isAdmin,reviews:reviews,lazyReviews:lazyReviews,el:el,fmtDate:fmtDate,stars:stars,storageUrl:storageUrl};
 })();
