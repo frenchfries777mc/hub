@@ -1,7 +1,7 @@
 /* Hub sub pages (settings, patch notes, music, community, lounge, wiki, help, profile): same "rich" look as the front pages.
    Flat page, gold lines, big left-barred title, gold-bordered cards with a left bar and short underline, gold pills.
    Colors only from --bg --text --dim --fry --fry2 (set by ff-lang.js, dark / light). */
-html[data-ff-theme] body{background:var(--bg)!important;background-image:none!important;color:var(--text)!important;font-weight:500;font-family:'Oswald','Noto Sans KR','WenQuanYi Zen Hei',sans-serif}
+html[data-ff-theme] body{background:var(--bg)!important;background-image:none!important;color:var(--text)!important}
 html[data-ff-theme] body::before,html[data-ff-theme] body::after{background:none!important}
 .amb,.hero-lg{display:none!important}
 /* header / footer */
@@ -13,7 +13,6 @@ header nav a:hover{color:var(--fry)!important}
 .sw{border:1px solid var(--fry)!important;background:transparent!important;box-shadow:none!important;border-radius:99px!important}
 .sw a{color:var(--text)!important;background:transparent!important;box-shadow:none!important}
 .sw a.on{background:var(--fry)!important;color:var(--bg)!important}
-.srx-btn,.tb{border:1px solid var(--fry)!important;background:transparent!important;color:var(--text)!important;box-shadow:none!important}
 .langSel{background:transparent!important;color:var(--text)!important;border:1px solid var(--fry)!important;border-radius:99px!important}
 footer{border-top:2px solid var(--fry)!important;color:var(--text)!important;background:var(--bg)!important}
 footer,footer *{text-shadow:none!important}
@@ -58,7 +57,7 @@ footer a{color:var(--text)!important}footer a:hover{color:var(--fry)!important}
 .pf-tabs button{margin:0!important;padding:8px 16px!important}
 .pf-b.on{box-shadow:0 0 0 2px var(--fry)!important}
 /* primary buttons: gold-filled pills */
-.cm-btn,.ffa-btn,.cx-go button,.hn-b .btn,.bp{background:var(--fry)!important;color:var(--bg)!important;border:1px solid var(--fry)!important;border-radius:99px!important;box-shadow:none!important;font-weight:700;background-image:none!important}
+.cm-btn,.cx-go button,.hn-b .btn,.bp{background:var(--fry)!important;color:var(--bg)!important;border:1px solid var(--fry)!important;border-radius:99px!important;box-shadow:none!important;font-weight:700;background-image:none!important}
 .st-sw{background:color-mix(in srgb,var(--text) 25%,transparent)!important;border:1px solid var(--fry)!important}
 .st-sw.on{background:var(--fry)!important}
 .st-sw::after{background:var(--text)!important}.st-sw.on::after{background:var(--bg)!important}
@@ -137,7 +136,6 @@ html[data-ff-theme=light] .txt a{color:var(--text);text-decoration:underline}
 @media(max-width:860px){.menuBtn{display:block}}
 footer.wf,.mainc>footer{border-top:2px solid var(--fry);color:var(--text);text-align:left}
 /* --- help --- */
-html[data-ff-theme] body{font-family:'Oswald','Noto Sans KR',sans-serif}
 .side{background:var(--bg)!important;border-right:2px solid var(--fry)!important}
 .brand{color:var(--text)!important;font-family:'Oswald',sans-serif;text-transform:uppercase}
 .sr{background:transparent!important;border:1px solid var(--fry)!important;border-radius:99px!important}

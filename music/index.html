@@ -20,14 +20,12 @@
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261116b" defer></script>
 <style>
   :root{ --bg:#000000; --panel:#0d0d0d; --line:#262626; --text:#ffffff; --dim:#9a9a9a; --fry:#ffd54a; --fry2:#b8923a; }
-  html[data-ff-theme=light]{ --bg:#f6f3ec; --panel:#ffffff; --line:#e2dccf; --text:#0d0d0d; --dim:#6d6658; }
   *{box-sizing:border-box;}
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);}
   body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif; font-size:16px; line-height:1.6; min-height:100vh;
     padding:env(safe-area-inset-top,0px) 0 calc(96px + env(safe-area-inset-bottom,0px));
     background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(217,180,95,.10), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(255,77,94,.07), transparent 60%);
     background-attachment:fixed;}
-  html[data-ff-theme=light] body{background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(217,180,95,.22), transparent 60%);}
   a{color:var(--fry);} button{font:inherit;}
   .wrap{max-width:980px; margin:0 auto; padding:0 16px;}
   header{display:flex; align-items:center; gap:12px; padding:18px 0 8px; flex-wrap:wrap;}
@@ -66,7 +64,7 @@
   footer{color:var(--dim); font-size:13px; margin:36px 0 10px; text-align:center;}
   @media (max-width:560px){ .tr{grid-template-columns:44px minmax(0,1fr) auto 36px;} .tm{grid-column:2;} .bar .in{grid-template-columns:minmax(0,1fr) auto;} .bar .t{grid-column:1/-1;} }
 </style>
-<link rel="stylesheet" href="../hub-rich.css?v=3">
+<link rel="stylesheet" href="../hub-rich.css?v=4">
 <style id="ffx">
 :root{--bg:#000000;--panel:#0d0d0d;--line:#262626;--text:#ffffff;--dim:#9a9a9a;--fry:#ffd54a;--fry2:#b8923a;--hb-panel:rgba(14,14,14,.6);--hb-line:#262626}
 *{box-sizing:border-box}
@@ -291,7 +289,7 @@ function tt(ko,en){ return lang==='ko'?ko:en; }
 function dlName(g,n){ return ('Frenchfries777 - '+g+' - '+n).replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim()+'.mp3'; }
 var all=[], box=document.getElementById('games'), h='';
 GAMES.forEach(function(g){
-  h+='<section class="gs" data-g="'+g.id+'"><img class="gs-cv" alt="" loading="lazy" src="'+(g.id==='shared'?'/img/pixel-bg.png':SITE+'og/'+g.id+'.jpg')+'"><h2>'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2><div class="gs-b">';
+  h+='<section class="gs" data-g="'+g.id+'"><img class="gs-cv" alt="" loading="lazy" src="'+(g.id==='shared'?'/img/home/hub.webp':SITE+'og/'+g.id+'.jpg')+'"><h2>'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2><div class="gs-b">';
   /* 버전이 붙은 곡(v)이 하나라도 있으면 버전별로 접어서 묶고, 맨 앞 버전만 펼쳐요. v가 없는 곡은 "오리지널" */
   var ORI=g.ori||'오리지널', hasV=g.tracks.some(function(tk){ return tk.v; });
   var vers=g.vers||[]; if(hasV){ g.tracks.forEach(function(tk){ var v=tk.v||ORI; if(vers.indexOf(v)<0) vers.push(v); }); } else vers=[null];
