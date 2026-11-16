@@ -639,7 +639,7 @@ body{background-image:none!important}
       (CARD&&CARD.bio?'<span class="px-bio">'+esc(CARD.bio)+'</span>':'')+(fav?'<span class="px-fav">대표 게임 · '+esc(fav)+'</span>':'')+
       '<div class="px-st"><span><b>'+played+'</b><span>플레이한 게임</span></span><span><b>'+ach+'</b><span>도전과제</span></span></div></div></div>'+
       '<div class="px-act" id="pxAct"></div>';
-    mountAct(); }
+    mountAct(); ownerBox(); }
   function games(){
     $('pxGames').innerHTML=GL.map(function(g){ var n=PLAYED[g[0]]; return '<div class="px-g"><img alt="'+esc(g[1])+'" loading="lazy" src="https://frenchfries777.com/games/og/'+g[0]+'.jpg"><span>'+(U||VID?(n?n+'회':'아직 안 해봤어요'):'—')+'</span></div>'; }).join('');
     $('pxAch').innerHTML=GL.map(function(g){ var A=ACH[g[0]]||[0,0], pct=A[1]?Math.round(A[0]/A[1]*100):0; return '<div class="px-a"><img alt="" loading="lazy" src="https://frenchfries777.com/games/og/'+g[0]+'.jpg"><div><div class="px-ar"><b>'+esc(g[1])+'</b><span>'+(A[1]?A[0]+' / '+A[1]:'—')+'</span></div><div class="px-bar"><i data-w="'+pct+'"></i></div></div></div>'; }).join('');
@@ -669,6 +669,18 @@ body{background-image:none!important}
     [].forEach.call(box.querySelectorAll('[data-g]'),function(b){ b.onclick=function(){ filt=b.getAttribute('data-g'); borders(); }; });
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
   var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261115c'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
+  async function ownerBox(){ var old=document.getElementById('pxOwn'); if(old) old.remove(); var h=$('pxAct'); var uid=VID; if(!h||!uid||!U||!SB||!window.FFAuth||!FFAuth.loadDevs||!FFAuth.devRole) return;
+    try{ await FFAuth.loadDevs(); }catch(e){ return; } if(FFAuth.devRole(U.id)!=='owner') return; if(document.getElementById('pxOwn')||$('pxAct')!==h) return;
+    var st='padding:8px 10px;border-radius:8px;border:1px solid #333;background:#171717;color:#ece6d8;font:inherit;min-width:0', bt='padding:8px 12px;border-radius:8px;border:1px solid #ffd36b;background:#2a2110;color:#ffd36b;font:inherit;cursor:pointer;white-space:nowrap';
+    var b=document.createElement('div'); b.id='pxOwn'; b.style.cssText='margin-top:10px;padding:12px;border:1px solid #333;border-radius:12px;display:flex;flex-direction:column;gap:8px';
+    b.innerHTML='<b style="font-size:13px;color:#ffd36b">총괄개발자 도구</b>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap"><input class="ot" maxlength="12" placeholder="칭호 (12자까지, 비우면 지워요)" style="'+st+';flex:1;min-width:140px"><button type="button" class="otb" style="'+bt+'">🏷️ 칭호 주기</button></div><span class="otm" style="font-size:12px;color:#9aa3b5"></span>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap"><input type="number" class="ca" min="1" max="100000" placeholder="개수" style="'+st+';width:90px"><input class="cm" maxlength="100" placeholder="메시지 (100자까지)" style="'+st+';flex:1;min-width:140px"><button type="button" class="cb" style="'+bt+'">🪙 코인 주기</button></div><span class="cs" style="font-size:12px;color:#9aa3b5"></span>';
+    h.parentNode.insertBefore(b,h.nextSibling);
+    b.querySelector('.otb').onclick=async function(){ var v=b.querySelector('.ot').value.trim().slice(0,12), m=b.querySelector('.otm'); m.textContent='…'; var r; try{ r=await SB.rpc('ff_title_give',{p_user:uid,p_title:v}); }catch(e){ r={error:e}; } m.textContent=(r&&r.error)?'저장하지 못했어요':(v?'칭호를 줬어요':'칭호를 지웠어요'); };
+    b.querySelector('.cb').onclick=async function(){ var n=parseInt(b.querySelector('.ca').value,10), ms=b.querySelector('.cm').value.trim().slice(0,100), m=b.querySelector('.cs');
+      if(!(n>=1&&n<=100000)){ m.textContent='개수는 1에서 100000 사이로 적어 주세요'; return; } m.textContent='…'; var r; try{ r=await SB.rpc('ff_coin_give',{p_user:uid,p_amount:n,p_msg:ms}); }catch(e){ r={error:e}; }
+      if(r&&r.error){ m.textContent='보내지 못했어요'; return; } b.querySelector('.ca').value=''; b.querySelector('.cm').value=''; m.textContent=n+' hC를 보냈어요. 받는 사람이 들어오면 창이 떠요'; }; }
   function mountAct(){ var h=$('pxAct'); if(!h) return; var go=function(){ if(window.FFPfAct) FFPfAct.mount(h,{sb:SB,me:U,uid:VID||(U&&U.id),un:UN,own:!VID}); };
     if(window.FFPfAct) return go(); var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-pfact.js?v=20261115d'; sc.onload=go; document.head.appendChild(sc); }
   async function other(){ VID=null; NOTF=false; var ed=null; document.documentElement.classList.remove('px-other'); var q=''; try{ q=(new URLSearchParams(location.search).get('u')||'').trim(); }catch(e){}
