@@ -670,7 +670,7 @@ body{background-image:none!important}
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
   var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261115c'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
   async function ownerBox(){ var old=document.getElementById('pxOwn'); if(old) old.remove(); var h=$('pxAct'); var uid=VID; if(!h||!uid||!U||!SB||!window.FFAuth||!FFAuth.loadDevs||!FFAuth.devRole) return;
-    try{ await FFAuth.loadDevs(); }catch(e){ return; } if(FFAuth.devRole(U.id)!=='owner') return; if(document.getElementById('pxOwn')||$('pxAct')!==h) return;
+    var dm; try{ dm=await FFAuth.loadDevs(true); }catch(e){ return; } if(!dm||dm[U.id]!=='owner') return; if(document.getElementById('pxOwn')||$('pxAct')!==h) return;
     var st='padding:8px 10px;border-radius:8px;border:1px solid #333;background:#171717;color:#ece6d8;font:inherit;min-width:0', bt='padding:8px 12px;border-radius:8px;border:1px solid #ffd36b;background:#2a2110;color:#ffd36b;font:inherit;cursor:pointer;white-space:nowrap';
     var b=document.createElement('div'); b.id='pxOwn'; b.style.cssText='margin-top:10px;padding:12px;border:1px solid #333;border-radius:12px;display:flex;flex-direction:column;gap:8px';
     b.innerHTML='<b style="font-size:13px;color:#ffd36b">총괄개발자 도구</b>'
