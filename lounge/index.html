@@ -88,6 +88,7 @@ button{font:inherit}
 [hidden]{display:none!important}
 img{max-width:100%}
 #ffTop{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-end;gap:14px;padding:20px 0;height:84px;box-sizing:border-box}
+@media(max-width:560px){#ffTop{flex-wrap:wrap;height:auto;gap:8px 10px}#onlineBar{max-width:none;order:3;flex:1 0 100%}}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #3a3530;font-size:14px;color:#ece6d8}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
