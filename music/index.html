@@ -110,8 +110,13 @@ body{background-image:none!important;padding-bottom:0!important}
 .mu-chip.on{border-color:#ffd54a;background:#26221a;color:#ffd54a}
 .mu-h{margin:14px 0 22px!important;display:block!important;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:28px!important;letter-spacing:.04em;color:#ffffff}
 #games{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:16px;align-items:stretch}
-.gs-b{height:420px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#262626 transparent}
 .favBar{margin:0 0 18px}
+#muTiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:14px}
+.mu-tile{display:flex;flex-direction:column;align-items:stretch;text-align:left;padding:0 0 12px;border-radius:16px;overflow:hidden;background:rgba(23,23,23,.92);border:1px solid #262626;color:#fff;font:inherit;cursor:pointer}
+.mu-tile:hover,.mu-tile:focus-visible{border-color:#ffd54a}
+.mu-tile img{width:100%;aspect-ratio:1200/630;object-fit:cover;display:block}
+.mu-tile b{padding:10px 14px 0;font-size:16px}.mu-tile span{padding:2px 14px 0;font-size:13px;color:#9a9a9a}
+.mu-back{margin:0 0 14px;padding:8px 16px;border-radius:999px;border:1px solid #262626;background:rgba(14,14,14,.55);color:#e6e6e6;cursor:pointer;font:inherit;font-size:14px}
 .favBar button{padding:8px 16px;border-radius:999px;border:1px solid #262626;background:rgba(14,14,14,.55);color:#e6e6e6;cursor:pointer;font-weight:500;font-size:14px}
 .favBar button.on{border-color:#ff5a7a;color:#ff5a7a}
 .gs{border-radius:16px;overflow:hidden;background:rgba(23,23,23,.92);border:1px solid #262626;min-width:0;padding-bottom:10px}
@@ -169,7 +174,7 @@ body{background-image:none!important;padding-bottom:0!important}
   <div class="t" id="barT"></div>
   <input type="range" id="seek" min="0" max="1000" value="0" aria-label="seek">
   <div class="ctl"><span class="tm" id="barTm">0:00</span><button id="loopBtn" data-u="loop">반복</button><button id="nextBtn" data-u="next">다음 ▶</button></div>
-</div></div><div class="mu-chips" id="muChips"></div><h2 class="mu-h">음악 감상실</h2><div id="games"></div>
+</div></div><h2 class="mu-h">음악 감상실</h2><div id="games"></div>
   <p style="font-size:11px;opacity:.7;margin:0 0 10px;line-height:1.6">Music: Crusade, Oppressive Gloom by Kevin MacLeod (<a href="https://incompetech.com" target="_blank" rel="noopener">incompetech.com</a>)<br>Licensed under Creative Commons: By Attribution 4.0 License</p>
   
 </div>
@@ -304,17 +309,26 @@ GAMES.forEach(function(g){
   h+='</div></section>';
 });
 box.innerHTML=h;
-(function(){ var c=document.getElementById('muChips'), cur='all'; var items=[['all',tt('전체','All')]].concat(GAMES.map(function(g){ return [g.id,t(g.name)]; }));
-  c.innerHTML=items.map(function(i){ return '<button type="button" class="mu-chip'+(i[0]==='all'?' on':'')+'" data-g="'+i[0]+'">'+esc(i[1])+'</button>'; }).join('');
-  c.onclick=function(e){ var b=e.target.closest('.mu-chip'); if(!b) return; cur=b.getAttribute('data-g'); [].forEach.call(c.children,function(x){ x.classList.toggle('on',x===b); }); [].forEach.call(box.querySelectorAll('.gs'),function(s){ s.style.display=(cur==='all'||s.getAttribute('data-g')===cur)?'':'none'; }); }; })();
+var muShow;
+/* 처음엔 게임·사이트 버튼만 보여요. 버튼을 누르면 그곳의 곡만 나와요 */
+(function(){ var tiles=document.createElement('div'); tiles.id='muTiles';
+  tiles.innerHTML=GAMES.map(function(g){ return '<button type="button" class="mu-tile" data-g="'+g.id+'"><img alt="" loading="lazy" src="'+(g.id==='shared'?'/img/home/hub.webp':SITE+'og/'+g.id+'.jpg')+'"><b>'+esc(t(g.name))+'</b><span>'+g.tracks.length+esc(tt('곡',' tracks'))+'</span></button>'; }).join('');
+  var back=document.createElement('button'); back.type='button'; back.className='mu-back'; back.textContent='← '+tt('전체 목록','All'); back.style.display='none';
+  box.parentNode.insertBefore(tiles,box); box.parentNode.insertBefore(back,tiles);
+  muShow=function(v){ tiles.style.display=v?'none':''; back.style.display=v?'':'none'; box.style.display=v?'':'none';
+    [].forEach.call(box.querySelectorAll('.gs'),function(sec){ sec.style.display=(v==='fav'?!!sec.querySelector('.tr:not(.hide)'):sec.getAttribute('data-g')===v)?'':'none'; });
+    try{ window.scrollTo(0,0); }catch(e){} };
+  tiles.onclick=function(e){ var b=e.target.closest('.mu-tile'); if(b) muShow(b.getAttribute('data-g')); };
+  back.onclick=function(){ favOnly=false; favPaint(); muShow(null); };
+  muShow(null); })();
 /* 즐겨찾는 곡: 하트를 눌러 두고 "♥ 내 곡만" 으로 따로 들어요 (이 기기에 저장돼요) */
 var FK='ff.music.fav', fav={}, favOnly=false; try{ fav=JSON.parse(localStorage.getItem(FK)||'{}')||{}; }catch(e){ fav={}; }
 function favSave(){ try{ localStorage.setItem(FK,JSON.stringify(fav)); }catch(e){} }
 function favPaint(){ all.forEach(function(tk,i){ var r=document.getElementById('tr'+i), f=!!fav[tk.f], b=r.querySelector('.fv'); b.classList.toggle('on',f); b.textContent=f?'♥':'♡'; r.classList.toggle('hide',favOnly&&!f); });
   [].forEach.call(box.querySelectorAll('.gs'),function(sec){ var any=false; [].forEach.call(sec.querySelectorAll('.list'),function(l){ var vis=l.querySelector('.tr:not(.hide)'); l.classList.toggle('hide',!vis); if(l.parentNode.classList.contains('vg')) l.parentNode.classList.toggle('hide',!vis); if(vis) any=true; }); sec.querySelector('h2').classList.toggle('hide',!any); });
   var fb=document.getElementById('favBtn'); if(fb){ fb.classList.toggle('on',favOnly); fb.textContent=favOnly?'♥ 내 곡만 보는 중':'♥ 내 곡만 보기'; } }
-var fbar=document.createElement('div'); fbar.className='favBar'; fbar.innerHTML='<button type="button" id="favBtn">♥ 내 곡만 보기</button>'; box.parentNode.insertBefore(fbar,box);
-fbar.querySelector('button').onclick=function(){ if(!favOnly&&!Object.keys(fav).some(function(k){ return fav[k]; })){ this.textContent='먼저 곡 오른쪽 ♡를 눌러 주세요'; return; } favOnly=!favOnly; favPaint(); };
+var fbar=document.createElement('div'); fbar.className='favBar'; fbar.innerHTML='<button type="button" id="favBtn">♥ 내 곡만 보기</button>'; box.parentNode.insertBefore(fbar,document.querySelector('.mu-back'));
+fbar.querySelector('button').onclick=function(){ if(!favOnly&&!Object.keys(fav).some(function(k){ return fav[k]; })){ this.textContent='먼저 곡 오른쪽 ♡를 눌러 주세요'; return; } favOnly=!favOnly; favPaint(); muShow(favOnly?'fav':null); };
 box.addEventListener('click',function(e){ var d=e.target.closest('a.dl'); if(!d||d.target==='_blank'||!window.FFAuth) return; e.preventDefault(); Promise.resolve(FFAuth.ready).then(function(){ if(FFAuth.user()){ var a=document.createElement('a'); a.href=d.href; a.download=d.getAttribute('download')||''; document.body.appendChild(a); a.click(); a.remove(); } else FFAuth.openLogin(); }); });
 box.addEventListener('click',function(e){ var b=e.target.closest('.fv'); if(!b) return; var f=all[+b.getAttribute('data-i')].f; if(fav[f]) delete fav[f]; else fav[f]=1; favSave(); favPaint(); });
 favPaint();
