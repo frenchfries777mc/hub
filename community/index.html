@@ -487,10 +487,84 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 #cmx-home h2{margin:0;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:28px;letter-spacing:.04em}
 .cmx-msg{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #ffd54a;color:#ffd54a;font-weight:500;font-size:14px}
 #cmx-home a[data-cmo]:hover{border-color:#ffd54a!important}
-#cmx-back{display:none;margin:0 0 14px;padding:8px 16px;border-radius:999px;border:1px solid #262626;background:rgba(14,14,14,.55);color:#e6e6e6;font-size:14px;font-weight:500;cursor:pointer}
-body.cmx-o #cmx-back{display:inline-block}
-body:not(.cmx-o) #community{display:none}
-body.cmx-o #cmx-home{display:none}
+/* 시안 2: 커뮤니티를 진짜 게시판처럼 (밑줄 탭 · 표 목록 · 글 화면) */
+#cmx-home,#cmx-back{display:none!important}
+#community{padding-top:4px}
+.ffx-c .cm-tabs{gap:2px;margin:0 0 18px;border-bottom:1px solid var(--line);align-items:flex-end}
+#community .cm-tabs button{background:none!important;color:var(--dim)!important;border:0!important;border-bottom:3px solid transparent!important;border-radius:0!important;padding:12px 16px!important;margin-bottom:-1px;font-size:15px;font-weight:500}
+#community .cm-tabs button:hover{color:var(--text)!important}
+#community .cm-tabs button.on{background:none!important;color:var(--text)!important;font-weight:700;border-bottom-color:var(--fry)!important}
+.ffx-c .cm-tabs .cm-chatlink{margin:0 0 6px auto;padding:6px 16px;font-size:13px;font-weight:500;color:var(--text);border:1px solid var(--line);background:none}
+.ffx-c .cm-p[data-p=board]{background:none!important;border:0!important;padding:0!important;box-shadow:none!important}
+.cm-p[data-p=board] .cm-bar{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;margin:0 0 14px}
+.cm-p[data-p=board] .cm-f{gap:8px 20px}
+#community .cm-f button{background:none!important;color:var(--dim)!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;padding:0 0 4px!important;font-size:14px;font-weight:500}
+#community .cm-f button.on{background:none!important;color:var(--text)!important;font-weight:700;border-bottom-color:var(--fry)!important}
+.cm-tp{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.cm-tp>span{font-size:12px;color:var(--dim);margin-right:4px}
+.cm-tp button{height:28px;padding:0 12px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--text);font:inherit;font-size:12px;cursor:pointer}
+.cm-tp button.on{border-color:var(--fry);color:var(--fry);font-weight:700}
+.cm-noadv .cm-tp,.cm-noadv .cm-sels select[name=tp],.cm-noadv .c-tp,.cm-noadv .c-vw{display:none}
+.cm-noadv .cm-hd,.cm-noadv .cm-row{grid-template-columns:56px minmax(0,1fr) 226px 64px 52px}
+.cm-tool{display:flex;gap:12px;align-items:center;margin:0 0 16px}
+.cm-tool .cm-q{flex:1;margin:0}
+.cm-tool .cm-q input{height:42px;border-radius:99px;padding:0 18px;font-size:14px}
+#community .cm-btn.cm-new{height:42px;padding:0 22px;background:none!important;border:1px solid var(--fry)!important;color:var(--fry)!important;font-weight:700;font-size:14px}
+.cm-sels{display:flex;gap:8px;flex-wrap:wrap}
+.cm-tbl{display:flex;flex-direction:column;font-size:14px}
+.cm-hd,.cm-row{display:grid;grid-template-columns:56px 76px minmax(0,1fr) 226px 64px 52px 52px;align-items:center}
+.cm-hd{height:38px;border-bottom:1px solid var(--line);font-size:12px;color:var(--dim)}
+.cm-hd .c-ti,.cm-hd .c-au{text-align:left;padding-left:8px}
+.c-no,.c-tp,.c-dt,.c-vw,.c-rc{text-align:center}
+.cm-row{position:relative;min-height:46px;border-bottom:1px solid var(--line);cursor:pointer;color:var(--text)}
+.cm-row:hover,.cm-row:focus-visible{background:rgba(127,127,127,.09);outline:0}
+.cm-row.pin{background:rgba(127,127,127,.06)}
+.c-no{font-size:12px;color:var(--dim)}.pin .c-no{color:var(--fry);font-weight:700}
+.c-tp{font-size:12px;font-weight:700;color:var(--fry)}
+.c-ti{display:flex;align-items:center;gap:8px;min-width:0;padding:6px 8px}
+.cm-row .cm-t{flex:0 1 auto;min-width:0;font-size:15px;font-weight:400}.pin .cm-t{font-weight:700}
+.cm-row .tag{font-size:11px;padding:1px 8px;flex:none}
+.cm-cn{font-style:normal;font-size:12px;font-weight:700;color:var(--fry);flex:none}
+.cm-nn{font-style:normal;flex:none;width:16px;height:16px;border-radius:50%;background:var(--fry);color:#1a1206;font-size:10px;font-weight:700;display:grid;place-items:center}
+.c-au{display:flex;align-items:center;gap:7px;font-size:13px;min-width:0;overflow:hidden;white-space:nowrap;padding-left:8px}
+.cm-av{flex:none;width:22px;height:22px;border-radius:50%;overflow:hidden;background:rgba(127,127,127,.2);display:inline-block}.cm-av img{display:block;width:22px;height:22px;object-fit:cover}
+.cm-lv{font-style:normal;flex:none;font-size:10px;padding:1px 6px;border-radius:99px;border:1px solid var(--line);color:var(--dim)}
+.c-dt,.c-vw,.c-rc{font-size:12px;color:var(--dim)}
+.cm-prev{display:none;position:absolute;left:150px;top:100%;z-index:20;width:380px;max-width:calc(100% - 170px);padding:14px 16px;border-radius:14px;background:var(--bg);border:1px solid var(--fry);box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:13px;line-height:1.55;white-space:normal;word-break:break-word;pointer-events:none;color:var(--text)}
+.cm-prev small{display:block;font-size:11px;color:var(--fry);font-weight:700;margin-bottom:4px}
+@media(hover:hover){.cm-row:hover .cm-prev{display:block;animation:cmpv .15s .35s both}}
+@keyframes cmpv{from{opacity:0}to{opacity:1}}
+.cm-pg{display:flex;justify-content:center;gap:6px;margin:20px 0 6px}
+.cm-pg button{width:36px;height:36px;border-radius:99px;border:1px solid transparent;background:none;color:var(--text);font:inherit;font-size:14px;cursor:pointer}
+.cm-pg button.on{border-color:var(--fry);color:var(--fry);font-weight:700}
+.cm-pg button[aria-label]{border-color:var(--line)}.cm-pg button:disabled{opacity:.35;cursor:default}
+.cm-dtl .cm-bar,.cm-dtl .cm-tool,.cm-dtl .cm-hd,.cm-dtl .cm-pg{display:none}
+.cm-p[data-p=board] .cm-post.cm-dt{border:0!important;background:none!important;box-shadow:none;transform:none;padding:0;margin:0}
+.cm-dbar{display:flex;align-items:center;gap:12px;margin:0 0 18px}.cm-dbar .cm-btn2,.cm-dnav .cm-btn2{margin:0;border-radius:99px;background:none}
+.cm-crumb{font-size:13px;color:var(--dim)}
+.cm-dtags{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}.cm-tpg,.cm-pn{border:1px solid var(--fry);color:var(--fry);background:none}
+.cm-dtitle{margin:0 0 12px;font-size:28px;line-height:1.3;font-weight:700}
+.cm-dm{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:13px;color:var(--dim);padding-bottom:20px;border-bottom:1px solid var(--line)}
+#community .cm-dt .cm-txt{background:none!important;border:0!important;padding:20px 0 0;font-size:16px;line-height:1.75;max-width:760px}
+.cm-dt .cm-acts2{justify-content:center;padding:22px 0 20px;border-bottom:1px solid var(--line)}
+.cm-dt .cm-like{height:56px;padding:0 34px;font-size:16px;margin:0;color:var(--fry)!important}
+.cm-dt .cm-like.on{background:var(--fry)!important;color:var(--bg)!important}
+.cm-cmh{font-size:15px;font-weight:700;margin:18px 0 6px}.cm-cmh b{color:var(--fry)}
+.cm-dt .cm-cm{background:none;border-bottom:1px solid var(--line);border-radius:0;padding:14px 30px 12px 0;margin:0}
+.cm-dt .cm-cm.cm-re{margin-left:40px;padding-left:16px;border-left:2px solid var(--line)}
+.cm-ca{display:flex;align-items:center;gap:14px;margin-top:6px}.cm-ca .rx{margin:0}
+.cm-rpb{background:none;border:0;color:var(--dim);font:inherit;font-size:12px;cursor:pointer;padding:0}.cm-rpb:hover{color:var(--text)}
+.cm-ow{font-style:normal;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;background:var(--fry);color:#1a1206}
+.cm-rpl{font-size:13px;color:var(--fry);margin-top:12px}.cm-rpl button{background:none;border:0;color:var(--dim);cursor:pointer;text-decoration:underline;font:inherit;font-size:12px;margin-left:6px}
+.cm-dt .cm-cf{margin-top:14px}.cm-dt .cm-cf input{border-radius:99px}.cm-dnav{margin-top:22px}
+@media(max-width:700px){
+  #community .cm-tabs button{padding:10px 11px!important;font-size:14px}.ffx-c .cm-tabs .cm-chatlink{margin-left:0}
+  .cm-hd{display:none}
+  .cm-row,.cm-noadv .cm-row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"ti ti" "au dt";padding:8px 2px;min-height:0}
+  .c-no,.c-tp,.c-vw,.c-rc{display:none}
+  .c-ti{grid-area:ti;padding:4px 0}.c-au{grid-area:au;padding-left:0}.c-dt{grid-area:dt;text-align:right}
+  .cm-prev{display:none!important}.cm-dtitle{font-size:22px}.cm-tool{flex-wrap:wrap}
+}
+#community .cm-tool .cm-q input{border:1px solid var(--line)!important}#community .cm-tool .cm-q input:focus{border-color:var(--fry)!important}
 </style><link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
 </head>
 <body data-root="https://frenchfries777.com/games/" data-hub="../">
@@ -521,7 +595,7 @@ body.cmx-o #cmx-home{display:none}
 <img src="/img/pixel-bg.png" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261116a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261116b';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#ffd54a">COMMUNITY</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Community</h1>
@@ -531,7 +605,7 @@ body.cmx-o #cmx-home{display:none}
 <div id="cmx-home"><div class="cmx-h"><h2>커뮤니티</h2><a class="cmx-msg" href="https://frenchfries777.com/chat/">✉️ 메신저</a></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px"><a href="#cm-open" data-cmo="board" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #262626;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#ffd54a,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">게시판</b><span style="font-size:14px;line-height:1.55;color:#9a9a9a">글을 쓰고 댓글과 좋아요를 달아요.</span></span><span style="color:#ffd54a;font-size:20px">→</span></a><a href="#cm-open" data-cmo="chat" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #262626;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#ffd54a,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8 10h8M8 13h5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">채팅</b><span style="font-size:14px;line-height:1.55;color:#9a9a9a">로그인하면 채팅할 수 있어요.</span></span><span style="color:#ffd54a;font-size:20px">→</span></a><a href="#cm-open" data-cmo="feed" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #262626;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#ffd54a,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c3 0 5 1.5 5 4.5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">친구 소식</b><span style="font-size:14px;line-height:1.55;color:#9a9a9a">친구가 올린 글을 모아 봐요.</span></span><span style="color:#ffd54a;font-size:20px">→</span></a><a href="#cm-open" data-cmo="lfg" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #262626;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#ffd54a,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="3" y="8" width="18" height="9" rx="4.5"/><path d="M8 10.5v4M6 12.5h4"/><circle cx="15.5" cy="11.5" r=".9"/><circle cx="18" cy="14" r=".9"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">같이 하기</b><span style="font-size:14px;line-height:1.55;color:#9a9a9a">친구를 불러 같이 해요.</span></span><span style="color:#ffd54a;font-size:20px">→</span></a><a href="#cm-open" data-cmo="gal" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #262626;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#ffd54a,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 17l5-4 4 3 3-2 6 5"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">갤러리</b><span style="font-size:14px;line-height:1.55;color:#9a9a9a">각 게임의 멋진 장면을 모아 봐요.</span></span><span style="color:#ffd54a;font-size:20px">→</span></a><a href="#cm-open" data-cmo="fb" style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:16px;background:rgba(23,23,23,.92);border:1px solid #262626;min-width:0"><span style="flex:none;width:62px;height:62px;border-radius:14px;background:linear-gradient(135deg,#ffd54a,#c9972e);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" stroke="#1a1408" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span style="display:flex;flex-direction:column;gap:5px;min-width:0;flex:1"><b style="font-size:18px">피드백 · 버그 신고</b><span style="font-size:14px;line-height:1.55;color:#9a9a9a">고쳤으면 하는 점, 버그, 새 아이디어를 보내 주세요.</span></span><span style="color:#ffd54a;font-size:20px">→</span></a></div>
 </div><section class="cm" id="community"><button type="button" id="cmx-back">← 커뮤니티</button>
     
-    <div class="cm-tabs"><button data-t="board" class="on">📋 게시판</button><button data-t="chat">💬 채팅</button><button data-t="feed">👥 친구 소식</button><button data-t="lfg">🎮 같이 하기</button><button data-t="gal">🖼️ 갤러리</button><button data-t="fb">📮 피드백 · 버그 신고</button><a class="cm-chatlink" href="https://frenchfries777.com/chat/">✉️ 메신저</a></div>
+    <div class="cm-tabs"><button data-t="board" class="on">게시판</button><button data-t="chat">채팅</button><button data-t="feed">친구 소식</button><button data-t="lfg">같이 하기</button><button data-t="gal">갤러리</button><button data-t="fb">의견 · 버그 신고</button><a class="cm-chatlink" href="https://frenchfries777.com/chat/">메신저</a></div>
     <div class="cm-p" data-p="board"></div>
     <div class="cm-p" data-p="chat" style="display:none"></div>
     <div class="cm-p" data-p="feed" style="display:none"></div>
@@ -551,7 +625,7 @@ d.addEventListener('click',function(e){var a=e.target.closest('[data-cmo]'); if(
 if(auto()) b.classList.add('cmx-o');
 window.addEventListener('hashchange',function(){ if(auto()) b.classList.add('cmx-o'); });
 })();</script><script src="https://frenchfries777.com/games/ff-auth.js?v=20261116b"></script>
-<script src="https://frenchfries777.com/games/hub.js?v=20261116a"></script>
+<script src="https://frenchfries777.com/games/hub.js?v=20261116b"></script>
 <script src="https://frenchfries777.com/games/ff-sidemenu.js?v=20261116c" defer></script>
 </body>
 </html>
