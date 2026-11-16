@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head><style id="ffTap">html,body{touch-action:manipulation}</style>
+<head><style id="ffTap">html,body{touch-action:manipulation}@media(pointer:coarse){.gs a,.ffx-c a{position:relative}.gs a::after,.ffx-c a::after{content:"";position:absolute;inset:-10px -6px}}
+</style>
 <meta name="copyright" content="© 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)">
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="https://frenchfries777.com/favicon.svg">
@@ -341,6 +342,7 @@ au.addEventListener('timeupdate',function(){ if(au.duration){ seek.value=Math.ro
     var a=new Audio(), done=false; a.preload='metadata';
     function fin(){ if(done) return; done=true; clearTimeout(tm); if(isFinite(a.duration)&&a.duration>0){ dur[f]=a.duration; show(i); } a.removeAttribute('src'); a.load(); next(); }
     var tm=setTimeout(fin,8000); a.addEventListener('loadedmetadata',fin); a.addEventListener('error',fin); a.src=f; }
+  if(matchMedia('(pointer:coarse)').matches||(navigator.connection&&navigator.connection.saveData)) return;
   next(); next(); })();
 au.addEventListener('ended',function(){ if(!loop) play(nextIdx(cur)); });
 seek.addEventListener('input',function(){ if(au.duration) au.currentTime=seek.value/1000*au.duration; });
