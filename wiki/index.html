@@ -19,14 +19,12 @@
 <script src="https://frenchfries777.com/games/ff-lang.js?v=20261114a"></script>
 <style>
   :root{ --bg:#000000; --panel:#0d0d0d; --panel2:var(--panel2); --line:#262626; --text:#ffffff; --dim:#9a9a9a; --fry:#ffd54a; --fry2:#b8923a; --g1:#3ee0c4; --g2:#ffd54a; --g3:#ffae5a; --g4:#6aa8ff; --g5:#9be564; --g6:#ff8fc2; --g7:#b79bff; }
-  html[data-ff-theme=light]{ --bg:#f6f3ec; --panel:#ffffff; --panel2:#faf8f3; --line:#e2dccf; --text:#0d0d0d; --dim:#6d6658; --g1:#0f8a77; --g2:#8a6c14; --g3:#a0600c; --g4:#1f5fbf; --g5:#3f7d12; --g6:#b8326f; --g7:#6a45c4; }
   *{box-sizing:border-box;}
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);}
   body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif; font-size:16px; line-height:1.6; min-height:100vh;
     padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
     background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(217,180,95,.10), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(255,77,94,.07), transparent 60%);
     background-attachment:fixed;}
-  html[data-ff-theme=light] body{background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(217,180,95,.22), transparent 60%);}
   a{color:var(--fry);}
   button{font:inherit;}
   .shell{max-width:1320px; margin:0 auto; padding:0 18px; display:grid; grid-template-columns:212px minmax(0,1fr); gap:18px; align-items:start;}
@@ -39,7 +37,7 @@
   .box{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:6px;}
   .box a,.box button{display:block; width:100%; text-align:left; background:none; border:0; color:var(--text); font-size:14px; padding:5px 9px; border-radius:7px; cursor:pointer; line-height:1.35; text-decoration:none;}
   .box a:hover,.box button:hover{background:rgba(127,127,127,.09);}
-  .box a.on{background:rgba(217,180,95,.14); color:var(--fry); font-weight:700;} html[data-ff-theme=light] .box a.on{color:#b06a00;}
+  .box a.on{background:rgba(217,180,95,.14); color:var(--fry); font-weight:700;}
   .box h4{margin:4px 9px 4px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim);}
   .box summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:6px; padding:5px 9px; font-weight:800; font-size:14.5px; color:var(--g); border-radius:7px;}
   .box summary::-webkit-details-marker{display:none;} .box summary::before{content:'▸'; color:var(--dim); font-size:12px; transition:transform .15s;} .box[open] summary::before{transform:rotate(90deg);}
@@ -75,7 +73,7 @@
   .note{margin:12px 0 0; padding:9px 12px; border-radius:10px; background:rgba(217,180,95,.08); border:1px solid rgba(217,180,95,.28); color:var(--dim); font-size:13.5px;}
   .note button{background:none; border:0; color:var(--fry); cursor:pointer; font-weight:700; padding:0; margin-left:6px;}
   .txt{line-height:1.8; font-size:16px; margin-top:10px; overflow-wrap:anywhere;}
-  .txt h3{font-size:21px; margin:28px 0 8px; padding-bottom:4px; border-bottom:1px solid var(--line); color:var(--fry); scroll-margin-top:14px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;} html[data-ff-theme=light] .txt h3{color:#b06a00;}
+  .txt h3{font-size:21px; margin:28px 0 8px; padding-bottom:4px; border-bottom:1px solid var(--line); color:var(--fry); scroll-margin-top:14px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
   .txt h3 .se{font-size:13px; font-weight:500; color:var(--dim);} .txt h3 .se button{background:none; border:0; padding:0 2px; color:var(--fry); cursor:pointer; font:inherit;}
   .txt code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; background:var(--panel2); border:1px solid var(--line); border-radius:5px; padding:1px 5px; overflow-wrap:anywhere;} .txt pre.cb{margin:10px 0; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px; overflow-x:auto; line-height:1.5; font-size:14px;} .txt pre.cb code{background:none; border:0; padding:0; font-size:inherit; white-space:pre; overflow-wrap:normal;}
   .txt p{margin:9px 0;} .txt ul,.txt ol{margin:6px 0; padding-left:24px;} .txt li{margin:3px 0;} .txt b{color:var(--text);}
@@ -118,14 +116,6 @@
   body[data-g=tools]{--fry:#6aa8ff; --fry2:#4a7bf0; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(106,168,255,.15), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(74,123,240,.09), transparent 60%);}
   body[data-g=educations]{--fry:#9be564; --fry2:#4fc47a; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(155,229,100,.14), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(79,196,122,.09), transparent 60%);}
   body[data-g=hub]{--fry:#ff8fc2; --fry2:#e8589a; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(255,143,194,.14), transparent 60%), radial-gradient(ellipse 800px 600px at 110% 30%, rgba(232,88,154,.09), transparent 60%);}
-  html[data-ff-theme=light] body[data-g=hub]{--fry:#b8326f; --fry2:#d04a88; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(255,143,194,.3), transparent 60%);}
-  html[data-ff-theme=light] body[data-g=tools]{--fry:#1f5fbf; --fry2:#2a4fc0; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(106,168,255,.25), transparent 60%);}
-  html[data-ff-theme=light] body[data-g=educations]{--fry:#3f7d12; --fry2:#2a8a52; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(155,229,100,.3), transparent 60%);}
-  html[data-ff-theme=light] body[data-g=stickseum]{--fry:#0f8a77; --fry2:#1279a8; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(62,224,196,.22), transparent 60%);}
-  html[data-ff-theme=light] body[data-g=crownenvoy]{--fry:#8a6c14; --fry2:#a5701c; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(232,194,90,.28), transparent 60%);}
-  html[data-ff-theme=light] body[data-g=beaconfall]{--fry:#a0600c; --fry2:#c4521f; background-image:radial-gradient(ellipse 900px 520px at 10% -10%, rgba(255,174,90,.28), transparent 60%);}
-  html[data-ff-theme=light] body[data-g] .txt h3, html[data-ff-theme=light] body[data-g] .box a.on{color:var(--fry);}
-  html[data-ff-theme=light] body[data-g] .btn, html[data-ff-theme=light] body[data-g] .ibox .ibh{color:#fff;}
   body[data-g] .box a.on{background:color-mix(in srgb, var(--fry) 16%, transparent);}
   @media(max-width:620px){ .ibox{float:none; width:100%; margin:6px 0 14px;} }
   footer{color:var(--dim); font-size:13px; text-align:center; padding:22px 0 30px;}
@@ -237,7 +227,6 @@ body.wk-home .page.wk-main{background:none!important;border:0!important;padding:
   .wk-cards{grid-template-columns:1fr}
 }
 body.wk-home .ptabs{display:none}
-#ffTop{--fry:#ffd54a;--fry2:#b8923a}
 
 </style>
 <link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=1">
@@ -283,7 +272,7 @@ body.wk-home .ptabs{display:none}
 <main class="page" id="page"><div class="e" data-u="loading">불러오는 중…</div></main></div></div>
 <footer>Frenchfries777 Wiki · <a href="../">frenchfries777.com</a>  · <span data-notr>Created by Frenchfries777</span> · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></footer>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261116b"></script>
-<script src="wiki.js?v=20261114a"></script>
+<script src="wiki.js?v=20261116a"></script>
 </div>
 
 </div>
