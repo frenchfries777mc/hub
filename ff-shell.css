@@ -5,9 +5,9 @@ body.ffsh .bg{display:none!important}
 
 /* pixel-art background (scrolls with the page, same size on every page) */
 .ffs-bg{position:absolute;z-index:-1;left:232px;right:0;top:0;height:calc((100vw - 232px) * 4400 / 1920);max-height:4400px;pointer-events:none;
-  background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%),url(/img/pixel-bg.png?v=20261117) top left/100% auto no-repeat;
+  background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%),url(/pics/pixel-bg.png?v=20261117) top left/100% auto no-repeat;
   image-rendering:pixelated}
-body.ffs-hub .ffs-bg{background:linear-gradient(180deg,rgba(14,14,14,.12) 0,rgba(14,14,14,0) 260px,rgba(14,14,14,.5) 560px,rgba(14,14,14,.78) 760px,rgba(14,14,14,.78) 100%),url(/img/pixel-bg.png?v=20261117) top left/100% auto no-repeat}
+body.ffs-hub .ffs-bg{background:linear-gradient(180deg,rgba(14,14,14,.12) 0,rgba(14,14,14,0) 260px,rgba(14,14,14,.5) 560px,rgba(14,14,14,.78) 760px,rgba(14,14,14,.78) 100%),url(/pics/pixel-bg.png?v=20261117) top left/100% auto no-repeat}
 
 /* left menu */
 .ffs-side{position:fixed;z-index:50;left:0;top:0;bottom:0;width:232px;box-sizing:border-box;background:#000000;border-right:1px solid #262626;padding:24px 16px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}

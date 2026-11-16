@@ -160,7 +160,7 @@ body{background-image:none!important;padding-bottom:0!important}
 <div style="margin-top:auto;padding:14px 12px;border-top:1px solid #262626;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#9a9a9a"><span>Made by Frenchfries777 with Claude AI</span><span>© 2026 Frenchfries777 · CC BY-NC-ND 4.0</span></div>
 </aside>
 <main style="position:relative;overflow:hidden;flex:1 1 640px;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;background:#000000">
-<img src="/img/pixel-bg.png?v=20261117" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
+<img src="/pics/pixel-bg.png?v=20261117" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
 <div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261116a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
@@ -297,7 +297,7 @@ function tt(ko,en){ return lang==='ko'?ko:en; }
 function dlName(g,n){ return ('Frenchfries777 - '+g+' - '+n).replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim()+'.mp3'; }
 var all=[], box=document.getElementById('games'), h='';
 GAMES.forEach(function(g){
-  h+='<section class="gs" data-g="'+g.id+'"><img class="gs-cv" alt="" loading="lazy" src="'+(g.id==='shared'?'/img/home/hub.webp?v=20261117':SITE+'og/'+g.id+'.jpg')+'"><h2>'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2><div class="gs-b">';
+  h+='<section class="gs" data-g="'+g.id+'"><img class="gs-cv" alt="" loading="lazy" src="'+(g.id==='shared'?'/pics/home/hub.webp?v=20261117':SITE+'og/'+g.id+'.jpg')+'"><h2>'+esc(t(g.name))+'<a href="'+g.url+'">'+esc(t(g.linkText||'게임 사이트'))+' →</a></h2><div class="gs-b">';
   /* 버전이 붙은 곡(v)이 하나라도 있으면 버전별로 접어서 묶고, 맨 앞 버전만 펼쳐요. v가 없는 곡은 "오리지널" */
   var ORI=g.ori||'오리지널', hasV=g.tracks.some(function(tk){ return tk.v; });
   var vers=g.vers||[]; if(hasV){ g.tracks.forEach(function(tk){ var v=tk.v||ORI; if(vers.indexOf(v)<0) vers.push(v); }); } else vers=[null];
@@ -315,7 +315,7 @@ box.innerHTML=h;
 var muShow;
 /* 처음엔 게임·사이트 버튼만 보여요. 버튼을 누르면 그곳의 곡만 나와요 */
 (function(){ var tiles=document.createElement('div'); tiles.id='muTiles';
-  tiles.innerHTML=GAMES.map(function(g){ return '<button type="button" class="mu-tile" data-g="'+g.id+'"><img alt="" loading="lazy" src="'+(g.id==='shared'?'/img/home/hub.webp?v=20261117':SITE+'og/'+g.id+'.jpg')+'"><b>'+esc(t(g.name))+'</b><span>'+g.tracks.length+esc(tt('곡',' tracks'))+'</span></button>'; }).join('');
+  tiles.innerHTML=GAMES.map(function(g){ return '<button type="button" class="mu-tile" data-g="'+g.id+'"><img alt="" loading="lazy" src="'+(g.id==='shared'?'/pics/home/hub.webp?v=20261117':SITE+'og/'+g.id+'.jpg')+'"><b>'+esc(t(g.name))+'</b><span>'+g.tracks.length+esc(tt('곡',' tracks'))+'</span></button>'; }).join('');
   var back=document.createElement('button'); back.type='button'; back.className='mu-back'; back.textContent='← '+tt('전체 목록','All'); back.style.display='none';
   box.parentNode.insertBefore(tiles,box); box.parentNode.insertBefore(back,tiles);
   muShow=function(v){ tiles.style.display=v?'none':''; back.style.display=v?'':'none'; box.style.display=v?'':'none';
