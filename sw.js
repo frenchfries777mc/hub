@@ -9,6 +9,8 @@ function setSaved(list){ SAVED=list.slice(0,3);
   return caches.open(CFG).then(function(c){ return c.put('/__saved',new Response(JSON.stringify(SAVED))); })
     .then(function(){ return caches.keys(); }).then(function(ks){ return Promise.all(ks.filter(function(k){ return k.indexOf(PRE)===0&&k!==CFG&&SAVED.indexOf(k.slice(PRE.length))<0; }).map(function(k){ return caches.delete(k); })); }); }
 
+/* 게임하는 중에 받는 파일도 개수 상한(150개)을 넘으면 오래된 것부터 지워요 */
+function trim(c){ return c.keys().then(function(k){ var over=k.length-150; return over>0?Promise.all(k.slice(0,over).map(function(q){ return c.delete(q); })):0; }); }
 self.addEventListener('install',function(){ self.skipWaiting(); });
 self.addEventListener('activate',function(e){ e.waitUntil(self.clients.claim()); });
 
@@ -22,7 +24,7 @@ self.addEventListener('fetch',function(e){
     return own.then(function(g){
       if(!g||list.indexOf(g)<0||r.headers.has('range')) return fetch(r);
       return fetch(r).then(function(res){
-        if(res&&res.ok&&res.status===200){ var cp=res.clone(); caches.open(PRE+g).then(function(c){ return c.put(r,cp); }).catch(function(){}); }
+        if(res&&res.ok&&res.status===200){ var cp=res.clone(); caches.open(PRE+g).then(function(c){ return c.put(r,cp).then(function(){ return trim(c); }); }).catch(function(){}); }
         return res;
       },function(){
         return caches.open(PRE+g).then(function(c){ return c.match(r,{ignoreSearch:r.mode==='navigate'}); }).then(function(hit){ return hit||Response.error(); });
