@@ -208,11 +208,11 @@ function paintMain(){
   var gameIds=GAMES.map(function(g){ return g[0]; }).filter(function(g){ return ['tools','educations','account','hub'].indexOf(g)<0; });
   function chips(g){ return pagesOf(g).map(function(p){ return '<a class="wk-cp" href="#'+g+'/'+esc(p.slug)+'">'+esc(titleOf(p))+'</a>'; }).join(''); }
   var cards=[
-    ['games','gT','play','/img/home/games.webp','<div class="wk-cc">'+gameIds.map(function(g){ return '<a class="wk-cp" href="#'+g+'">'+esc(gameName(g))+'</a>'; }).join('')+'</div>'],
-    ['edu','eT','edu','/img/home/educations.webp','<div class="wk-cc">'+chips('educations')+'</div>'],
-    ['tools','tT','tool','/img/home/tools.webp','<div class="wk-cc">'+chips('tools')+'</div>'],
-    ['acct','aT','user','/img/home/account.webp','<div class="wk-cc">'+chips('account')+'</div>'],
-    ['acct','hT','doc','/img/home/hub.webp','<div class="wk-cc">'+chips('hub')+'</div>']
+    ['games','gT','play','/img/home/games.webp?v=20261117','<div class="wk-cc">'+gameIds.map(function(g){ return '<a class="wk-cp" href="#'+g+'">'+esc(gameName(g))+'</a>'; }).join('')+'</div>'],
+    ['edu','eT','edu','/img/home/educations.webp?v=20261117','<div class="wk-cc">'+chips('educations')+'</div>'],
+    ['tools','tT','tool','/img/home/tools.webp?v=20261117','<div class="wk-cc">'+chips('tools')+'</div>'],
+    ['acct','aT','user','/img/home/account.webp?v=20261117','<div class="wk-cc">'+chips('account')+'</div>'],
+    ['acct','hT','doc','/img/home/hub.webp?v=20261117','<div class="wk-cc">'+chips('hub')+'</div>']
   ].filter(function(c){ return wcat==='all'||c[0]===wcat; }).map(function(c){
     return '<div class="wk-card"><img src="'+c[3]+'" alt="" loading="lazy"><div class="wk-cb"><div class="wk-ch">'+wico(c[2])+'<b>'+esc(w(c[1]))+'</b></div>'+c[4]+'</div></div>'; }).join('');
   A.innerHTML='<section class="wk-s"><h2>'+esc(w('first'))+'</h2><div class="wk-first">'+first+'</div></section><section class="wk-s"><h2>'+esc(w('all'))+'</h2><div class="wk-cards">'+cards+'</div></section>';
