@@ -698,7 +698,7 @@ function linkify(text,box){
 }
 function renderBody(m){
   var k=V2&&m.kind||'text', meta=m.meta||{};
-  if(k==='sticker'){ var s=meta&&meta.px?pxSticker(meta):stickerSvg(meta&&meta.s); if(s) return s; }
+  if(k==='sticker'){ var s=meta&&(meta.img||meta.px)?pxSticker(meta):stickerSvg(meta&&meta.s); if(s) return s; }
   if(k==='image') return imageBox(meta);
   if(k==='result') return resultCard(meta);
   if(k==='bet') return betCard(meta.bet);
