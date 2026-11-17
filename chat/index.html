@@ -976,11 +976,13 @@ function betCard(id){
   if(d.status==='open'){ st.textContent=B+'님이 받으면 시작돼요';
     if(me.id===d.b){ var y=el('button','ok','받기 (-'+d.coins+')'), n=el('button','','거절'); y.onclick=function(){ call('ffc_bet_answer',{bid:id,ok:true}); }; n.onclick=function(){ call('ffc_bet_answer',{bid:id,ok:false}); }; act.appendChild(y); act.appendChild(n); }
     if(me.id===d.a){ var cx=el('button','','취소'); cx.onclick=function(){ call('ffc_bet_answer',{bid:id,ok:false}); }; act.appendChild(cx); } }
-  else if(d.status==='live'){ var myPick=me.id===d.a?d.a_pick:me.id===d.b?d.b_pick:null;
-    st.textContent='진행 중 · 판이 끝나면 둘 다 승자를 골라요'+((d.a_pick?1:0)+(d.b_pick?1:0)===1?' (한 명 골랐어요)':'');
-    if(me.id===d.a||me.id===d.b){ [[d.a,A],[d.b,B]].forEach(function(p){ var x=el('button',myPick===p[0]?'ok':'',p[1]+' 승'); x.onclick=function(){ call('ffc_bet_pick',{bid:id,w:p[0]}); }; act.appendChild(x); }); } }
+  else if(d.status==='live'){ var isP=me.id===d.a||me.id===d.b, myPick=me.id===d.a?d.a_pick:me.id===d.b?d.b_pick:null, opPick=me.id===d.a?d.b_pick:me.id===d.b?d.a_pick:null, opN=me.id===d.a?B:A;
+    if(!isP) st.textContent='진행 중 · 둘이 승자를 고르면 끝나요'+((d.a_pick?1:0)+(d.b_pick?1:0)?' ('+((d.a_pick?1:0)+(d.b_pick?1:0))+'/2명 골랐어요)':'');
+    else if(myPick) st.textContent='✓ 내가 '+(names[myPick]||'?')+'님 승으로 골랐어요 · '+(opPick?'상대도 골랐어요':opN+'님이 고르면 끝나요')+' (끝나기 전까지는 다시 눌러 바꿀 수 있어요)';
+    else st.textContent=(opPick?opN+'님은 이미 골랐어요. ':'')+'판이 끝났으면 이긴 사람을 눌러 주세요';
+    if(isP){ [[d.a,A],[d.b,B]].forEach(function(p){ var on=myPick===p[0], x=el('button',on?'ok':'',(on?'✓ ':'')+p[1]+' 승'); x.onclick=function(){ call('ffc_bet_pick',{bid:id,w:p[0]}); }; act.appendChild(x); }); } }
   else if(d.status==='done'){ st.textContent='🏆 '+(names[d.winner]||'?')+'님이 '+(d.coins*2)+' 코인을 가져갔어요'; c.classList.add('done'); }
-  else if(d.status==='refund'){ st.textContent='승자가 엇갈려서 둘 다 돌려받았어요'; c.classList.add('off'); }
+  else if(d.status==='refund'){ st.textContent='고른 승자가 서로 달라서 둘 다 '+d.coins+' 코인을 돌려받았어요'; c.classList.add('off'); }
   else { st.textContent='취소된 내기예요'; c.classList.add('off'); }
   c.appendChild(st); if(act.childNodes.length) c.appendChild(act); return c;
 }
