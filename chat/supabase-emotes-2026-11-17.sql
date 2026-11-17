@@ -2,7 +2,7 @@
 -- 하는 일: 이모티콘 표(ffc_emotes), 가진 이모티콘 표(ffc_emote_own)와 만들기·가격 바꾸기·사기 함수를 만들어요.
 -- 이모티콘 그림은 PNG(브라우저가 128px 안으로 줄임)를 글자(data:URL, 4만 글자까지)로 적어서 표에 저장해요. 저장소(Storage)는 안 써요.
 -- 예전 32×32 도트 그림(px)도 그대로 보여요. 이미 이 파일을 한 번 실행했어도 다시 실행하면 PNG 방식으로 바뀌어요.
--- 팔 때: 사는 사람 코인 -가격, 만든 사람 코인 +가격의 90% (10%는 수수료로 사라져요). 무료(0 코인)로 공유하면 누구나 가져갈 수 있어요.
+-- 팔 때: 사는 사람 코인 -가격, 만든 사람 코인 +가격 전부 (수수료 없음). 무료(0 코인)로 공유하면 누구나 가져갈 수 있어요.
 -- 여러 번 실행해도 안전해요. 쓰는 법: Supabase 왼쪽 SQL Editor → New query → 이 파일 전체를 붙여 넣고 Run.
 
 -- 1) 코인 기록 종류에 'emote_buy'(이모티콘 구매), 'emote_sale'(이모티콘 판매) 추가 (기존 종류는 그대로 유지)
@@ -114,7 +114,7 @@ begin
     update public.ff_coins c set coins = c.coins - e.price, updated_at = now()
      where c.user_id = uid and c.coins >= e.price returning c.coins into left_;
     if not found then raise exception 'not enough coins'; end if;
-    cut := (e.price * 9) / 10;
+    cut := e.price;   -- 수수료 없음: 낸 금액 전부가 만든 사람에게 가요
     if cut > 0 then
       insert into public.ff_coins (user_id, coins, earned) values (e.owner, cut, cut)
       on conflict (user_id) do update set coins = public.ff_coins.coins + cut, earned = public.ff_coins.earned + cut, updated_at = now();

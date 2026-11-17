@@ -21,6 +21,7 @@
 (function(){ var SUB='https://chat.frenchfries777.com/'; if(!/^(www\.)?frenchfries777\.com$/.test(location.hostname)||/[?&]nosub=1/.test(location.search)) return;
   try{ fetch(SUB+'manifest.webmanifest',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j&&j.short_name==='FF Chat') location.replace(SUB+location.search.replace(/^\?/,'?')+location.hash); }).catch(function(){}); }catch(e){} })();
 </script>
+<script>(function(){ try{ var t0=Date.parse(document.lastModified); if(!t0) return; fetch(location.pathname,{cache:'no-store',credentials:'omit'}).then(function(r){ var lm=Date.parse(r.headers.get('last-modified')||''); if(lm&&lm-t0>2000){ var k='ffc-fresh-'+lm; if(sessionStorage.getItem(k)) return; sessionStorage.setItem(k,'1'); var u=new URL(location.href); u.searchParams.set('_',String(lm)); location.replace(u.toString()); } }).catch(function(){}); }catch(e){} })();</script>
 <script src="https://frenchfries777.com/games/ff-lang.js?v=20261116e"></script>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261116d"></script>
 <style>
@@ -629,7 +630,7 @@ async function shopModal(e,mine,done){
   var md=el('div','modal'), box=el('div','box emb'); box.appendChild(el('h3','',e.name));
   var body=el('div','emshop'); body.appendChild(emVis(e,160));
   var info=el('div','hint',''); body.appendChild(info); box.appendChild(body);
-  nameOf([e.owner]).then(function(){ var c=0; info.textContent='만든 사람 '+(names[e.owner]||'알 수 없음')+' · '+e.sold+'명이 가져갔어요'+(e.price>0?' · '+e.price+' 코인 (만든 사람이 90%를 받아요)':' · 무료'); });
+  nameOf([e.owner]).then(function(){ var c=0; info.textContent='만든 사람 '+(names[e.owner]||'알 수 없음')+' · '+e.sold+'명이 가져갔어요'+(e.price>0?' · '+e.price+' 코인 (수수료 없음)':' · 무료'); });
   var coin=el('div','hint',''); try{ var c=await sb.from('ff_coins').select('coins').eq('user_id',me.id).maybeSingle(); coin.textContent='내 Hub Coin: '+((c&&c.data&&c.data.coins)||0); }catch(x){} box.appendChild(coin);
   var act=el('div','act'), no=el('button','','닫기'); no.onclick=function(){ md.remove(); }; act.appendChild(no);
   var adm=false; try{ var a=await sb.rpc('ff_is_admin'); adm=!!(a&&a.data); }catch(x){}
@@ -667,7 +668,7 @@ function emoteStudio(){
   var f=el('div','emform'); var nm=el('input'); nm.type='text'; nm.maxLength=12; nm.placeholder='이름 (12자까지)';
   var pr=el('input'); pr.type='number'; pr.min=0; pr.max=10000; pr.value=0;
   var ls=el('input'); ls.type='checkbox'; var lb=el('label','emck'); lb.appendChild(ls); lb.appendChild(document.createTextNode(' 상점에 올려서 다른 사람이 가져가게 하기'));
-  var l1=el('label','fl2'); l1.appendChild(el('span','','이름')); l1.appendChild(nm); var l2=el('label','fl2'); l2.appendChild(el('span','','가격 (Hub Coin, 0이면 무료 공유 · 팔리면 90%를 받아요)')); l2.appendChild(pr);
+  var l1=el('label','fl2'); l1.appendChild(el('span','','이름')); l1.appendChild(nm); var l2=el('label','fl2'); l2.appendChild(el('span','','가격 (Hub Coin, 0이면 무료 공유 · 수수료 없이 가격 전부를 받아요)')); l2.appendChild(pr);
   f.appendChild(l1); f.appendChild(l2); f.appendChild(lb); box.appendChild(f);
   var mineBox=el('div','emmine'); box.appendChild(mineBox);
   async function loadMine(){ mineBox.innerHTML=''; var r=await sb.from('ffc_emotes').select('id,name,px,img,price,listed,sold').eq('owner',me.id).order('created_at',{ascending:false}); var a=(r&&r.data)||[]; if(!a.length) return; mineBox.appendChild(el('div','sub2','내가 만든 이모티콘'));
