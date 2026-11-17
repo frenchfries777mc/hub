@@ -746,11 +746,16 @@ function emoteShop(startMine){
     });
   }
   function reBtn(ids,after){ var b=el('button','sb','↩ 내 이모티콘에 다시 넣기'); b.type='button'; b.onclick=async function(){ b.disabled=true; var r=await sb.rpc('ffc_emote_hide',{p_ids:ids,p_hidden:false}); if(r.error){ toast('다시 넣지 못했어요'); b.disabled=false; return; } toast('내 이모티콘에 다시 넣었어요'); await refreshMe(); after&&after(); }; return b; }
+  function delBtn(e,after){ var b=el('button','sb','🗑 이모티콘 삭제'), arm=false; b.type='button';
+    b.onclick=async function(){ if(!arm){ arm=true; b.textContent='정말 지울까요? 산 사람 것도 같이 지워져요. 한 번 더 누르세요'; return; }
+      b.disabled=true; var r=await sb.rpc('ffc_emote_delete',{p_id:e.id,p_mode:'all'}); if(r.error){ b.disabled=false; arm=false; b.textContent='🗑 이모티콘 삭제'; toast(/not yours/.test(String(r.error.message))?'내가 만든 이모티콘만 지울 수 있어요':'지금은 지울 수 없어요. 서버 준비가 끝나면 쓸 수 있어요'); return; }
+      toast('지웠어요. 이미 보낸 메시지의 그림은 그대로 남아요'); await refreshMe(); after&&after(); };
+    return b; }
   function oneEdit(e,after){ var pe=el('div','shopact pkpe'); pe.appendChild(el('span','pks','단품 가격 (Hub Coin)')); var pi=el('input','shopq pkpi'); pi.type='number'; pi.min=0; pi.max=10000; pi.value=e.price||0;
     var lk=el('input'); lk.type='checkbox'; lk.checked=!!e.listed; var ll=el('label','emck'); ll.appendChild(lk); ll.appendChild(document.createTextNode(' 단품으로 상점에 올림'));
     var sv=el('button','sb ok','저장'); sv.type='button';
     sv.onclick=async function(){ var np=Math.max(0,Math.min(10000,parseInt(pi.value,10)||0)); sv.disabled=true; var r=await sb.rpc('ffc_emote_set',{p_id:e.id,p_price:np,p_listed:lk.checked}); sv.disabled=false; if(r.error){ toast('저장하지 못했어요'); return; } e.price=np; e.listed=lk.checked; toast('저장했어요'); after&&after(); };
-    pe.appendChild(pi); pe.appendChild(ll); pe.appendChild(sv); return pe; }
+    pe.appendChild(pi); pe.appendChild(ll); pe.appendChild(sv); pe.appendChild(delBtn(e,function(){ listPage(); })); return pe; }
   function card(p,items){ var c=el('div','pkc'), pv=el('div','pkp'); items.slice(0,4).forEach(function(x){ var n=itemVis(x,44); if(n) pv.appendChild(n); }); if(!pv.firstChild) pv.appendChild(el('span','hint','…')); c.appendChild(pv);
     c.appendChild(el('div','pkn',p.name)); c.appendChild(el('div','pks',(names[p.owner]||'알 수 없음')+' · '+p.n+'개 · '+p.sold+'명'+(p.listed?'':' · 비공개')));
     var row=el('div','pkr'), have=ownIds.indexOf(p.id)>=0||p.owner===me.id; row.appendChild(likeBtn(p)); row.appendChild(el('span','pkprice',have?'가짐':(p.price>0?'🪙 '+p.price:'무료'))); c.appendChild(row);
