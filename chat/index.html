@@ -639,20 +639,20 @@ function emoteCell(e,note,fn){ var b=el('button','stkb emc'); b.type='button'; b
 
 function stickerPanel(anchor){
   var old=$('.stkp'); if(old){ old.remove(); return; }
-  var p=el('div','stkp'), tab='base', sort='hot', rmMode=false; anchor.appendChild(p);
+  var p=el('div','stkp'), tab='base', sort='hot', mgMode=false; anchor.appendChild(p);
   function tabs(){ if(!EM) return; var bar=el('div','emtabs'); [['base','기본'],['own','내 이모티콘'],['shop','상점']].forEach(function(t){ var b=el('button',tab===t[0]?'on':'',t[1]); b.type='button'; b.onclick=function(ev){ ev.stopPropagation(); if(t[0]==='shop'){ p.remove(); emoteShop(); return; } tab=t[0]; paint(); }; bar.appendChild(b); }); p.appendChild(bar); }
   function paint(){ p.innerHTML=''; tabs();
     if(tab==='own') return ownTab();
     STK.forEach(function(s){ var b=el('button','stkb'); b.title=s.t; b.innerHTML='<svg viewBox="0 0 120 120" width="56" height="56">'+s.s+'</svg>'; b.onclick=function(){ p.remove(); pickSt({s:s.id},s.t,function(){ var d=el('span','stp'); d.innerHTML='<svg viewBox="0 0 120 120" width="40" height="40">'+s.s+'</svg>'; return d; }); }; p.appendChild(b); }); }
   async function ownTab(){ var mk=el('button','stkb emc emnew'); mk.type='button'; mk.innerHTML='<span>＋</span><small>그림 만들기</small>'; mk.onclick=function(ev){ ev.stopPropagation(); p.remove(); emoteStudio(); }; p.appendChild(mk);
     var pk=el('button','stkb emc emnew'); pk.type='button'; pk.innerHTML='<span>🎁</span><small>내 팩</small>'; pk.onclick=function(ev){ ev.stopPropagation(); p.remove(); emoteShop(true); }; p.appendChild(pk);
-    var rb=el('button','stkb emc emnew'+(rmMode?' rmon':'')); rb.type='button'; rb.innerHTML='<span>🗑</span><small>'+(rmMode?'정리 끝':'빼기')+'</small>'; rb.onclick=function(ev){ ev.stopPropagation(); rmMode=!rmMode; paint(); }; p.appendChild(rb);
-    if(rmMode) p.appendChild(el('div','hint emhint','내 이모티콘에서 뺄 것을 누르세요. 산 기록은 남아서 상점에서 “다시 넣기”로 되돌릴 수 있어요.'));
+    var rb=el('button','stkb emc emnew'+(mgMode?' rmon':'')); rb.type='button'; rb.innerHTML='<span>⚙</span><small>'+(mgMode?'관리 끝':'관리')+'</small>'; rb.onclick=function(ev){ ev.stopPropagation(); mgMode=!mgMode; paint(); }; p.appendChild(rb);
+    if(mgMode) p.appendChild(el('div','hint emhint','관리할 이모티콘을 누르세요. 단품으로 올리기, 가격 바꾸기, 빼기, 삭제를 할 수 있어요.'));
     var r=await sb.from('ffc_emote_own').select('emote_id,hidden,ffc_emotes(id,name,px,img)').eq('user_id',me.id).order('got_at',{ascending:false});
     if(r&&r.error) r=await sb.from('ffc_emote_own').select('emote_id,ffc_emotes(id,name,px,img)').eq('user_id',me.id).order('got_at',{ascending:false}); if(tab!=='own') return;
     var a=((r&&r.data)||[]).filter(function(x){ return !x.hidden; }).map(function(x){ return x.ffc_emotes; }).filter(emOk);
-    a.forEach(function(e){ var c=emoteCell(e,e.name,function(ev){ if(!rmMode){ p.remove(); pickEmote(e); return; } ev.stopPropagation();
-        sb.rpc('ffc_emote_hide',{p_ids:[e.id],p_hidden:true}).then(function(x){ if(x.error){ toast('지금은 뺄 수 없어요. 서버 준비가 끝나면 쓸 수 있어요'); return; } c.remove(); toast('내 이모티콘에서 뺐어요'); }); }); if(rmMode) c.classList.add('rm'); p.appendChild(c); });
+    a.forEach(function(e){ var c=emoteCell(e,e.name,function(ev){ if(!mgMode){ p.remove(); pickEmote(e); return; } ev.stopPropagation(); p.remove(); emoteShop({manage:e.id}); });
+      if(mgMode) c.classList.add('rm'); p.appendChild(c); });
     if(!a.length) p.appendChild(el('div','hint emhint','아직 없어요. ＋로 직접 만들거나 상점에서 가져와 보세요.')); }
   paint();
 }
@@ -667,6 +667,7 @@ function stkSvg(id,size){ var s=STK.find(function(x){ return x.id===id; }); if(!
 function itemVis(it,size){ if(it.sid) return stkSvg(it.sid,size); var e=it.ffc_emotes; return e&&emOk(e)?emVis(e,size):null; }
 function pkErr(er){ var m=String((er&&er.message)||''); return /not yours/.test(m)?'내가 만든 이모티콘만 팩에 넣을 수 있어요':/bad size/.test(m)?'팩에는 1~20개를 넣을 수 있어요':/too many packs/.test(m)?'팩은 30개까지 만들 수 있어요':/bad price/.test(m)?'가격은 0~10000이에요':/name required/.test(m)?'팩 이름을 적어 주세요':emoteErr(er); }
 function emoteShop(startMine){
+  var mg=(startMine&&typeof startMine==='object')?startMine.manage:null;
   var old=$('.shopv'); if(old) old.remove();
   var v=el('div','shopv'), hd=el('div','shoph'), main=el('div','shopb'), inner=el('div','shopin'); main.appendChild(inner);
   var st={q:'',kind:'pack',sort:'hot',price:'all',size:'all',view:'all'}, ownIds=[], ownEm=[], hidEm=[], likeIds=[], coinEl=el('span','pks','');
@@ -736,16 +737,18 @@ function emoteShop(startMine){
     a.forEach(function(e){ var c=el('div','pkc'), pv=el('div','pkp pk1'); pv.appendChild(emVis(e,88)); c.appendChild(pv); c.appendChild(el('div','pkn',e.name)); c.appendChild(el('div','pks',(names[e.owner]||'알 수 없음')+' · '+e.sold+'명'+(e.listed?'':' · 내림')));
       var have=ownEm.indexOf(e.id)>=0||e.owner===me.id, row=el('div','pkr'); row.appendChild(el('span','pks','단품')); row.appendChild(el('span','pkprice',have?'가짐':(e.price>0?'🪙 '+e.price:'무료'))); c.appendChild(row); c.onclick=function(){ detailOne(e); }; grid.appendChild(c); });
   }
-  function detailOne(e){
+  function detailOne(e,manage){
     page(function(box){
-      var b=el('button','sb','← 목록'); b.type='button'; b.onclick=function(){ listPage(); }; box.appendChild(b);
+      if(!manage){ var b=el('button','sb','← 목록'); b.type='button'; b.onclick=function(){ listPage(); }; box.appendChild(b); }
       box.appendChild(el('h3','pkt',e.name)); var big=el('div','pkp pk1'); big.appendChild(emVis(e,160)); box.appendChild(big);
       var inf=el('div','pks',''); box.appendChild(inf); nameOf([e.owner]).then(function(){ inf.textContent='만든 사람 '+(names[e.owner]||'알 수 없음')+' · 단품 · '+e.sold+'명이 가져갔어요'; });
       var have=ownEm.indexOf(e.id)>=0||e.owner===me.id, act=el('div','shopact');
+      if(manage){ var rm=el('button','sb','➖ 내 이모티콘에서 빼기'); rm.type='button'; rm.onclick=async function(){ rm.disabled=true; var r=await sb.rpc('ffc_emote_hide',{p_ids:[e.id],p_hidden:true}); if(r.error){ rm.disabled=false; toast('지금은 뺄 수 없어요. 서버 준비가 끝나면 쓸 수 있어요'); return; } toast('내 이모티콘에서 뺐어요. 상점에서 다시 넣을 수 있어요'); v.remove(); }; act.appendChild(rm); box.appendChild(act); }
+      else {
       var ok=el('button','sb ok',have?'가지고 있어요':(e.price>0?'🪙 '+e.price+' 코인으로 사기':'무료로 가져오기')); ok.type='button'; if(have||!e.listed) ok.disabled=true;
       ok.onclick=async function(){ ok.disabled=true; var r=await sb.rpc('ffc_emote_buy',{p_id:e.id}); if(r.error){ toast(emoteErr(r.error)); ok.disabled=false; return; } toast('내 이모티콘에 담았어요'); await refreshMe(); detailOne(e); };
-      act.appendChild(ok); if(hidEm.indexOf(e.id)>=0) act.appendChild(reBtn([e.id],function(){ detailOne(e); })); box.appendChild(act);
-      if(e.owner===me.id) box.appendChild(oneEdit(e,function(){ detailOne(e); }));
+      act.appendChild(ok); if(hidEm.indexOf(e.id)>=0) act.appendChild(reBtn([e.id],function(){ detailOne(e); })); box.appendChild(act); }
+      if(e.owner===me.id) box.appendChild(oneEdit(e,function(){ detailOne(e,manage); },function(){ if(manage) v.remove(); else listPage(); }));
       sb.rpc('ff_is_admin').then(function(a){ if(a&&a.data&&e.owner!==me.id){ var d=el('button','sb','삭제(관리자)'); d.type='button'; d.onclick=async function(){ var r=await sb.from('ffc_emotes').delete().eq('id',e.id); if(r.error){ toast('지우지 못했어요'); return; } toast('지웠어요'); listPage(); }; act.appendChild(d); } }).catch(function(){});
     });
   }
@@ -755,11 +758,11 @@ function emoteShop(startMine){
       b.disabled=true; var r=await sb.rpc('ffc_emote_delete',{p_id:e.id,p_mode:'all'}); if(r.error){ b.disabled=false; arm=false; b.textContent='🗑 이모티콘 삭제'; toast(/not yours/.test(String(r.error.message))?'내가 만든 이모티콘만 지울 수 있어요':'지금은 지울 수 없어요. 서버 준비가 끝나면 쓸 수 있어요'); return; }
       toast('지웠어요. 이미 보낸 메시지의 그림은 그대로 남아요'); await refreshMe(); after&&after(); };
     return b; }
-  function oneEdit(e,after){ var pe=el('div','shopact pkpe'); pe.appendChild(el('span','pks','단품 가격 (Hub Coin)')); var pi=el('input','shopq pkpi'); pi.type='number'; pi.min=0; pi.max=10000; pi.value=e.price||0;
+  function oneEdit(e,after,afterDel){ var pe=el('div','shopact pkpe'); pe.appendChild(el('span','pks','단품 가격 (Hub Coin)')); var pi=el('input','shopq pkpi'); pi.type='number'; pi.min=0; pi.max=10000; pi.value=e.price||0;
     var lk=el('input'); lk.type='checkbox'; lk.checked=!!e.listed; var ll=el('label','emck'); ll.appendChild(lk); ll.appendChild(document.createTextNode(' 단품으로 상점에 올림'));
     var sv=el('button','sb ok','저장'); sv.type='button';
     sv.onclick=async function(){ var np=Math.max(0,Math.min(10000,parseInt(pi.value,10)||0)); sv.disabled=true; var r=await sb.rpc('ffc_emote_set',{p_id:e.id,p_price:np,p_listed:lk.checked}); sv.disabled=false; if(r.error){ toast('저장하지 못했어요'); return; } e.price=np; e.listed=lk.checked; toast('저장했어요'); after&&after(); };
-    pe.appendChild(pi); pe.appendChild(ll); pe.appendChild(sv); pe.appendChild(delBtn(e,function(){ listPage(); })); return pe; }
+    pe.appendChild(pi); pe.appendChild(ll); pe.appendChild(sv); pe.appendChild(delBtn(e,afterDel||function(){ listPage(); })); return pe; }
   function card(p,items){ var c=el('div','pkc'), pv=el('div','pkp'); items.slice(0,4).forEach(function(x){ var n=itemVis(x,44); if(n) pv.appendChild(n); }); if(!pv.firstChild) pv.appendChild(el('span','hint','…')); c.appendChild(pv);
     c.appendChild(el('div','pkn',p.name)); c.appendChild(el('div','pks',(names[p.owner]||'알 수 없음')+' · '+p.n+'개 · '+p.sold+'명'+(p.listed?'':' · 비공개')));
     var row=el('div','pkr'), have=ownIds.indexOf(p.id)>=0||p.owner===me.id; row.appendChild(likeBtn(p)); row.appendChild(el('span','pkprice',have?'가짐':(p.price>0?'🪙 '+p.price:'무료'))); c.appendChild(row);
@@ -794,12 +797,7 @@ function emoteShop(startMine){
     page(function(box){
       box.appendChild(el('h3','pkt','내 팩'));
       var nw=el('button','sb ok','＋ 새 팩 만들기'); nw.type='button'; nw.onclick=function(){ editor(null); }; box.appendChild(nw);
-      var mk=el('button','sb','🖼 이모티콘 그림 만들기(PNG)'); mk.type='button'; mk.onclick=function(){ emoteStudio(); }; box.appendChild(mk);
       var list=el('div','pkg'); box.appendChild(list);
-      box.appendChild(el('h3','pkt','내 이모티콘 단품 판매')); box.appendChild(el('div','pks','팩과 상관없이 이모티콘 하나씩도 가격을 정해 상점에 올릴 수 있어요.'));
-      var one=el('div','pkone'); box.appendChild(one);
-      sb.from('ffc_emotes').select('id,name,px,img,price,listed,sold,owner').eq('owner',me.id).order('created_at',{ascending:false}).then(function(r){ var a=((r&&r.data)||[]).filter(emOk); if(!a.length){ one.appendChild(el('div','hint emhint','아직 만든 이모티콘이 없어요')); return; }
-        a.forEach(function(e){ var row=el('div','emrow'); row.appendChild(emVis(e,40)); var t=el('div','emt'); t.appendChild(el('b','',e.name)); t.appendChild(el('small','',(e.listed?'단품 판매 중 · 🪙'+e.price:'단품으로 안 팔아요')+' · '+e.sold+'명')); row.appendChild(t); var eb=el('button','sb','가격·올리기'); eb.type='button'; eb.onclick=function(){ detailOne(e); }; row.appendChild(eb); one.appendChild(row); }); });
       sb.from('ffc_emote_packs').select('id,name,descr,price,n,sold,likes,owner,listed,created_at').eq('owner',me.id).order('created_at',{ascending:false}).then(async function(r){ var a=(r&&r.data)||[];
         if(!a.length){ list.appendChild(el('div','hint emhint','아직 만든 팩이 없어요. 내가 만든 이모티콘과 기본 스티커를 골라 팩으로 묶어 보세요.')); return; }
         var it=await sb.from('ffc_pack_items').select('pack_id,emote_id,sid,pos,ffc_emotes(id,name,px,img)').in('pack_id',a.map(function(p){ return p.id; })).lt('pos',4).order('pos'); var by={}; ((it&&it.data)||[]).forEach(function(x){ (by[x.pack_id]=by[x.pack_id]||[]).push(x); });
@@ -824,7 +822,7 @@ function emoteShop(startMine){
       Promise.all([sb.from('ffc_emotes').select('id,name,px,img').eq('owner',me.id).order('created_at',{ascending:false}), p?sb.from('ffc_pack_items').select('emote_id,sid').eq('pack_id',p.id):Promise.resolve(null)]).then(function(rs){
         ((rs[1]&&rs[1].data)||[]).forEach(function(x){ if(x.emote_id) selE[x.emote_id]=1; else if(x.sid){ selS[x.sid]=1; } });
         [].forEach.call(sg.querySelectorAll('.pkic'),function(c,i){ if(selS[STK[i].id]) c.classList.add('on'); });
-        var a=((rs[0]&&rs[0].data)||[]).filter(emOk); if(!a.length) eg.appendChild(el('div','hint emhint','아직 만든 이모티콘이 없어요. “이모티콘 그림 만들기(PNG)”로 먼저 만들어 보세요.'));
+        var a=((rs[0]&&rs[0].data)||[]).filter(emOk); if(!a.length) eg.appendChild(el('div','hint emhint','아직 만든 이모티콘이 없어요. 😊 → 내 이모티콘 → ＋ 그림 만들기로 먼저 만들어 보세요.'));
         a.forEach(function(e){ var c=el('button','pkic sel'+(selE[e.id]?' on':'')); c.type='button'; c.appendChild(emVis(e,56)); c.appendChild(el('small','',e.name)); c.onclick=function(){ if(selE[e.id]){ delete selE[e.id]; c.classList.remove('on'); } else { selE[e.id]=1; c.classList.add('on'); } upd(); }; eg.appendChild(c); }); upd(); });
       var act=el('div','shopact'), sv=el('button','sb ok',p?'저장':'팩 만들기'); sv.type='button';
       sv.onclick=async function(){ var n=nm.value.trim(); if(!n){ toast('팩 이름을 적어 주세요'); return; } var ek=Object.keys(selE), sk=Object.keys(selS); if(!ek.length&&!sk.length){ toast('팩에 넣을 것을 골라 주세요'); return; } if(ek.length+sk.length>20){ toast('팩에는 20개까지 넣을 수 있어요'); return; }
@@ -835,6 +833,8 @@ function emoteShop(startMine){
       box.appendChild(act);
     });
   }
+  if(mg){ hd.querySelector('h2').textContent='이모티콘 관리'; [].slice.call(hd.querySelectorAll('.sb')).forEach(function(x){ if(x!==bk) x.style.display='none'; });
+    refreshMe().then(async function(){ var r=await sb.from('ffc_emotes').select('id,name,px,img,price,sold,owner,listed').eq('id',mg).maybeSingle(); var e=r&&r.data; if(!e||!emOk(e)){ v.remove(); toast('이모티콘을 찾지 못했어요'); return; } detailOne(e,true); }); return; }
   refreshMe().then(function(){ if(startMine) mineList(); else listPage(); });
 }
 
