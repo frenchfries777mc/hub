@@ -1,6 +1,7 @@
 -- 채팅 이모티콘: 만들기 · 공유 · 사고팔기 (2026-11-17, 오너 요청)
 -- 하는 일: 이모티콘 표(ffc_emotes), 가진 이모티콘 표(ffc_emote_own)와 만들기·가격 바꾸기·사기 함수를 만들어요.
--- 이모티콘 그림은 32×32 도트(16색)를 글자 1024개로 적어서 저장해요. 그림 파일을 올리는 게 아니라서 저장소(Storage)는 안 써요.
+-- 이모티콘 그림은 PNG(브라우저가 128px 안으로 줄임)를 글자(data:URL, 4만 글자까지)로 적어서 표에 저장해요. 저장소(Storage)는 안 써요.
+-- 예전 32×32 도트 그림(px)도 그대로 보여요. 이미 이 파일을 한 번 실행했어도 다시 실행하면 PNG 방식으로 바뀌어요.
 -- 팔 때: 사는 사람 코인 -가격, 만든 사람 코인 +가격의 90% (10%는 수수료로 사라져요). 무료(0 코인)로 공유하면 누구나 가져갈 수 있어요.
 -- 여러 번 실행해도 안전해요. 쓰는 법: Supabase 왼쪽 SQL Editor → New query → 이 파일 전체를 붙여 넣고 Run.
 
@@ -17,17 +18,26 @@ begin
   end if;
 end $$;
 
--- 2) 이모티콘 표 (px = 32×32 칸, 칸마다 16진수 글자 하나. 0 = 투명, 1~f = 색)
+-- 2) 이모티콘 표 (img = PNG data:URL, px = 예전 32×32 도트 그림 · 둘 중 하나는 있어야 해요)
 create table if not exists public.ffc_emotes (
   id         uuid primary key default gen_random_uuid(),
   owner      uuid not null references auth.users(id) on delete cascade,
   name       text not null check (char_length(name) between 1 and 12),
-  px         text not null check (char_length(px) = 1024 and px ~ '^[0-9a-f]+$' and px !~ '^0+$'),
+  px         text check (char_length(px) = 1024 and px ~ '^[0-9a-f]+$' and px !~ '^0+$'),
+  img        text check (char_length(img) <= 40000 and img ~ '^data:image/png;base64,iVBORw0KGgo[A-Za-z0-9+/=]+$'),
   price      int  not null default 0 check (price between 0 and 10000),
   listed     boolean not null default false,
   sold       int  not null default 0,
   created_at timestamptz not null default now()
 );
+-- 이미 만들어 둔 표라면 PNG 칸을 더하고 도트 칸의 '꼭 있어야 함'을 풀어요
+alter table public.ffc_emotes add column if not exists img text;
+alter table public.ffc_emotes alter column px drop not null;
+alter table public.ffc_emotes drop constraint if exists ffc_emotes_img_check;
+alter table public.ffc_emotes add constraint ffc_emotes_img_check
+  check (img is null or (char_length(img) <= 40000 and img ~ '^data:image/png;base64,iVBORw0KGgo[A-Za-z0-9+/=]+$'));
+alter table public.ffc_emotes drop constraint if exists ffc_emotes_has_pic;
+alter table public.ffc_emotes add constraint ffc_emotes_has_pic check (px is not null or img is not null);
 create index if not exists ffc_emotes_listed on public.ffc_emotes (listed, created_at desc);
 create index if not exists ffc_emotes_owner on public.ffc_emotes (owner);
 
@@ -54,18 +64,19 @@ create policy ffc_emotes_read on public.ffc_emotes for select using (
 drop policy if exists ffc_emotes_admin_del on public.ffc_emotes;
 create policy ffc_emotes_admin_del on public.ffc_emotes for delete using (public.ff_is_admin());
 
--- 3) 만들기: 한 사람이 40개까지. 만든 사람은 자동으로 가진 것이 돼요
-create or replace function public.ffc_emote_create(p_name text, p_px text, p_price int, p_listed boolean)
+-- 3) 만들기: 한 사람이 40개까지. 만든 사람은 자동으로 가진 것이 돼요 (그림은 PNG data:URL)
+drop function if exists public.ffc_emote_create(text, text, int, boolean);
+create or replace function public.ffc_emote_create(p_name text, p_img text, p_price int, p_listed boolean)
 returns uuid language plpgsql security definer set search_path = public as $$
 declare uid uuid := auth.uid(); nm text := left(btrim(coalesce(p_name, '')), 12); eid uuid;
 begin
   if uid is null then raise exception 'login required'; end if;
   if char_length(nm) < 1 then raise exception 'name required'; end if;
-  if p_px is null or char_length(p_px) <> 1024 or p_px !~ '^[0-9a-f]+$' or p_px ~ '^0+$' then raise exception 'bad picture'; end if;
+  if p_img is null or char_length(p_img) > 40000 or p_img !~ '^data:image/png;base64,iVBORw0KGgo[A-Za-z0-9+/=]+$' then raise exception 'bad picture'; end if;
   if coalesce(p_price, 0) < 0 or coalesce(p_price, 0) > 10000 then raise exception 'bad price'; end if;
   if (select count(*) from public.ffc_emotes where owner = uid) >= 40 then raise exception 'too many'; end if;
-  insert into public.ffc_emotes (owner, name, px, price, listed)
-  values (uid, nm, p_px, coalesce(p_price, 0), coalesce(p_listed, false)) returning id into eid;
+  insert into public.ffc_emotes (owner, name, img, price, listed)
+  values (uid, nm, p_img, coalesce(p_price, 0), coalesce(p_listed, false)) returning id into eid;
   insert into public.ffc_emote_own (user_id, emote_id) values (uid, eid) on conflict do nothing;
   return eid;
 end $$;
