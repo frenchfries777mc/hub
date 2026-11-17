@@ -234,6 +234,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .form .ntx{margin:0}
 .slist .sub2{font-size:12px;font-weight:700;color:var(--fry);margin:6px 0 4px}.srow{display:flex;gap:8px;align-items:center;font-size:13px;padding:4px 0;border-top:1px solid var(--line)}
 .srow .st2{color:var(--fry);flex:none}.srow .sb2{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.srow button{border:1px solid var(--line);background:none;border-radius:8px;padding:3px 8px;font-size:12px}
+.enote{position:fixed;left:50%;top:10px;transform:translateX(-50%);width:min(560px,calc(100vw - 20px));box-sizing:border-box;display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);font-size:13px;z-index:24;box-shadow:0 6px 18px rgba(0,0,0,.35)}.enote span{flex:1;min-width:0}.enote button{background:none;border:0;color:var(--dim);padding:0 4px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#000c;color:#fff;padding:9px 16px;border-radius:99px;font-size:14px;z-index:30}
 @media(max-width:760px){
   .app{grid-template-columns:1fr;border:0}
@@ -265,8 +266,11 @@ async function boot(){
   if(!window.FFAuth){ return setTimeout(boot,200); }
   await FFAuth.ready; sb=FFAuth.client(); me=FFAuth.user(); await detectV2(); await detectV3(); await detectEm(); await detectPoll();
   FFAuth.onChange(function(){ var u=FFAuth.user(); if((u&&u.id)!==(me&&me.id)){ me=u; start(); } });
-  start();
+  start(); if(me&&EM) emoteNotices();
 }
+async function emoteNotices(){ try{ var r=await sb.rpc('ffc_emote_notices_take'); var a=(r&&r.data)||[]; if(r.error||!a.length) return;
+    var nm=a.map(function(x){ return x.name; }), t=nm.length===1?'‘'+nm[0]+'’ 이모티콘이 삭제되었어요':'‘'+nm.slice(0,2).join('’, ‘')+'’'+(nm.length>2?' 외 '+(nm.length-2)+'개':'')+' 이모티콘이 삭제되었어요';
+    var b=el('div','enote'); b.appendChild(el('span','',t+'. 만든 사람이 지워서 내 이모티콘에서 사라졌어요.')); var x=el('button','','✕'); x.type='button'; x.onclick=function(){ b.remove(); }; b.appendChild(x); document.body.appendChild(b); setTimeout(function(){ b.remove(); },20000); }catch(e){} }
 function start(){
   if(chan){ try{ sb.removeChannel(chan); }catch(e){} chan=null; }
   root.innerHTML=''; friends=[]; rooms=[]; cur=null; msgs=[];
