@@ -956,7 +956,7 @@ async function betModal(){
   var n=el('input'); n.type='number'; n.min=1; n.max=100; n.value=10;
   var mine=el('div','hint',''); try{ var c=await sb.from('ff_coins').select('coins').eq('user_id',me.id).maybeSingle(); mine.textContent='내 Hub Coin: '+((c&&c.data&&c.data.coins)||0); }catch(e){}
   [['상대',who],['게임',game],['걸 코인 (1~100)',n]].forEach(function(x){ var l=el('label','fl2'); l.appendChild(el('span','',x[0])); l.appendChild(x[1]); f.appendChild(l); });
-  f.appendChild(mine); f.appendChild(el('div','hint','상대가 받으면 둘 다 같은 코인을 걸어요. 끝나고 둘이 고른 승자가 같으면 승자가 모두 가져가고, 다르면 둘 다 돌려받아요.'));
+  f.appendChild(mine); f.appendChild(el('div','hint','상대가 받으면 둘 다 같은 코인을 걸고, 바로 랜덤(동전 던지기)으로 승자가 정해져요. 승자가 코인을 모두 가져가요.'));
   box.appendChild(f);
   var act=el('div','act'); var no=el('button','','취소'), ok=el('button','ok','내기 걸기'); no.onclick=function(){ md.remove(); };
   ok.onclick=async function(){ var v=Math.round(+n.value); if(!(v>=1&&v<=100)){ toast('1~100 사이로 정해 주세요'); return; } ok.disabled=true;
@@ -973,7 +973,7 @@ function betCard(id){
   c.appendChild(el('div','vs',A+'  vs  '+B));
   var st=el('div','st'), act=el('div','ba');
   async function call(fn,args){ var r=await sb.rpc(fn,args); if(r.error){ toast(/not enough/.test(r.error.message)?'Hub Coin이 모자라요':'처리하지 못했어요'); return; } var x=await sb.from('ffc_bets').select('*').eq('id',id).maybeSingle(); if(x&&x.data){ bets[id]=x.data; paintMsgs(false); } }
-  if(d.status==='open'){ st.textContent=B+'님이 받으면 시작돼요';
+  if(d.status==='open'){ st.textContent=B+'님이 받으면 바로 랜덤으로 승자가 정해져요';
     if(me.id===d.b){ var y=el('button','ok','받기 (-'+d.coins+')'), n=el('button','','거절'); y.onclick=function(){ call('ffc_bet_answer',{bid:id,ok:true}); }; n.onclick=function(){ call('ffc_bet_answer',{bid:id,ok:false}); }; act.appendChild(y); act.appendChild(n); }
     if(me.id===d.a){ var cx=el('button','','취소'); cx.onclick=function(){ call('ffc_bet_answer',{bid:id,ok:false}); }; act.appendChild(cx); } }
   else if(d.status==='live'){ var isP=me.id===d.a||me.id===d.b, myPick=me.id===d.a?d.a_pick:me.id===d.b?d.b_pick:null, opPick=me.id===d.a?d.b_pick:me.id===d.b?d.a_pick:null, opN=me.id===d.a?B:A;
@@ -981,7 +981,7 @@ function betCard(id){
     else if(myPick) st.textContent='✓ 내가 '+(names[myPick]||'?')+'님 승으로 골랐어요 · '+(opPick?'상대도 골랐어요':opN+'님이 고르면 끝나요')+' (끝나기 전까지는 다시 눌러 바꿀 수 있어요)';
     else st.textContent=(opPick?opN+'님은 이미 골랐어요. ':'')+'판이 끝났으면 이긴 사람을 눌러 주세요';
     if(isP){ [[d.a,A],[d.b,B]].forEach(function(p){ var on=myPick===p[0], x=el('button',on?'ok':'',(on?'✓ ':'')+p[1]+' 승'); x.onclick=function(){ call('ffc_bet_pick',{bid:id,w:p[0]}); }; act.appendChild(x); }); } }
-  else if(d.status==='done'){ st.textContent='🏆 '+(names[d.winner]||'?')+'님이 '+(d.coins*2)+' 코인을 가져갔어요'; c.classList.add('done'); }
+  else if(d.status==='done'){ st.textContent='🎲 랜덤 결과 · 🏆 '+(names[d.winner]||'?')+'님이 '+(d.coins*2)+' 코인을 가져갔어요'; c.classList.add('done'); }
   else if(d.status==='refund'){ st.textContent='고른 승자가 서로 달라서 둘 다 '+d.coins+' 코인을 돌려받았어요'; c.classList.add('off'); }
   else { st.textContent='취소된 내기예요'; c.classList.add('off'); }
   c.appendChild(st); if(act.childNodes.length) c.appendChild(act); return c;
