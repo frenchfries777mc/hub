@@ -399,7 +399,6 @@ function paintMain(){
   tb('🎮','전적 공유',resultModal);
   tb('🤖','AI 부르기',function(){ var old=$('.aip'); if(old){ old.remove(); return; } var p=el('div','aip'); Object.keys(AIS).forEach(function(k){ var x=el('button','',(k==='premus'?'🧠 ':k==='lectus'?'💡 ':'⚡ ')+'@'+AIS[k].n); x.onclick=function(){ p.remove(); ta.value='@'+AIS[k].n+' '+ta.value.replace(AIRE,''); ta.focus(); ta.oninput(); }; p.appendChild(x); }); p.appendChild(el('div','hint','AI는 내 기기에서 돌아가요. 처음 한 번은 모델을 받아요.')); tools.appendChild(p); });
   if(others().length) tb('🎲','Hub Coin 내기',betModal);
-  if(cur.kind==='group') tb('🏆','대진표',bracketModal);
   if(!V2) [].forEach.call(tools.querySelectorAll('.tb'),function(b){ b.classList.add('off'); b.title='준비 중'; b.onclick=function(e){ e.preventDefault(); e.stopPropagation(); toast('아직 준비 중이에요'); }; });
   document.addEventListener('click',function(e){ [].forEach.call(document.querySelectorAll('.stkp,.aip'),function(p){ if(!p.contains(e.target)) p.remove(); }); });
   var comp=el('div','comp'); comp.appendChild(tools); var row2=el('div','row2'); row2.appendChild(ta); row2.appendChild(send); comp.appendChild(row2); bar.appendChild(comp); main.appendChild(bar); paintPend(); paintReplyBar();
@@ -474,7 +473,7 @@ function groupModal(){
   act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
 }
 /* ===== 확장: 스티커, 전적 카드, 자체 AI, Hub Coin 내기, 대진표, 위키 미리보기 ===== */
-var V2=false, bets={}, brackets={}, wikiPages=null, aiBusy=false;
+var V2=false, bets={}, wikiPages=null, aiBusy=false;
 var GAMES={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',tumblecrown:'Tumble Crown',gatecrash:'Gatecrash',dummyparty:'Dummy Party',vowkeep:'Vowkeep',isleport:'Isleport'};
 function gname(g){ return GAMES[g]||g; }
 var COLS='id,user_id,body,created_at';
@@ -692,7 +691,7 @@ function renderBody(m){
   if(k==='image') return imageBox(meta);
   if(k==='result') return resultCard(meta);
   if(k==='bet') return betCard(meta.bet);
-  if(k==='bracket') return bracketCard(meta.bracket);
+  if(k==='bracket'){ var o=el('div','b'); o.textContent='🏆 (없어진 대진표)'; return o; }
   var b=el('div','b'+(k==='ai'?' ai':''));
   if(k==='ai'){ var h=el('div','aih'); h.textContent='🤖 '+aiName(meta.model)+(meta.by?' · '+(names[meta.by]||'')+'님이 불렀어요':''); b.appendChild(h); }
   var tx=el('div','tx'); linkify(m.body,tx); b.appendChild(tx);
@@ -796,36 +795,6 @@ function betCard(id){
   c.appendChild(st); if(act.childNodes.length) c.appendChild(act); return c;
 }
 
-/* ---------- 🏆 대진표 ---------- */
-async function bracketModal(){
-  if(!V2){ toast('아직 준비 중이에요'); return; }
-  var md=el('div','modal'), box=el('div','box'); box.appendChild(el('h3','','🏆 대진표 만들기'));
-  var t=el('input'); t.type='text'; t.placeholder='대회 이름 (예: 스틱시움 금요 토너먼트)'; t.maxLength=40; box.appendChild(t);
-  var pick=el('div','pick'); cur.members.forEach(function(i){ var l=el('label','row'); l.innerHTML='<input type="checkbox" checked><span class="av"></span><span class="rm"><b></b></span>'; $('input',l).value=i; $('.av',l).textContent=initial(names[i]); $('b',l).textContent=(names[i]||'?')+(i===me.id?' (나)':''); pick.appendChild(l); }); box.appendChild(pick);
-  box.appendChild(el('div','hint','순서는 무작위로 섞여요. 사람 수가 안 맞으면 일부는 부전승으로 올라가요.'));
-  var act=el('div','act'); var no=el('button','','취소'), ok=el('button','ok','만들기'); no.onclick=function(){ md.remove(); };
-  ok.onclick=async function(){ var ids=[].map.call(pick.querySelectorAll('input:checked'),function(i){return i.value;}); if(ids.length<2){ toast('두 명 이상 골라 주세요'); return; }
-    var r=await sb.rpc('ffc_bracket_new',{rid:cur.id,t:t.value,players:ids}); if(r.error){ toast('만들지 못했어요'); return; } md.remove(); };
-  act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
-}
-var brWant={};
-async function needBracket(id){ if(brackets[id]||brWant[id]) return; brWant[id]=1; var r=await sb.from('ffc_brackets').select('*').eq('id',id).maybeSingle(); if(r&&r.data){ brackets[id]=r.data; paintMsgs(false); } }
-function bracketCard(id){
-  var c=el('div','card brk'); var d=brackets[id]; if(!d){ needBracket(id); c.appendChild(el('div','ct','🏆 대진표 불러오는 중…')); return c; }
-  c.appendChild(el('div','ct','🏆 '+d.title)); var n=d.rounds.length;
-  var g=el('div','rounds');
-  d.rounds.forEach(function(rd,ri){ var col=el('div','rd'); col.appendChild(el('div','rh',ri===n-1?'결승':ri===n-2?'준결승':(Math.pow(2,n-ri))+'강'));
-    rd.forEach(function(mt,mi){ var box=el('div','mt');
-      [mt.a,mt.b].forEach(function(p){ var b=el('button','pl'+(mt.w&&mt.w===p?' win':'')+(mt.w&&p&&mt.w!==p?' lose':''),p?(names[p]||'?'):(ri===0?'부전승':'—')); b.disabled=!(p&&mt.a&&mt.b);
-        b.onclick=async function(){ var r=await sb.rpc('ffc_bracket_win',{bid:id,ri:ri,mi:mi,w:mt.w===p?null:p}); if(r.error){ toast('처리하지 못했어요'); return; } var x=await sb.from('ffc_brackets').select('*').eq('id',id).maybeSingle(); if(x&&x.data){ brackets[id]=x.data; paintMsgs(false); } };
-        box.appendChild(b); });
-      col.appendChild(box); });
-    g.appendChild(col); });
-  var sc=el('div','rsc'); sc.appendChild(g); c.appendChild(sc);
-  c.appendChild(el('div','st',d.champ?'👑 우승: '+(names[d.champ]||'?'):'이긴 사람 이름을 누르면 다음 라운드로 올라가요'));
-  if(d.champ) c.classList.add('done');
-  return c;
-}
 
 /* ---------- 📖 위키 링크 미리보기 ---------- */
 function wikiLink(t){ var m=/https?:\/\/(?:www\.)?(?:frenchfries777\.com|frenchfries777mc\.github\.io\/hub)\/wiki\/?#([a-z0-9_-]+)\/([^\s#?&]+)/i.exec(t||''); return m?{game:m[1],slug:decodeURIComponent(m[2]),url:m[0]}:null; }
@@ -1011,8 +980,7 @@ function subscribeExt(ch){
   if(V3) ch=ch.on('postgres_changes',{event:'UPDATE',schema:'public',table:'ffc_msgs'},function(p){ var d=p.new; if(!d||!cur||d.room_id!==cur.id) return; var m=msgs.find(function(x){ return x.id===d.id; }); if(m){ m.kind=d.kind; m.body=d.body; m.meta=d.meta; paintMsgs(false); } })
     .on('postgres_changes',{event:'*',schema:'public',table:'ffc_reacts'},function(p){ var d=p.eventType==='DELETE'?p.old:p.new; if(!d||!cur||d.room_id!==cur.id) return; var a=reacts[d.msg_id]=(reacts[d.msg_id]||[]).filter(function(x){ return !(x.user_id===d.user_id&&x.emoji===d.emoji); }); if(p.eventType!=='DELETE') a.push(d); paintMsgs(false); })
     .on('postgres_changes',{event:'UPDATE',schema:'public',table:'ffc_rooms'},function(p){ var d=p.new; if(!d) return; var rm=rooms.find(function(x){ return x.id===d.id; }); if(rm) rm.notice=d.notice||null; if(cur&&cur.id===d.id){ cur.notice=d.notice||null; paintNotice(); } });
-  return ch.on('postgres_changes',{event:'*',schema:'public',table:'ffc_bets'},function(p){ var d=p.new; if(d&&d.id){ bets[d.id]=d; nameOf([d.a,d.b]).then(function(){ if(cur&&d.room_id===cur.id) paintMsgs(false); }); } })
-           .on('postgres_changes',{event:'*',schema:'public',table:'ffc_brackets'},function(p){ var d=p.new; if(d&&d.id){ brackets[d.id]=d; if(cur&&d.room_id===cur.id) paintMsgs(false); } });
+  return ch.on('postgres_changes',{event:'*',schema:'public',table:'ffc_bets'},function(p){ var d=p.new; if(d&&d.id){ bets[d.id]=d; nameOf([d.a,d.b]).then(function(){ if(cur&&d.room_id===cur.id) paintMsgs(false); }); } });
 }
 
 /* ===== 실시간 보강: 연결이 끊기거나 탭이 잠들었다 돌아와도 놓친 메시지를 바로 채워요 ===== */
