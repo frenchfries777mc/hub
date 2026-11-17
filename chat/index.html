@@ -963,24 +963,26 @@ try{ if('serviceWorker' in navigator && /(^|\.)frenchfries777\.com$/.test(locati
 var PUSHFN='https://kebsbuvuutilitwlvxzv.supabase.co/functions/v1/ff-chat-push', pushOn=false, pushInit=false, pushBusy=false;
 function pushOk(){ return ('serviceWorker' in navigator)&&('PushManager' in window)&&('Notification' in window); }
 function pushPaint(){ var b=document.getElementById('pushBtn'); if(!b) return;
-  var need=instIOS()&&!instStandalone(); b.hidden=!(me&&(pushOk()||need)); b.textContent=pushOn?'🔔 알림 켜짐':'🔕 알림 꺼짐'; b.classList.toggle('on',pushOn);
+  var need=instIOS()&&!instStandalone(); b.hidden=!(me&&(pushOk()||need)); var blk=!pushOn&&pushOk()&&Notification.permission==='denied', tx=pushOn?'🔔 알림 켜짐':(blk?'🚫 알림 차단됨':'🔕 알림 꺼짐'); if(b.textContent!==tx) b.textContent=tx; b.classList.toggle('on',pushOn);
   if(!b.__w){ b.__w=1; b.onclick=pushToggle; } }
+function pushNote(t){ var m=document.getElementById('pushMsg'); if(!t){ if(m) m.remove(); return; } if(!m){ var tp=document.querySelector('.side .top'); if(!tp) return; m=document.createElement('div'); m.id='pushMsg'; m.style.cssText='margin:6px 12px 0;padding:8px 10px;border:1px solid var(--fry);border-radius:10px;font-size:12.5px;line-height:1.6;color:var(--tx,#ece6d8)'; tp.parentNode.insertBefore(m,tp.nextSibling); } m.textContent=t; }
+function pushWait(pr,ms){ return Promise.race([pr,new Promise(function(_,rej){ setTimeout(function(){ rej(new Error('timeout')); },ms); })]); }
 function pushKey(u){ var p='='.repeat((4-u.length%4)%4), r=atob((u+p).replace(/-/g,'+').replace(/_/g,'/')), a=new Uint8Array(r.length); for(var i=0;i<r.length;i++) a[i]=r.charCodeAt(i); return a; }
 async function pushRead(){ try{ var reg=await navigator.serviceWorker.ready, sub=await reg.pushManager.getSubscription(); pushOn=!!sub&&Notification.permission==='granted'; if(pushOn&&me){ var r=await sb.from('ffc_push_subs').select('id').eq('endpoint',sub.endpoint).limit(1); if(!(r&&r.data&&r.data.length)) pushOn=false; } }catch(e){ pushOn=false; } pushPaint(); }
-async function pushToggle(){ if(pushBusy) return;
-  if(instIOS()&&!instStandalone()){ toast('공유 버튼 → 홈 화면에 추가로 설치한 뒤, 설치한 앱에서 켤 수 있어요'); return; }
-  if(!pushOk()){ toast('이 브라우저는 알림을 지원하지 않아요'); return; }
-  pushBusy=true;
-  try{ var reg=await navigator.serviceWorker.ready, sub=await reg.pushManager.getSubscription();
+async function pushToggle(){ if(pushBusy){ pushNote('처리 중이에요. 잠시만 기다려 주세요'); return; }
+  if(instIOS()&&!instStandalone()){ toast('공유 버튼 → 홈 화면에 추가로 설치한 뒤, 설치한 앱에서 켤 수 있어요'); pushNote('아이폰은 공유 버튼 → 홈 화면에 추가로 설치한 뒤, 설치한 앱에서 켤 수 있어요'); return; }
+  if(!pushOk()){ toast('이 브라우저는 알림을 지원하지 않아요'); pushNote('이 브라우저는 알림을 지원하지 않아요. 크롬이나 엣지에서 열어 주세요'); return; }
+  pushBusy=true; pushNote('');
+  try{ var reg=await pushWait(navigator.serviceWorker.ready,8000), sub=await pushWait(reg.pushManager.getSubscription(),8000);
     if(pushOn){ if(sub){ var ep=sub.endpoint; await sub.unsubscribe(); await sb.from('ffc_push_subs').delete().eq('endpoint',ep); } pushOn=false; toast('알림을 껐어요'); }
     else {
-      if(Notification.permission==='denied'){ toast('브라우저 설정에서 이 사이트의 알림을 허용해 주세요'); pushBusy=false; return; }
-      var perm=await Notification.requestPermission(); if(perm!=='granted'){ toast('알림이 허용되지 않았어요'); pushBusy=false; return; }
-      if(!sub){ var pk=(await (await fetch(PUSHFN)).json()).pub; if(!pk) throw new Error('key'); sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:pushKey(pk)}); }
+      if(Notification.permission==='denied'){ toast('이 사이트의 알림이 차단돼 있어요'); pushNote('이 사이트의 알림이 차단돼 있어요. 주소창 왼쪽 아이콘(자물쇠) 클릭 → 알림을 "허용"으로 바꾸고 → 새로고침(F5) → 다시 눌러 주세요'); pushBusy=false; pushPaint(); return; }
+      var perm=await Notification.requestPermission(); if(perm!=='granted'){ toast('알림이 허용되지 않았어요'); pushNote(perm==='denied'?'알림이 차단됐어요. 주소창 왼쪽 아이콘(자물쇠) 클릭 → 알림을 "허용"으로 바꾸고 → 새로고침(F5) → 다시 눌러 주세요':'알림 허용 창이 닫혔어요. 다시 누르고 "허용"을 눌러 주세요'); pushBusy=false; pushPaint(); return; }
+      if(!sub){ var pk=(await pushWait(fetch(PUSHFN).then(function(r){ return r.json(); }),10000)).pub; if(!pk) throw new Error('key'); sub=await pushWait(reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:pushKey(pk)}),15000); }
       var j=sub.toJSON(); await sb.from('ffc_push_subs').delete().eq('endpoint',sub.endpoint);
       var ins=await sb.from('ffc_push_subs').insert({endpoint:sub.endpoint,p256dh:j.keys.p256dh,auth:j.keys.auth,ua:navigator.userAgent.slice(0,200)}); if(ins&&ins.error) throw ins.error;
       pushOn=true; toast('새 메시지 알림을 켰어요'); }
-  }catch(e){ toast('알림을 바꾸지 못했어요. 잠시 뒤 다시 해 주세요'); }
+  }catch(e){ var why=String((e&&(e.message||e.name))||e||'').slice(0,80); toast('알림을 바꾸지 못했어요'); pushNote('알림을 바꾸지 못했어요. 잠시 뒤 다시 눌러 주세요. (이유: '+why+')'); }
   pushBusy=false; pushPaint(); }
 try{ if('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message',function(e){ var d=e.data; if(d&&d.room&&typeof openRoom==='function') openRoom(d.room); }); }catch(e){}
 setInterval(function(){ if(me&&!pushInit){ pushInit=true; pushRead(); } else pushPaint(); },1500);
