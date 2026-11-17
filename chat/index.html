@@ -1119,7 +1119,7 @@ function membersModal(){
     var pick=el('div','pick'); cand.forEach(function(f){ var l=el('label','row'); var c=el('input'); c.type='checkbox'; c.value=f.id; l.appendChild(c); l.appendChild(avEl(f.id)); var t=el('span','rm'); t.appendChild(el('b','',f.name)); l.appendChild(t); pick.appendChild(l); }); box.appendChild(pick); }
   var act=el('div','act'); var no=el('button','','닫기'); no.onclick=function(){ md.remove(); }; act.appendChild(no);
   if(pick){ var ok=el('button','ok',rm.kind==='group'?'초대하기':'그룹 만들기'); ok.onclick=async function(){ var ids=[].map.call(pick.querySelectorAll('input:checked'),function(x){return x.value;}); if(!ids.length){ toast('친구를 골라 주세요'); return; }
-    if(rm.kind==='group'){ var x=await sb.rpc('ffc_invite',{rid:rm.id,members:ids}); if(x.error){ toast('초대하지 못했어요'); return; } md.remove(); await reloadCur(); toast('초대했어요'); }
+    if(rm.kind==='group'){ var x=await sb.rpc('ffc_invite',{rid:rm.id,members:ids}); if(x.error){ toast('초대하지 못했어요'); return; } md.remove(); await reloadCur(); toast(x.data===0?'초대하지 못했어요 (추방된 사람은 방장만 다시 초대할 수 있어요)':'초대했어요'); }
     else { var o=roomOther(rm); var y=await sb.rpc('ffc_create_group',{gname:'',members:[o].concat(ids)}); if(y.error){ toast('만들지 못했어요'); return; } md.remove(); await loadRooms(); openRoom(y.data); } }; act.appendChild(ok); }
   box.appendChild(act); md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
 }
