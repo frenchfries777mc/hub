@@ -134,7 +134,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .stk{display:flex;flex-direction:column;align-items:center;gap:2px}
 .stk span{font-size:12px;color:var(--dim);font-weight:700}
 .stk svg{overflow:visible;max-width:100%}
-.pxc{image-rendering:pixelated;display:block;max-width:100%}
+.pxc{image-rendering:pixelated;display:block;max-width:100%}.pxi{display:block;object-fit:contain;max-width:100%}.emshop .pxi{background:repeating-conic-gradient(#2a2619 0 25%,#1d1a12 0 50%) 0 0/16px 16px;border-radius:10px}.emprev{display:flex;align-items:center;justify-content:center;min-height:200px;cursor:pointer;text-align:center;white-space:pre-line;cursor:pointer}.emprev .pxi{max-width:100%;max-height:260px;width:auto;height:auto}
 .emtabs,.emsort{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}.emtabs button,.emsort button{padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:none;font-size:13px;font-weight:700;color:var(--dim)}.emtabs button.on,.emsort button.on{background:var(--mine);color:var(--mineText);border-color:transparent}
 .emc{display:flex;flex-direction:column;align-items:center;gap:2px}.emc small{font-size:10px;color:var(--dim);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.emnew span{font-size:30px;line-height:52px;color:var(--fry)}.emhint{grid-column:1/-1;text-align:center;padding:14px 4px}
 .emshop{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px}.emshop .pxc{background:repeating-conic-gradient(#2a2619 0 25%,#1d1a12 0 50%) 0 0/16px 16px;border-radius:10px}
@@ -581,18 +581,21 @@ STK.push(
 );
 function stickerSvg(id){ var s=STK.find(function(x){return x.id===id;}); if(!s) return null; var w=el('div','stk a-'+s.a); w.innerHTML='<svg viewBox="0 0 120 120" width="112" height="112" aria-label="'+s.t+'">'+s.s+'</svg>'; w.appendChild(el('span','',s.t)); return w; }
 /* ===== 내가 만든 이모티콘: 만들기 · 공유 · 사고팔기 (supabase-emotes-2026-11-17.sql) =====
-   그림은 32×32 도트, 칸마다 색 번호 한 글자(0=투명, 1~f)로 1024글자예요. 색 목록(EPAL)은 저장된 그림과 연결돼서 순서를 바꾸면 안 돼요. */
+   새로 만드는 그림은 PNG(최대 128px로 줄여 data:URL로 저장). 예전 32×32 도트 그림(px, 1024글자 · 색 목록 EPAL은 순서를 바꾸면 안 돼요)도 그대로 보여요. */
 var EM=false, EPAL=['','#1c1405','#ffffff','#e5484d','#ff8a3d','#ffd34d','#6fe3a1','#2f9e6b','#6fc3ff','#3b6fe0','#a78bfa','#ff8fb8','#8a5a2b','#f2c9a0','#9a937f','#4a4636'];
 async function detectEm(){ if(!V2) return; try{ var t=await sb.from('ffc_emotes').select('id').limit(1); EM=!t.error; }catch(e){ EM=false; } }
 function okPx(p){ return typeof p==='string'&&p.length===1024&&/^[0-9a-f]+$/.test(p); }
+function imgOk(s){ return typeof s==='string'&&s.length<=40000&&/^data:image\/png;base64,iVBORw0KGgo[A-Za-z0-9+\/=]+$/.test(s); }
+function emOk(e){ return !!e&&(imgOk(e.img)||okPx(e.px)); }
+function emVis(e,size){ if(imgOk(e.img)){ var im=document.createElement('img'); im.src=e.img; im.alt=e.name||''; im.className='pxi'; im.draggable=false; im.style.width=size+'px'; im.style.height=size+'px'; return im; } return pxCanvas(e.px,size); }
 function pxDraw(cv,px,size){ cv.width=32; cv.height=32; var c=cv.getContext('2d'); c.clearRect(0,0,32,32);
   for(var i=0;i<1024;i++){ var v=parseInt(px.charAt(i),16); if(v){ c.fillStyle=EPAL[v]; c.fillRect(i%32,(i/32)|0,1,1); } }
   cv.className='pxc'; cv.style.width=size+'px'; cv.style.height=size+'px'; return cv; }
 function pxCanvas(px,size){ return pxDraw(document.createElement('canvas'),px,size); }
-function pxSticker(meta){ if(!meta||!okPx(meta.px)) return null; var w=el('div','stk'); w.appendChild(pxCanvas(meta.px,112)); w.appendChild(el('span','',String(meta.n||'').slice(0,12))); return w; }
-function sendEmote(e){ return sendKind('sticker','(스티커) '+e.name,{e:e.id,px:e.px,n:e.name}); }
+function pxSticker(meta){ if(!emOk(meta)) return null; var w=el('div','stk'); w.appendChild(emVis(meta,112)); w.appendChild(el('span','',String(meta.n||'').slice(0,12))); return w; }
+function sendEmote(e){ return sendKind('sticker','(스티커) '+e.name,imgOk(e.img)?{e:e.id,img:e.img,n:e.name}:{e:e.id,px:e.px,n:e.name}); }
 function emoteErr(er){ var m=String((er&&er.message)||''); return /not enough/.test(m)?'Hub Coin이 모자라요':/too many/.test(m)?'이모티콘은 40개까지 만들 수 있어요':/not for sale/.test(m)?'지금은 팔지 않는 이모티콘이에요':/login/.test(m)?'로그인이 필요해요':'처리하지 못했어요. 잠시 뒤 다시 해 주세요'; }
-function emoteCell(e,note,fn){ var b=el('button','stkb emc'); b.type='button'; b.title=e.name; b.appendChild(pxCanvas(e.px,52)); if(note) b.appendChild(el('small','',note)); b.onclick=fn; return b; }
+function emoteCell(e,note,fn){ var b=el('button','stkb emc'); b.type='button'; b.title=e.name; b.appendChild(emVis(e,52)); if(note) b.appendChild(el('small','',note)); b.onclick=fn; return b; }
 
 function stickerPanel(anchor){
   var old=$('.stkp'); if(old){ old.remove(); return; }
@@ -602,15 +605,15 @@ function stickerPanel(anchor){
     if(tab==='own') return ownTab(); if(tab==='shop') return shopTab();
     STK.forEach(function(s){ var b=el('button','stkb'); b.title=s.t; b.innerHTML='<svg viewBox="0 0 120 120" width="56" height="56">'+s.s+'</svg>'; b.onclick=function(){ p.remove(); sendKind('sticker','(스티커) '+s.t,{s:s.id}); }; p.appendChild(b); }); }
   async function ownTab(){ var mk=el('button','stkb emc emnew'); mk.type='button'; mk.innerHTML='<span>＋</span><small>만들기·관리</small>'; mk.onclick=function(ev){ ev.stopPropagation(); p.remove(); emoteStudio(); }; p.appendChild(mk);
-    var r=await sb.from('ffc_emote_own').select('emote_id,ffc_emotes(id,name,px)').eq('user_id',me.id).order('got_at',{ascending:false}); if(tab!=='own') return;
-    var a=((r&&r.data)||[]).map(function(x){ return x.ffc_emotes; }).filter(function(x){ return x&&okPx(x.px); });
+    var r=await sb.from('ffc_emote_own').select('emote_id,ffc_emotes(id,name,px,img)').eq('user_id',me.id).order('got_at',{ascending:false}); if(tab!=='own') return;
+    var a=((r&&r.data)||[]).map(function(x){ return x.ffc_emotes; }).filter(emOk);
     a.forEach(function(e){ p.appendChild(emoteCell(e,e.name,function(){ p.remove(); sendEmote(e); })); });
     if(!a.length) p.appendChild(el('div','hint emhint','아직 없어요. ＋로 직접 만들거나 상점에서 가져와 보세요.')); }
   async function shopTab(){ var bar=el('div','emsort'); [['hot','인기순'],['new','최신순']].forEach(function(t){ var b=el('button',sort===t[0]?'on':'',t[1]); b.type='button'; b.onclick=function(ev){ ev.stopPropagation(); sort=t[0]; paint(); }; bar.appendChild(b); }); p.appendChild(bar);
-    var q=sb.from('ffc_emotes').select('id,name,px,price,sold,owner').eq('listed',true); q=sort==='hot'?q.order('sold',{ascending:false}).order('created_at',{ascending:false}):q.order('created_at',{ascending:false});
+    var q=sb.from('ffc_emotes').select('id,name,px,img,price,sold,owner').eq('listed',true); q=sort==='hot'?q.order('sold',{ascending:false}).order('created_at',{ascending:false}):q.order('created_at',{ascending:false});
     var r=await q.limit(60), o=await sb.from('ffc_emote_own').select('emote_id').eq('user_id',me.id); if(tab!=='shop') return;
     var have={}; ((o&&o.data)||[]).forEach(function(x){ have[x.emote_id]=1; });
-    var a=((r&&r.data)||[]).filter(function(x){ return okPx(x.px); });
+    var a=((r&&r.data)||[]).filter(emOk);
     a.forEach(function(e){ var mine=have[e.id]||e.owner===me.id; p.appendChild(emoteCell(e,mine?'가짐':(e.price>0?'🪙'+e.price:'무료'),function(ev){ ev.stopPropagation(); shopModal(e,mine,function(){ if(tab==='shop') paint(); }); })); });
     if(!a.length) p.appendChild(el('div','hint emhint','아직 올라온 이모티콘이 없어요. 첫 번째로 만들어 올려 보세요!')); }
   paint();
@@ -618,7 +621,7 @@ function stickerPanel(anchor){
 
 async function shopModal(e,mine,done){
   var md=el('div','modal'), box=el('div','box emb'); box.appendChild(el('h3','',e.name));
-  var body=el('div','emshop'); body.appendChild(pxCanvas(e.px,160));
+  var body=el('div','emshop'); body.appendChild(emVis(e,160));
   var info=el('div','hint',''); body.appendChild(info); box.appendChild(body);
   nameOf([e.owner]).then(function(){ var c=0; info.textContent='만든 사람 '+(names[e.owner]||'알 수 없음')+' · '+e.sold+'명이 가져갔어요'+(e.price>0?' · '+e.price+' 코인 (만든 사람이 90%를 받아요)':' · 무료'); });
   var coin=el('div','hint',''); try{ var c=await sb.from('ff_coins').select('coins').eq('user_id',me.id).maybeSingle(); coin.textContent='내 Hub Coin: '+((c&&c.data&&c.data.coins)||0); }catch(x){} box.appendChild(coin);
@@ -630,47 +633,48 @@ async function shopModal(e,mine,done){
   act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(ev){ if(ev.target===md) md.remove(); }; document.body.appendChild(md);
 }
 
+function pngFit(file){
+  return new Promise(function(res,rej){
+    var u=URL.createObjectURL(file), im=new Image();
+    im.onerror=function(){ URL.revokeObjectURL(u); rej(new Error('그림을 읽지 못했어요')); };
+    im.onload=function(){ URL.revokeObjectURL(u); var W=im.naturalWidth, H=im.naturalHeight; if(!W||!H){ rej(new Error('그림을 읽지 못했어요')); return; }
+      var sizes=[128,96,64,48];
+      for(var k=0;k<sizes.length;k++){ var s=sizes[k], sc=Math.min(1,s/Math.max(W,H)), w=Math.max(1,Math.round(W*sc)), h=Math.max(1,Math.round(H*sc));
+        var cv=document.createElement('canvas'); cv.width=w; cv.height=h; var c=cv.getContext('2d'); c.imageSmoothingEnabled=true; c.imageSmoothingQuality='high'; c.drawImage(im,0,0,w,h);
+        var d=cv.toDataURL('image/png'); if(imgOk(d)){ res(d); return; } }
+      rej(new Error('그림이 너무 복잡해요. 더 단순하거나 작은 PNG를 써 주세요')); };
+    im.src=u; });
+}
 function emoteStudio(){
-  var px=new Uint8Array(1024), hist=[], col=1, tool='pen', mirror=false, down=false, last=null;
-  var md=el('div','modal'), box=el('div','box emb'); box.appendChild(el('h3','','🎨 이모티콘 만들기'));
-  var wrap=el('div','emst'); var cv=document.createElement('canvas'); cv.width=32; cv.height=32; cv.className='pxc emcv'; wrap.appendChild(cv);
-  function str(){ var s=''; for(var i=0;i<1024;i++) s+=px[i].toString(16); return s; }
-  function redraw(){ pxDraw(cv,str(),288); cv.className='pxc emcv'; }
-  function push(){ hist.push(px.slice()); if(hist.length>40) hist.shift(); }
-  function put(x,y){ if(x<0||y<0||x>31||y>31) return; var v=tool==='eraser'?0:col; px[y*32+x]=v; if(mirror) px[y*32+(31-x)]=v; }
-  function line(a,b){ var dx=Math.abs(b[0]-a[0]), dy=Math.abs(b[1]-a[1]), sx=a[0]<b[0]?1:-1, sy=a[1]<b[1]?1:-1, er=dx-dy, x=a[0], y=a[1]; for(var n=0;n<80;n++){ put(x,y); if(x===b[0]&&y===b[1]) break; var e2=2*er; if(e2>-dy){ er-=dy; x+=sx; } if(e2<dx){ er+=dx; y+=sy; } } }
-  function fill(x,y){ var t=px[y*32+x], v=col; if(t===v) return; var st=[[x,y]]; while(st.length){ var q=st.pop(), qx=q[0], qy=q[1]; if(qx<0||qy<0||qx>31||qy>31||px[qy*32+qx]!==t) continue; px[qy*32+qx]=v; st.push([qx+1,qy],[qx-1,qy],[qx,qy+1],[qx,qy-1]); } }
-  function pos(ev){ var r=cv.getBoundingClientRect(); return [Math.max(0,Math.min(31,Math.floor((ev.clientX-r.left)/r.width*32))),Math.max(0,Math.min(31,Math.floor((ev.clientY-r.top)/r.height*32)))]; }
-  cv.addEventListener('pointerdown',function(ev){ ev.preventDefault(); try{ cv.setPointerCapture(ev.pointerId); }catch(x){} var p=pos(ev); push();
-    if(tool==='fill'){ fill(p[0],p[1]); redraw(); return; } if(tool==='pick'){ var v=px[p[1]*32+p[0]]; if(v){ col=v; tool='pen'; sync(); } hist.pop(); return; }
-    down=true; last=p; put(p[0],p[1]); redraw(); });
-  cv.addEventListener('pointermove',function(ev){ if(!down) return; var p=pos(ev); line(last,p); last=p; redraw(); });
-  function up(){ down=false; last=null; } cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up);
-  box.appendChild(wrap);
-  var tl=el('div','emtools'); var tbs={};
-  [['pen','✏️ 펜'],['eraser','지우개'],['fill','채우기'],['pick','색 집기']].forEach(function(t){ var b=el('button','',t[1]); b.type='button'; b.onclick=function(){ tool=t[0]; sync(); }; tl.appendChild(b); tbs[t[0]]=b; });
-  var mr=el('button','','좌우 대칭'); mr.type='button'; mr.onclick=function(){ mirror=!mirror; sync(); }; tl.appendChild(mr);
-  var un=el('button','','되돌리기'); un.type='button'; un.onclick=function(){ if(hist.length){ px=hist.pop(); redraw(); } }; tl.appendChild(un);
-  var cl=el('button','','모두 지우기'); cl.type='button'; cl.onclick=function(){ push(); px=new Uint8Array(1024); redraw(); }; tl.appendChild(cl); box.appendChild(tl);
-  var pal=el('div','empal'), sw=[]; for(var i=1;i<16;i++)(function(i){ var b=el('button',''); b.type='button'; b.style.background=EPAL[i]; b.setAttribute('aria-label','색 '+i); b.onclick=function(){ col=i; if(tool==='eraser'||tool==='pick') tool='pen'; sync(); }; pal.appendChild(b); sw[i]=b; })(i); box.appendChild(pal);
-  function sync(){ Object.keys(tbs).forEach(function(k){ tbs[k].classList.toggle('on',tool===k); }); mr.classList.toggle('on',mirror); for(var i=1;i<16;i++) sw[i].classList.toggle('on',i===col&&tool!=='eraser'); }
+  var img=null;
+  var md=el('div','modal'), box=el('div','box emb'); box.appendChild(el('h3','','🖼 이모티콘 만들기'));
+  var wrap=el('div','emst'); var prev=el('div','emcv emprev'); wrap.appendChild(prev); box.appendChild(wrap);
+  var fi=document.createElement('input'); fi.type='file'; fi.accept='image/png'; fi.hidden=true; box.appendChild(fi);
+  function showPrev(){ prev.innerHTML=''; if(img){ var i=document.createElement('img'); i.src=img; i.className='pxi'; prev.appendChild(i); } else prev.appendChild(el('span','hint','PNG 그림을 골라 주세요\n(배경이 투명한 PNG가 좋아요)')); }
+  async function take(file){ if(!file) return; if(!(file.type==='image/png'||/\.png$/i.test(file.name||''))){ toast('PNG 파일만 올릴 수 있어요'); return; } if(file.size>8*1024*1024){ toast('파일이 너무 커요 (8MB까지)'); return; }
+    try{ img=await pngFit(file); }catch(e){ toast((e&&e.message)||'그림을 읽지 못했어요'); return; } showPrev(); }
+  fi.onchange=function(){ take(fi.files&&fi.files[0]); fi.value=''; };
+  prev.onclick=function(){ fi.click(); };
+  prev.ondragover=function(e){ e.preventDefault(); }; prev.ondrop=function(e){ e.preventDefault(); take(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]); };
+  var tl=el('div','emtools'); var pk=el('button','','📁 PNG 고르기'); pk.type='button'; pk.onclick=function(){ fi.click(); }; tl.appendChild(pk);
+  var cl=el('button','','지우기'); cl.type='button'; cl.onclick=function(){ img=null; showPrev(); }; tl.appendChild(cl); box.appendChild(tl);
   var f=el('div','emform'); var nm=el('input'); nm.type='text'; nm.maxLength=12; nm.placeholder='이름 (12자까지)';
   var pr=el('input'); pr.type='number'; pr.min=0; pr.max=10000; pr.value=0;
   var ls=el('input'); ls.type='checkbox'; var lb=el('label','emck'); lb.appendChild(ls); lb.appendChild(document.createTextNode(' 상점에 올려서 다른 사람이 가져가게 하기'));
   var l1=el('label','fl2'); l1.appendChild(el('span','','이름')); l1.appendChild(nm); var l2=el('label','fl2'); l2.appendChild(el('span','','가격 (Hub Coin, 0이면 무료 공유 · 팔리면 90%를 받아요)')); l2.appendChild(pr);
   f.appendChild(l1); f.appendChild(l2); f.appendChild(lb); box.appendChild(f);
   var mineBox=el('div','emmine'); box.appendChild(mineBox);
-  async function loadMine(){ mineBox.innerHTML=''; var r=await sb.from('ffc_emotes').select('id,name,px,price,listed,sold').eq('owner',me.id).order('created_at',{ascending:false}); var a=(r&&r.data)||[]; if(!a.length) return; mineBox.appendChild(el('div','sub2','내가 만든 이모티콘'));
-    a.forEach(function(e){ if(!okPx(e.px)) return; var row=el('div','emrow'); row.appendChild(pxCanvas(e.px,36)); var t=el('div','emt'); t.appendChild(el('b','',e.name)); t.appendChild(el('small','',e.sold+'명이 가져갔어요')); row.appendChild(t);
+  async function loadMine(){ mineBox.innerHTML=''; var r=await sb.from('ffc_emotes').select('id,name,px,img,price,listed,sold').eq('owner',me.id).order('created_at',{ascending:false}); var a=(r&&r.data)||[]; if(!a.length) return; mineBox.appendChild(el('div','sub2','내가 만든 이모티콘'));
+    a.forEach(function(e){ if(!emOk(e)) return; var row=el('div','emrow'); row.appendChild(emVis(e,36)); var t=el('div','emt'); t.appendChild(el('b','',e.name)); t.appendChild(el('small','',e.sold+'명이 가져갔어요')); row.appendChild(t);
       var p2=el('input'); p2.type='number'; p2.min=0; p2.max=10000; p2.value=e.price; p2.title='가격'; var l=el('input'); l.type='checkbox'; l.checked=e.listed; l.title='상점에 올리기'; var lab=el('label','emck','올림'); lab.insertBefore(l,lab.firstChild);
       var sv=el('button','','저장'); sv.type='button'; sv.onclick=async function(){ var r=await sb.rpc('ffc_emote_set',{p_id:e.id,p_price:Math.max(0,Math.min(10000,parseInt(p2.value,10)||0)),p_listed:l.checked}); toast(r.error?'저장하지 못했어요':'저장했어요'); };
       row.appendChild(p2); row.appendChild(lab); row.appendChild(sv); mineBox.appendChild(row); }); }
   var act=el('div','act'), no=el('button','','닫기'); no.onclick=function(){ md.remove(); }; var ok=el('button','ok','만들기');
-  ok.onclick=async function(){ var s=str(); if(/^0+$/.test(s)){ toast('그림을 그려 주세요'); return; } var n=nm.value.trim(); if(!n){ toast('이름을 적어 주세요'); return; }
-    ok.disabled=true; var r=await sb.rpc('ffc_emote_create',{p_name:n,p_px:s,p_price:Math.max(0,Math.min(10000,parseInt(pr.value,10)||0)),p_listed:ls.checked}); ok.disabled=false;
-    if(r.error){ toast(emoteErr(r.error)); return; } toast(ls.checked?'만들어서 상점에 올렸어요':'만들었어요. 내 이모티콘에서 보낼 수 있어요'); push(); px=new Uint8Array(1024); hist=[]; nm.value=''; redraw(); loadMine(); };
+  ok.onclick=async function(){ if(!img){ toast('PNG 그림을 골라 주세요'); return; } var n=nm.value.trim(); if(!n){ toast('이름을 적어 주세요'); return; }
+    ok.disabled=true; var r=await sb.rpc('ffc_emote_create',{p_name:n,p_img:img,p_price:Math.max(0,Math.min(10000,parseInt(pr.value,10)||0)),p_listed:ls.checked}); ok.disabled=false;
+    if(r.error){ toast(emoteErr(r.error)); return; } toast(ls.checked?'만들어서 상점에 올렸어요':'만들었어요. 내 이모티콘에서 보낼 수 있어요'); img=null; nm.value=''; showPrev(); loadMine(); };
   act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(ev){ if(ev.target===md) md.remove(); }; document.body.appendChild(md);
-  sync(); redraw(); loadMine();
+  showPrev(); loadMine();
 }
 
 /* ---------- 메시지 보내기 (종류별) ---------- */
