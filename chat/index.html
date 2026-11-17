@@ -440,7 +440,18 @@ function add(m){
   paintMsgs(near||m.user_id===me.id);
   var rm=cur; if(rm){ rm.last_text=m.body.slice(0,80); rm.last_at=m.created_at; rm.unread=0; rooms.sort(function(a,b){return new Date(b.last_at)-new Date(a.last_at);}); paintList(); markRead(); }
 }
-async function markRead(){ if(!cur) return; var now=new Date().toISOString(); cur.read=now; cur.unread=0; await sb.from('ffc_members').update({last_read_at:now}).eq('room_id',cur.id).eq('user_id',me.id); paintList(); }
+async function clearNotes(){
+  try{ if(!cur||!navigator.serviceWorker) return; var rg=await navigator.serviceWorker.getRegistration(); if(!rg) return; var l=await rg.getNotifications(); l.forEach(function(n){ var r=n.data&&n.data.room; if(!r||r===cur.id) n.close(); }); }catch(e){}
+}
+async function markRead(){
+  if(!cur) return; cur.unread=0; paintList();
+  if(document.visibilityState==='hidden') return;
+  var last=null; msgs.forEach(function(x){ if(x.created_at&&(!last||x.created_at>last)) last=x.created_at; });
+  var ts=last||new Date().toISOString(); if(cur.read&&cur.read>ts) ts=cur.read;
+  cur.read=ts; clearNotes();
+  try{ await sb.from('ffc_members').update({last_read_at:ts}).eq('room_id',cur.id).eq('user_id',me.id); }catch(e){}
+  if(cur) cur.unread=0; paintList();
+}
 function subscribe(){
   chan=sb.channel('ffc-'+me.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'ffc_msgs'},async function(p){
     var m=p.new; if(!m) return;
@@ -1025,9 +1036,9 @@ async function syncNow(full){
   }catch(e){} finally{ syncBusy=false; }
 }
 var tick=0; setInterval(function(){ tick++; if(document.visibilityState!=='hidden'&&(!live||tick%3===0)) syncNow(false); }, 4000);
-document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') syncNow(true); });
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible'){ syncNow(true); markRead(); } });
 window.addEventListener('online',function(){ syncNow(true); });
-window.addEventListener('focus',function(){ syncNow(false); });
+window.addEventListener('focus',function(){ syncNow(false); markRead(); });
 
 /* ===== 앱 설치: 이 채팅만 따로 설치돼요 (설치한 앱도 사이트를 그대로 열어서 업데이트가 같이 따라와요) ===== */
 var instEv=null;
