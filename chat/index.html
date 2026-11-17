@@ -193,7 +193,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .imgs img{display:block;width:100%;height:100%;max-height:340px;object-fit:cover;background:rgba(127,127,127,.15)}
 .imgs.n2 img,.imgs.n3 img,.imgs.n4 img{aspect-ratio:1/1}
 .main.drop{outline:2px dashed var(--fry);outline-offset:-8px}
-.plink{cursor:pointer}.nm.plink:hover{text-decoration:underline}
+.typing{min-height:0;padding:0 16px;font-size:12px;color:var(--dim)}.typing.on{padding:4px 16px}.plink{cursor:pointer}.nm.plink:hover{text-decoration:underline}
 .av.pic{padding:0;overflow:hidden;background:#222}.av img{width:100%;height:100%;object-fit:cover;display:block}
 .av.mosaic{display:grid;padding:1px;gap:1px;overflow:hidden;border-radius:16px;background:var(--line)}.av.mosaic.n2{grid-template-columns:1fr 1fr}.av.mosaic.n3,.av.mosaic.n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
 .av.mosaic .av.mini{width:100%;height:100%;border-radius:0;border:0;font-size:10px}
@@ -359,7 +359,7 @@ async function openRoom(id){
   var rm=rooms.find(function(x){return x.id===id;});
   if(!rm){ await loadRooms(); rm=rooms.find(function(x){return x.id===id;}); }
   if(!rm){ toast('대화방을 찾을 수 없어요'); return; }
-  cur=rm; msgs=[]; seen={}; oldest=null;
+  cur=rm; msgs=[]; seen={}; oldest=null; typeOpen();
   $('#app').classList.add('open'); paintMain(); paintList();
   var r=await sb.from('ffc_msgs').select(COLS).eq('room_id',id).order('id',{ascending:false}).limit(60);
   var rows=((r&&r.data)||[]).reverse(); await nameOf(rows.map(function(x){return x.user_id;})); loadAvatars(rows.map(function(x){return x.user_id;}));
@@ -389,7 +389,7 @@ function paintMain(){
   var hav=roomAv(cur); t.style.cursor='pointer'; t.onclick=membersModal; ch.appendChild(back); ch.appendChild(hav); ch.appendChild(t); ch.appendChild(more); main.appendChild(ch);
   var box=el('div','msgs'); box.id='msgs'; main.appendChild(box); setTimeout(paintNotice,0);
   pendSt=null; var bar=el('div','bar'); var ta=el('textarea'); ta.rows=1; ta.maxLength=2000; ta.placeholder='메시지를 입력하세요'; var send=el('button','','전송'); send.disabled=true;
-  ta.oninput=function(){ send.disabled=!(ta.value.trim()||pend.length||pendSt); ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,120)+'px'; };
+  ta.oninput=function(){ if(ta.value.trim()) typeSend(); send.disabled=!(ta.value.trim()||pend.length||pendSt); ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,120)+'px'; };
   ta.onpaste=function(e){ var fs=[].filter.call((e.clipboardData&&e.clipboardData.files)||[],function(f){ return /^image\//.test(f.type); }); if(fs.length){ e.preventDefault(); addPend(fs); } };
   main.ondragover=function(e){ if(e.dataTransfer&&[].some.call(e.dataTransfer.items||[],function(i){ return i.kind==='file'; })){ e.preventDefault(); main.classList.add('drop'); } };
   main.ondragleave=function(e){ if(e.target===main||!main.contains(e.relatedTarget)) main.classList.remove('drop'); };
@@ -416,7 +416,7 @@ function paintMain(){
   if(others().length) tb('🎲','Hub Coin 내기',betModal);
   if(!V2) [].forEach.call(tools.querySelectorAll('.tb'),function(b){ b.classList.add('off'); b.title='준비 중'; b.onclick=function(e){ e.preventDefault(); e.stopPropagation(); toast('아직 준비 중이에요'); }; });
   document.addEventListener('click',function(e){ [].forEach.call(document.querySelectorAll('.stkp,.aip'),function(p){ if(!p.contains(e.target)) p.remove(); }); });
-  var comp=el('div','comp'); comp.appendChild(tools); var row2=el('div','row2'); row2.appendChild(ta); row2.appendChild(send); comp.appendChild(row2); bar.appendChild(comp); main.appendChild(bar); paintPend(); paintReplyBar();
+  var comp=el('div','comp'); comp.appendChild(tools); var row2=el('div','row2'); row2.appendChild(ta); row2.appendChild(send); comp.appendChild(row2); bar.appendChild(comp); var tp=el('div','typing'); tp.id='typing'; main.appendChild(tp); main.appendChild(bar); typePaint(); paintPend(); paintReplyBar();
 }
 function paintMsgs(bottom){
   var box=$('#msgs'); if(!box) return; var keep=box.scrollHeight-box.scrollTop; box.innerHTML='';
@@ -449,7 +449,7 @@ async function older(){
   rows.forEach(function(x){ seen[x.id]=1; }); msgs=rows.concat(msgs); oldest=rows.length?rows[0].id:null; if(rows.length<60) oldest=null; paintMsgs(false);
 }
 function add(m){
-  if(seen[m.id]) return; seen[m.id]=1; msgs.push(m);
+  if(seen[m.id]) return; seen[m.id]=1; msgs.push(m); if(typers[m.user_id]){ delete typers[m.user_id]; typePaint(); }
   var box=$('#msgs'), near=box&&box.scrollHeight-box.scrollTop-box.clientHeight<140;
   paintMsgs(near||m.user_id===me.id);
   var rm=cur; if(rm){ rm.last_text=m.body.slice(0,80); rm.last_at=m.created_at; rm.unread=0; rooms.sort(function(a,b){return new Date(b.last_at)-new Date(a.last_at);}); paintList(); markRead(); }
@@ -466,6 +466,23 @@ async function markRead(){
   try{ await sb.from('ffc_members').update({last_read_at:ts}).eq('room_id',cur.id).eq('user_id',me.id); }catch(e){}
   if(cur) cur.unread=0; paintList();
 }
+
+/* ---------- ✍️ 입력 중 표시 (Realtime 브로드캐스트, DB 없이 동작) ---------- */
+var typers={}, typeCh=null, typeRid=null, typeLast=0;
+function typeOpen(){
+  var rid=cur&&cur.id; if(rid===typeRid) return;
+  if(typeCh){ try{ sb.removeChannel(typeCh); }catch(e){} typeCh=null; } typeRid=rid; typers={}; typePaint(); if(!rid) return;
+  try{ typeCh=sb.channel('typing-'+rid,{config:{broadcast:{self:false}}}).on('broadcast',{event:'t'},function(m){ var u=m&&m.payload&&m.payload.u; if(!u||u===me.id) return; typers[u]=Date.now(); typePaint(); }).subscribe(); }catch(e){ typeCh=null; }
+}
+function typeSend(){ var n=Date.now(); if(!typeCh||n-typeLast<2500) return; typeLast=n; try{ typeCh.send({type:'broadcast',event:'t',payload:{u:me.id}}); }catch(e){} }
+function typePaint(){
+  var d=document.getElementById('typing'); if(!d) return; var n=Date.now(), a=[];
+  Object.keys(typers).forEach(function(u){ if(n-typers[u]<4500) a.push(names[u]||'상대'); else delete typers[u]; });
+  if(!a.length){ d.textContent=''; d.classList.remove('on'); return; }
+  d.textContent=(a.length>2?a[0]+' 외 '+(a.length-1)+'명':a.join(', '))+'님이 입력 중…'; d.classList.add('on');
+}
+setInterval(function(){ if(Object.keys(typers).length) typePaint(); },1000);
+
 function subscribe(){
   chan=sb.channel('ffc-'+me.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'ffc_msgs'},async function(p){
     var m=p.new; if(!m) return;
