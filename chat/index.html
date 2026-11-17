@@ -165,6 +165,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .res .cell b{font-size:16px}.res .cell span{font-size:11px;color:var(--dim)}
 .res .last{margin-top:8px;font-size:13px;font-weight:700}.res .last.w{color:#4cc38a}.res .last.l{color:#e5484d}
 .bet .vs{font-weight:800;font-size:15px;margin-bottom:6px}.bet .st,.brk .st{font-size:13px;color:var(--dim);margin-top:6px}
+.poll .po,.poll .pcl{color:var(--text)}.poll .po{position:relative;display:flex;justify-content:space-between;gap:10px;width:100%;margin-top:6px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:none;overflow:hidden;font-weight:700;font-size:13px;text-align:left}.poll .po.on{border-color:var(--fry)}.poll .pb{position:absolute;left:0;top:0;bottom:0;background:rgba(217,180,95,.22);z-index:0;transition:width .25s}.poll .pt,.poll .pn{position:relative;z-index:1}.poll .pn{color:var(--dim);font-weight:600;white-space:nowrap}.poll .st{font-size:12px;color:var(--dim);margin-top:8px}.poll .pcl{margin-top:8px;padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:none;font-size:12px;font-weight:700}.popts{display:flex;flex-direction:column;gap:6px;margin-top:6px}
 .ba{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ba button{padding:7px 14px;border-radius:10px;border:1px solid var(--line);background:none;font-weight:700;font-size:13px}
 .ba button.ok{background:var(--mine);color:var(--mineText);border-color:transparent}
 .rsc{overflow-x:auto;padding-bottom:4px}.rounds{display:flex;gap:14px;align-items:stretch}
@@ -253,7 +254,7 @@ function toast(s){ var t=el('div','toast',s); document.body.appendChild(t); setT
 
 async function boot(){
   if(!window.FFAuth){ return setTimeout(boot,200); }
-  await FFAuth.ready; sb=FFAuth.client(); me=FFAuth.user(); await detectV2(); await detectV3(); await detectEm();
+  await FFAuth.ready; sb=FFAuth.client(); me=FFAuth.user(); await detectV2(); await detectV3(); await detectEm(); await detectPoll();
   FFAuth.onChange(function(){ var u=FFAuth.user(); if((u&&u.id)!==(me&&me.id)){ me=u; start(); } });
   start();
 }
@@ -397,6 +398,7 @@ function paintMain(){
   tb('😊','스티커',function(b){ stickerPanel(tools); });
   tb('⏰','예약 메시지',function(){ schedModal(ta.value.trim()); });
   tb('🎮','전적 공유',resultModal);
+  if(PL) tb('📊','투표',pollModal);
   tb('🤖','AI 부르기',function(){ var old=$('.aip'); if(old){ old.remove(); return; } var p=el('div','aip'); Object.keys(AIS).forEach(function(k){ var x=el('button','',(k==='premus'?'🧠 ':k==='lectus'?'💡 ':'⚡ ')+'@'+AIS[k].n); x.onclick=function(){ p.remove(); ta.value='@'+AIS[k].n+' '+ta.value.replace(AIRE,''); ta.focus(); ta.oninput(); }; p.appendChild(x); }); p.appendChild(el('div','hint','AI는 내 기기에서 돌아가요. 처음 한 번은 모델을 받아요.')); tools.appendChild(p); });
   if(others().length) tb('🎲','Hub Coin 내기',betModal);
   if(!V2) [].forEach.call(tools.querySelectorAll('.tb'),function(b){ b.classList.add('off'); b.title='준비 중'; b.onclick=function(e){ e.preventDefault(); e.stopPropagation(); toast('아직 준비 중이에요'); }; });
@@ -473,7 +475,7 @@ function groupModal(){
   act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
 }
 /* ===== 확장: 스티커, 전적 카드, 자체 AI, Hub Coin 내기, 대진표, 위키 미리보기 ===== */
-var V2=false, bets={}, wikiPages=null, aiBusy=false;
+var V2=false, PL=false, polls={}, pollVotes={}, pollWant={}, bets={}, wikiPages=null, aiBusy=false;
 var GAMES={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',tumblecrown:'Tumble Crown',gatecrash:'Gatecrash',dummyparty:'Dummy Party',vowkeep:'Vowkeep',isleport:'Isleport'};
 function gname(g){ return GAMES[g]||g; }
 var COLS='id,user_id,body,created_at';
@@ -691,6 +693,7 @@ function renderBody(m){
   if(k==='image') return imageBox(meta);
   if(k==='result') return resultCard(meta);
   if(k==='bet') return betCard(meta.bet);
+  if(k==='poll'&&PL) return pollCard(meta.poll);
   if(k==='bracket'){ var o=el('div','b'); o.textContent='🏆 (없어진 대진표)'; return o; }
   var b=el('div','b'+(k==='ai'?' ai':''));
   if(k==='ai'){ var h=el('div','aih'); h.textContent='🤖 '+aiName(meta.model)+(meta.by?' · '+(names[meta.by]||'')+'님이 불렀어요':''); b.appendChild(h); }
@@ -974,12 +977,60 @@ async function schedModal(text){
   act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
 }
 
-/* ---------- 실시간: 내기·대진표 바뀜 ---------- */
+
+/* ---------- 📊 투표 (supabase-chat-poll-2026-11-17.sql) ---------- */
+async function detectPoll(){ if(!V2) return; try{ var t=await sb.from('ffc_polls').select('id').limit(1); PL=!t.error; }catch(e){ PL=false; } }
+function pollModal(){
+  if(!V2){ toast('아직 준비 중이에요'); return; }
+  var md=el('div','modal'), box=el('div','box'); box.appendChild(el('h3','','📊 투표 만들기'));
+  var f=el('div','form'), q=el('input'); q.type='text'; q.maxLength=120; q.placeholder='질문 (예: 오늘 몇 시에 할까요?)'; f.appendChild(q);
+  var list=el('div','popts'), ins=[];
+  function addOpt(){ if(ins.length>=8) return; var i=el('input'); i.type='text'; i.maxLength=40; i.placeholder='선택지 '+(ins.length+1); ins.push(i); list.appendChild(i); }
+  addOpt(); addOpt(); f.appendChild(list);
+  var more=el('button','','＋ 선택지 추가'); more.type='button'; more.onclick=function(){ addOpt(); if(ins.length>=8) more.disabled=true; }; f.appendChild(more);
+  var ml=el('label','row'); var mc=el('input'); mc.type='checkbox'; ml.appendChild(mc); ml.appendChild(el('span','rm','여러 개 고를 수 있게')); f.appendChild(ml);
+  box.appendChild(f);
+  var act=el('div','act'); var no=el('button','','취소'), ok=el('button','ok','올리기'); no.onclick=function(){ md.remove(); };
+  ok.onclick=async function(){ var qq=q.value.trim(), os=ins.map(function(i){return i.value.trim();}).filter(Boolean);
+    if(!qq){ toast('질문을 적어 주세요'); return; } if(os.length<2){ toast('선택지는 두 개 이상 필요해요'); return; }
+    ok.disabled=true; var r=await sb.rpc('ffc_poll_new',{rid:cur.id,question:qq,options:os,allow_multi:mc.checked}); ok.disabled=false;
+    if(r.error){ toast('투표를 올리지 못했어요'); return; } md.remove(); };
+  act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
+}
+async function loadPoll(id){
+  var a=await sb.from('ffc_polls').select('*').eq('id',id).maybeSingle(), v=await sb.from('ffc_poll_votes').select('user_id,opt').eq('poll_id',id);
+  if(a&&a.data){ polls[id]=a.data; pollVotes[id]=(v&&v.data)||[]; await nameOf([a.data.user_id].concat(pollVotes[id].map(function(x){return x.user_id;}))); paintMsgs(false); }
+}
+function pollCard(id){
+  var c=el('div','card poll'), d=polls[id];
+  if(!d){ if(!pollWant[id]){ pollWant[id]=1; loadPoll(id); } c.appendChild(el('div','ct','📊 투표 불러오는 중…')); return c; }
+  var vs=pollVotes[id]||[], voters={}; vs.forEach(function(x){ voters[x.user_id]=1; });
+  c.appendChild(el('div','ct','📊 '+d.q));
+  var mine={}; vs.forEach(function(x){ if(x.user_id===me.id) mine[x.opt]=1; });
+  var total=Object.keys(voters).length;
+  d.opts.forEach(function(t,i){
+    var who=vs.filter(function(x){return x.opt===i;}), n=who.length, pc=total?Math.round(n*100/total):0;
+    var b=el('button','po'+(mine[i]?' on':'')); b.type='button'; b.disabled=!!d.closed;
+    var bar=el('span','pb'); bar.style.width=pc+'%'; b.appendChild(bar);
+    b.appendChild(el('span','pt',(mine[i]?'✓ ':'')+t)); b.appendChild(el('span','pn',n+'표 · '+pc+'%'));
+    if(n) b.title=who.map(function(x){return names[x.user_id]||'?';}).join(', ');
+    b.onclick=async function(){ var r=await sb.rpc('ffc_poll_vote',{pid:id,o:i}); if(r.error){ toast(/closed/.test(r.error.message)?'끝난 투표예요':'투표하지 못했어요'); return; } loadPoll(id); };
+    c.appendChild(b); });
+  var st=el('div','st',(d.closed?'끝난 투표 · ':'')+total+'명 참여'+(d.multi&&!d.closed?' · 여러 개 선택 가능':'')+' · '+(names[d.user_id]||'?')+'님');
+  c.appendChild(st);
+  if(!d.closed&&d.user_id===me.id){ var cl=el('button','','투표 끝내기'); cl.type='button'; cl.className='pcl'; cl.onclick=async function(){ var r=await sb.rpc('ffc_poll_close',{pid:id}); if(r.error){ toast('끝내지 못했어요'); return; } loadPoll(id); }; c.appendChild(cl); }
+  if(d.closed) c.classList.add('off');
+  return c;
+}
+
+/* ---------- 실시간: 내기·투표 바뀜 ---------- */
 function subscribeExt(ch){
   if(!V2) return ch;
   if(V3) ch=ch.on('postgres_changes',{event:'UPDATE',schema:'public',table:'ffc_msgs'},function(p){ var d=p.new; if(!d||!cur||d.room_id!==cur.id) return; var m=msgs.find(function(x){ return x.id===d.id; }); if(m){ m.kind=d.kind; m.body=d.body; m.meta=d.meta; paintMsgs(false); } })
     .on('postgres_changes',{event:'*',schema:'public',table:'ffc_reacts'},function(p){ var d=p.eventType==='DELETE'?p.old:p.new; if(!d||!cur||d.room_id!==cur.id) return; var a=reacts[d.msg_id]=(reacts[d.msg_id]||[]).filter(function(x){ return !(x.user_id===d.user_id&&x.emoji===d.emoji); }); if(p.eventType!=='DELETE') a.push(d); paintMsgs(false); })
     .on('postgres_changes',{event:'UPDATE',schema:'public',table:'ffc_rooms'},function(p){ var d=p.new; if(!d) return; var rm=rooms.find(function(x){ return x.id===d.id; }); if(rm) rm.notice=d.notice||null; if(cur&&cur.id===d.id){ cur.notice=d.notice||null; paintNotice(); } });
+  if(PL) ch=ch.on('postgres_changes',{event:'*',schema:'public',table:'ffc_poll_votes'},function(p){ var d=p.new&&p.new.poll_id?p.new:p.old; if(d&&d.poll_id&&polls[d.poll_id]) loadPoll(d.poll_id); })
+         .on('postgres_changes',{event:'UPDATE',schema:'public',table:'ffc_polls'},function(p){ var d=p.new; if(d&&polls[d.id]) loadPoll(d.id); });
   return ch.on('postgres_changes',{event:'*',schema:'public',table:'ffc_bets'},function(p){ var d=p.new; if(d&&d.id){ bets[d.id]=d; nameOf([d.a,d.b]).then(function(){ if(cur&&d.room_id===cur.id) paintMsgs(false); }); } });
 }
 
