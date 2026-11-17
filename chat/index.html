@@ -140,7 +140,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .emc{display:flex;flex-direction:column;align-items:center;gap:2px}.emc small{font-size:10px;color:var(--dim);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.emnew span{font-size:30px;line-height:52px;color:var(--fry)}.emhint{grid-column:1/-1;text-align:center;padding:14px 4px}
 .shopv{position:fixed;inset:0;z-index:25;background:var(--bg);display:flex;flex-direction:column}.shoph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line)}.shoph h2{margin:0;font-size:17px;flex:1;min-width:120px}.shopb{flex:1;overflow-y:auto;padding:14px;-webkit-overflow-scrolling:touch}.shopin{max-width:980px;margin:0 auto}
 .sb{padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:none;font-size:13px;font-weight:700;color:var(--text);margin:2px 0}.sb.on,.sb.ok{background:var(--mine);color:var(--mineText);border-color:transparent}.sb:disabled{opacity:.5}
-.shopq{display:block;width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:15px;margin:4px 0}.pk1{grid-template-columns:1fr;min-height:120px}.pkone .emrow{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}.pkone .emt{flex:1;min-width:0;display:flex;flex-direction:column}.pkone .emt small{color:var(--dim);font-size:12px}.pkpi{width:110px;display:inline-block}.pkpe{border-top:1px solid var(--line);padding-top:10px}.shopsel{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}.shopsl{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--dim);font-weight:700}.shopse{width:100%;padding:9px 10px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:14px;font-weight:700;cursor:pointer}.shopse:focus{outline:1px solid var(--fry)}
+.shopq{display:block;width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:15px;margin:4px 0}.emc.rm{outline:2px dashed #e5566d;border-radius:10px}.emnew.rmon{background:rgba(229,86,109,.18)}.pk1{grid-template-columns:1fr;min-height:120px}.pkone .emrow{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}.pkone .emt{flex:1;min-width:0;display:flex;flex-direction:column}.pkone .emt small{color:var(--dim);font-size:12px}.pkpi{width:110px;display:inline-block}.pkpe{border-top:1px solid var(--line);padding-top:10px}.shopsel{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}.shopsl{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--dim);font-weight:700}.shopse{width:100%;padding:9px 10px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:14px;font-weight:700;cursor:pointer}.shopse:focus{outline:1px solid var(--fry)}
 .pkg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-top:12px}.pkc{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;min-width:0}.pkp{display:grid;grid-template-columns:1fr 1fr;gap:4px;justify-items:center;align-items:center;min-height:100px;padding:6px;border-radius:10px;background:repeating-conic-gradient(#2a2619 0 25%,#1d1a12 0 50%) 0 0/16px 16px}
 .pkn{font-weight:800;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pks{font-size:12px;color:var(--dim)}.pkr{display:flex;justify-content:space-between;align-items:center}.pklk{border:0;background:none;color:var(--dim);font-weight:700;font-size:13px;padding:2px 0}.pklk.on{color:#e5566d}.pkprice{font-weight:800;color:var(--fry);font-size:13px}.pkt{margin:12px 0 4px;font-size:18px}
 .pki{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin:12px 0}.pkic{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;border:2px solid transparent;background:none;color:var(--text);min-width:0}.pkic small{font-size:11px;color:var(--dim);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pkic.sel.on{border-color:var(--fry);background:rgba(217,180,95,.12)}.shopact{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
@@ -635,17 +635,21 @@ function emoteCell(e,note,fn){ var b=el('button','stkb emc'); b.type='button'; b
 
 function stickerPanel(anchor){
   var old=$('.stkp'); if(old){ old.remove(); return; }
-  var p=el('div','stkp'), tab='base', sort='hot'; anchor.appendChild(p);
+  var p=el('div','stkp'), tab='base', sort='hot', rmMode=false; anchor.appendChild(p);
   function tabs(){ if(!EM) return; var bar=el('div','emtabs'); [['base','기본'],['own','내 이모티콘'],['shop','상점']].forEach(function(t){ var b=el('button',tab===t[0]?'on':'',t[1]); b.type='button'; b.onclick=function(ev){ ev.stopPropagation(); if(t[0]==='shop'){ p.remove(); emoteShop(); return; } tab=t[0]; paint(); }; bar.appendChild(b); }); p.appendChild(bar); }
   function paint(){ p.innerHTML=''; tabs();
     if(tab==='own') return ownTab();
     STK.forEach(function(s){ var b=el('button','stkb'); b.title=s.t; b.innerHTML='<svg viewBox="0 0 120 120" width="56" height="56">'+s.s+'</svg>'; b.onclick=function(){ p.remove(); pickSt({s:s.id},s.t,function(){ var d=el('span','stp'); d.innerHTML='<svg viewBox="0 0 120 120" width="40" height="40">'+s.s+'</svg>'; return d; }); }; p.appendChild(b); }); }
   async function ownTab(){ var mk=el('button','stkb emc emnew'); mk.type='button'; mk.innerHTML='<span>＋</span><small>그림 만들기</small>'; mk.onclick=function(ev){ ev.stopPropagation(); p.remove(); emoteStudio(); }; p.appendChild(mk);
     var pk=el('button','stkb emc emnew'); pk.type='button'; pk.innerHTML='<span>🎁</span><small>내 팩</small>'; pk.onclick=function(ev){ ev.stopPropagation(); p.remove(); emoteShop(true); }; p.appendChild(pk);
-    var r=await sb.from('ffc_emote_own').select('emote_id,ffc_emotes(id,name,px,img)').eq('user_id',me.id).order('got_at',{ascending:false}); if(tab!=='own') return;
-    var a=((r&&r.data)||[]).map(function(x){ return x.ffc_emotes; }).filter(emOk);
-    a.forEach(function(e){ p.appendChild(emoteCell(e,e.name,function(){ p.remove(); pickEmote(e); })); });
-    if(!a.length) p.appendChild(el('div','hint emhint','아직 없어요. ＋로 직접 만들거나 상점에서 팩을 가져와 보세요.')); }
+    var rb=el('button','stkb emc emnew'+(rmMode?' rmon':'')); rb.type='button'; rb.innerHTML='<span>🗑</span><small>'+(rmMode?'정리 끝':'빼기')+'</small>'; rb.onclick=function(ev){ ev.stopPropagation(); rmMode=!rmMode; paint(); }; p.appendChild(rb);
+    if(rmMode) p.appendChild(el('div','hint emhint','내 이모티콘에서 뺄 것을 누르세요. 산 기록은 남아서 상점에서 “다시 넣기”로 되돌릴 수 있어요.'));
+    var r=await sb.from('ffc_emote_own').select('emote_id,hidden,ffc_emotes(id,name,px,img)').eq('user_id',me.id).order('got_at',{ascending:false});
+    if(r&&r.error) r=await sb.from('ffc_emote_own').select('emote_id,ffc_emotes(id,name,px,img)').eq('user_id',me.id).order('got_at',{ascending:false}); if(tab!=='own') return;
+    var a=((r&&r.data)||[]).filter(function(x){ return !x.hidden; }).map(function(x){ return x.ffc_emotes; }).filter(emOk);
+    a.forEach(function(e){ var c=emoteCell(e,e.name,function(ev){ if(!rmMode){ p.remove(); pickEmote(e); return; } ev.stopPropagation();
+        sb.rpc('ffc_emote_hide',{p_ids:[e.id],p_hidden:true}).then(function(x){ if(x.error){ toast('지금은 뺄 수 없어요. 서버 준비가 끝나면 쓸 수 있어요'); return; } c.remove(); toast('내 이모티콘에서 뺐어요'); }); }); if(rmMode) c.classList.add('rm'); p.appendChild(c); });
+    if(!a.length) p.appendChild(el('div','hint emhint','아직 없어요. ＋로 직접 만들거나 상점에서 가져와 보세요.')); }
   paint();
 }
 
@@ -661,7 +665,7 @@ function pkErr(er){ var m=String((er&&er.message)||''); return /not yours/.test(
 function emoteShop(startMine){
   var old=$('.shopv'); if(old) old.remove();
   var v=el('div','shopv'), hd=el('div','shoph'), main=el('div','shopb'), inner=el('div','shopin'); main.appendChild(inner);
-  var st={q:'',kind:'pack',sort:'hot',price:'all',size:'all',view:'all'}, ownIds=[], ownEm=[], likeIds=[], coinEl=el('span','pks','');
+  var st={q:'',kind:'pack',sort:'hot',price:'all',size:'all',view:'all'}, ownIds=[], ownEm=[], hidEm=[], likeIds=[], coinEl=el('span','pks','');
   var bk=el('button','sb','✕ 닫기'); bk.type='button'; bk.onclick=function(){ v.remove(); };
   var mine=el('button','sb','🎁 내 팩 · 만들기'); mine.type='button'; mine.onclick=function(){ mineList(); };
   var home=el('button','sb on','🛍 상점'); home.type='button'; home.onclick=function(){ listPage(); };
@@ -669,7 +673,7 @@ function emoteShop(startMine){
   v.appendChild(hd); v.appendChild(main); document.body.appendChild(v);
   function page(fn){ inner.innerHTML=''; main.scrollTop=0; fn(inner); }
   async function refreshMe(){ try{ var a=await sb.from('ffc_pack_own').select('pack_id').eq('user_id',me.id), b=await sb.from('ffc_pack_likes').select('pack_id').eq('user_id',me.id);
-      var oe=await sb.from('ffc_emote_own').select('emote_id').eq('user_id',me.id); ownEm=((oe&&oe.data)||[]).map(function(x){ return x.emote_id; });
+      var oe=await sb.from('ffc_emote_own').select('emote_id,hidden').eq('user_id',me.id); if(oe&&oe.error) oe=await sb.from('ffc_emote_own').select('emote_id').eq('user_id',me.id); ownEm=((oe&&oe.data)||[]).map(function(x){ return x.emote_id; }); hidEm=((oe&&oe.data)||[]).filter(function(x){ return x.hidden; }).map(function(x){ return x.emote_id; });
       ownIds=((a&&a.data)||[]).map(function(x){ return x.pack_id; }); likeIds=((b&&b.data)||[]).map(function(x){ return x.pack_id; });
       var c=await sb.from('ff_coins').select('coins').eq('user_id',me.id).maybeSingle(); coinEl.textContent='내 Hub Coin '+((c&&c.data&&c.data.coins)||0); }catch(x){} }
   function chips(box,label,opts,key,onch){ var row=box.querySelector('.shopsel'); if(!row){ row=el('div','shopsel'); box.appendChild(row); }
@@ -736,11 +740,12 @@ function emoteShop(startMine){
       var have=ownEm.indexOf(e.id)>=0||e.owner===me.id, act=el('div','shopact');
       var ok=el('button','sb ok',have?'가지고 있어요':(e.price>0?'🪙 '+e.price+' 코인으로 사기':'무료로 가져오기')); ok.type='button'; if(have||!e.listed) ok.disabled=true;
       ok.onclick=async function(){ ok.disabled=true; var r=await sb.rpc('ffc_emote_buy',{p_id:e.id}); if(r.error){ toast(emoteErr(r.error)); ok.disabled=false; return; } toast('내 이모티콘에 담았어요'); await refreshMe(); detailOne(e); };
-      act.appendChild(ok); box.appendChild(act);
+      act.appendChild(ok); if(hidEm.indexOf(e.id)>=0) act.appendChild(reBtn([e.id],function(){ detailOne(e); })); box.appendChild(act);
       if(e.owner===me.id) box.appendChild(oneEdit(e,function(){ detailOne(e); }));
       sb.rpc('ff_is_admin').then(function(a){ if(a&&a.data&&e.owner!==me.id){ var d=el('button','sb','삭제(관리자)'); d.type='button'; d.onclick=async function(){ var r=await sb.from('ffc_emotes').delete().eq('id',e.id); if(r.error){ toast('지우지 못했어요'); return; } toast('지웠어요'); listPage(); }; act.appendChild(d); } }).catch(function(){});
     });
   }
+  function reBtn(ids,after){ var b=el('button','sb','↩ 내 이모티콘에 다시 넣기'); b.type='button'; b.onclick=async function(){ b.disabled=true; var r=await sb.rpc('ffc_emote_hide',{p_ids:ids,p_hidden:false}); if(r.error){ toast('다시 넣지 못했어요'); b.disabled=false; return; } toast('내 이모티콘에 다시 넣었어요'); await refreshMe(); after&&after(); }; return b; }
   function oneEdit(e,after){ var pe=el('div','shopact pkpe'); pe.appendChild(el('span','pks','단품 가격 (Hub Coin)')); var pi=el('input','shopq pkpi'); pi.type='number'; pi.min=0; pi.max=10000; pi.value=e.price||0;
     var lk=el('input'); lk.type='checkbox'; lk.checked=!!e.listed; var ll=el('label','emck'); ll.appendChild(lk); ll.appendChild(document.createTextNode(' 단품으로 상점에 올림'));
     var sv=el('button','sb ok','저장'); sv.type='button';
@@ -772,7 +777,8 @@ function emoteShop(startMine){
         pe.appendChild(pi); pe.appendChild(ll); pe.appendChild(ps); box.appendChild(pe); }
       sb.rpc('ff_is_admin').then(function(a){ if(a&&a.data&&p.owner!==me.id){ var d=el('button','sb','삭제(관리자)'); d.type='button'; d.onclick=async function(){ var r=await sb.from('ffc_emote_packs').delete().eq('id',p.id); if(r.error){ toast('지우지 못했어요'); return; } toast('지웠어요'); listPage(); }; act.appendChild(d); } }).catch(function(){});
       box.appendChild(act);
-      sb.from('ffc_pack_items').select('pack_id,emote_id,sid,pos,ffc_emotes(id,name,px,img)').eq('pack_id',p.id).order('pos').then(function(r){ items.innerHTML=''; ((r&&r.data)||[]).forEach(function(x){ var n=itemVis(x,72); if(!n) return; var c=el('div','pkic'); c.appendChild(n); c.appendChild(el('small','',x.sid?(STK.find(function(s){ return s.id===x.sid; })||{}).t||'':x.ffc_emotes&&x.ffc_emotes.name||'')); items.appendChild(c); }); if(!items.firstChild) items.appendChild(el('div','hint emhint','안에 든 것을 볼 수 없어요')); });
+      sb.from('ffc_pack_items').select('pack_id,emote_id,sid,pos,ffc_emotes(id,name,px,img)').eq('pack_id',p.id).order('pos').then(function(r){ items.innerHTML=''; ((r&&r.data)||[]).forEach(function(x){ var n=itemVis(x,72); if(!n) return; var c=el('div','pkic'); c.appendChild(n); c.appendChild(el('small','',x.sid?(STK.find(function(s){ return s.id===x.sid; })||{}).t||'':x.ffc_emotes&&x.ffc_emotes.name||'')); items.appendChild(c); }); if(!items.firstChild) items.appendChild(el('div','hint emhint','안에 든 것을 볼 수 없어요'));
+        var hs=((r&&r.data)||[]).filter(function(x){ return x.emote_id&&hidEm.indexOf(x.emote_id)>=0; }).map(function(x){ return x.emote_id; }); if(have&&hs.length) act.appendChild(reBtn(hs,function(){ detail(p); })); });
     });
   }
   async function mineList(){
@@ -850,14 +856,34 @@ function emoteStudio(onDone){
   var cl=el('button','','지우기'); cl.type='button'; cl.onclick=function(){ img=null; showPrev(); }; tl.appendChild(cl); box.appendChild(tl);
   var f=el('div','emform'); var nm=el('input'); nm.type='text'; nm.maxLength=12; nm.placeholder='이름 (12자까지)';
   var l1=el('label','fl2'); l1.appendChild(el('span','','이름')); l1.appendChild(nm);
-  f.appendChild(l1); f.appendChild(el('div','hint','만든 이모티콘은 “내 팩”에서 팩으로 묶어 상점에 올릴 수 있어요.')); box.appendChild(f);
+  f.appendChild(l1);
+  var dest=el('select','shopse'), packs=[], dpr=el('input','shopq'), dnm=el('input','shopq');
+  [['none','올리지 않고 내 이모티콘에만 두기'],['one','단품으로 상점에 올리기'],['new','새 팩을 만들어 넣기']].forEach(function(o){ var op=el('option','',o[1]); op.value=o[0]; dest.appendChild(op); });
+  dpr.type='number'; dpr.min=0; dpr.max=10000; dpr.value=0; dnm.type='text'; dnm.maxLength=20; dnm.placeholder='새 팩 이름 (20자까지)';
+  var l2=el('label','fl2'); l2.appendChild(el('span','','올리는 곳')); l2.appendChild(dest);
+  var l3=el('label','fl2'); l3.appendChild(el('span','','가격 (Hub Coin, 0이면 무료)')); l3.appendChild(dpr);
+  var l4=el('label','fl2'); l4.appendChild(el('span','','새 팩 이름')); l4.appendChild(dnm);
+  function dsh(){ var v=dest.value; l3.style.display=(v==='one'||v==='new')?'':'none'; l4.style.display=v==='new'?'':'none'; }
+  dest.onchange=dsh; dsh(); f.appendChild(l2); f.appendChild(l3); f.appendChild(l4); box.appendChild(f);
+  sb.from('ffc_emote_packs').select('id,name,descr,price,listed,n').eq('owner',me.id).order('created_at',{ascending:false}).then(function(r){ packs=(r&&r.data)||[]; packs.forEach(function(pk){ var op=el('option','','내 팩에 넣기: '+pk.name+' ('+pk.n+'/20)'); op.value='pack:'+pk.id; dest.appendChild(op); }); }).catch(function(){});
   var mineBox=el('div','emmine'); box.appendChild(mineBox);
   async function loadMine(){ mineBox.innerHTML=''; var r=await sb.from('ffc_emotes').select('id,name,px,img').eq('owner',me.id).order('created_at',{ascending:false}); var a=(r&&r.data)||[]; if(!a.length) return; mineBox.appendChild(el('div','sub2','내가 만든 이모티콘'));
     a.forEach(function(e){ if(!emOk(e)) return; var row=el('div','emrow'); row.appendChild(emVis(e,36)); var t=el('div','emt'); t.appendChild(el('b','',e.name)); row.appendChild(t); mineBox.appendChild(row); }); }
   var act=el('div','act'), no=el('button','','닫기'); no.onclick=function(){ md.remove(); }; var ok=el('button','ok','만들기');
   ok.onclick=async function(){ if(!img){ toast('PNG 그림을 골라 주세요'); return; } var n=nm.value.trim(); if(!n){ toast('이름을 적어 주세요'); return; }
     ok.disabled=true; var r=await sb.rpc('ffc_emote_create',{p_name:n,p_img:img,p_price:0,p_listed:false}); ok.disabled=false;
-    if(r.error){ toast(emoteErr(r.error)); return; } toast('만들었어요. 내 이모티콘에서 보낼 수 있어요'); img=null; nm.value=''; showPrev(); loadMine(); onDone&&onDone(); };
+    if(r.error){ toast(emoteErr(r.error)); return; }
+    var eid=r.data, dv=dest.value, pr=Math.max(0,Math.min(10000,parseInt(dpr.value,10)||0)), msg='만들었어요. 내 이모티콘에서 보낼 수 있어요', r2=null;
+    ok.disabled=true;
+    if(dv==='one'){ r2=await sb.rpc('ffc_emote_set',{p_id:eid,p_price:pr,p_listed:true}); msg='만들어서 단품으로 상점에 올렸어요'; }
+    else if(dv==='new'){ r2=await sb.rpc('ffc_pack_save',{p_id:null,p_name:dnm.value.trim()||n,p_descr:'',p_price:pr,p_listed:true,p_emotes:[eid],p_sids:[]}); msg='만들어서 새 팩으로 상점에 올렸어요'; }
+    else if(dv.indexOf('pack:')===0){ var pk=packs.filter(function(x){ return 'pack:'+x.id===dv; })[0];
+      if(pk){ var it=await sb.from('ffc_pack_items').select('emote_id,sid').eq('pack_id',pk.id); var D=(it&&it.data)||[];
+        if(D.length>=20){ r2={error:{message:'bad size'}}; } else r2=await sb.rpc('ffc_pack_save',{p_id:pk.id,p_name:pk.name,p_descr:pk.descr||'',p_price:pk.price,p_listed:pk.listed,p_emotes:D.filter(function(x){ return x.emote_id; }).map(function(x){ return x.emote_id; }).concat([eid]),p_sids:D.filter(function(x){ return x.sid; }).map(function(x){ return x.sid; })});
+        msg='만들어서 “'+pk.name+'” 팩에 넣었어요'; } }
+    ok.disabled=false;
+    if(r2&&r2.error){ toast('만들었지만 올리지는 못했어요. '+pkErr(r2.error)); } else toast(msg);
+    img=null; nm.value=''; showPrev(); loadMine(); onDone&&onDone(); };
   act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(ev){ if(ev.target===md) md.remove(); }; document.body.appendChild(md);
   showPrev(); loadMine();
 }
