@@ -50,7 +50,7 @@ async function login(){
   if(window.FFAuth&&window.FFAuth.openLogin) window.FFAuth.openLogin();
 }
 async function isAdmin(){try{return (await rpc('ff_is_admin'))===true}catch(e){return false}}
-function fmtDate(x){try{return new Date(x).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'})}catch(e){return ''}}
+function fmtDate(x){try{return window.FFFmt?FFFmt.date(x):new Date(x).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'})}catch(e){return ''}}
 function stars(n){var r=Math.round(n||0);return '★★★★★'.slice(0,r)+'☆☆☆☆☆'.slice(0,5-r)}
 
 /* ---------- 리뷰 영역 ---------- */
