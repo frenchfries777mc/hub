@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261120b"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261120c"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
    The pages are written in Korean; this file translates their text in place. Whole text nodes are looked up first (S: site strings),
@@ -587,7 +587,7 @@ body{background-image:none!important}
 <img src="/pics/pixel-bg.png?v=20261117" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261116a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261120c';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#ffd54a">PROFILE · [닉네임]</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Profile</h1>
@@ -671,7 +671,7 @@ body{background-image:none!important}
     $('bdOff').onclick=function(){ set(''); };
     [].forEach.call(box.querySelectorAll('[data-g]'),function(b){ b.onclick=function(){ filt=b.getAttribute('data-g'); borders(); }; });
     [].forEach.call(box.querySelectorAll('.pf-b'),function(b){ b.onclick=function(){ var id=b.getAttribute('data-b'); if(b.classList.contains('lock')){ $('bdM').textContent='이 테두리는 '+GN[B.get(id).game]+'에서 사면 생겨요.'; return; } set(id); }; }); }
-  var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261115c'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
+  var libDone=null; function libP(){ if(window.FFProfile) return Promise.resolve(); if(!libDone) libDone=new Promise(function(res){ var sc=document.createElement('script'); sc.src='https://frenchfries777.com/games/ff-profile.js?v=20261120c'; sc.onload=res; sc.onerror=res; document.head.appendChild(sc); }); return libDone; }
   async function ownerBox(){ var old=document.getElementById('pxOwn'); if(old) old.remove(); var h=$('pxAct'); var uid=VID; if(!h||!uid||!U||!SB||!window.FFAuth||!FFAuth.loadDevs||!FFAuth.devRole) return;
     var dm; try{ dm=await FFAuth.loadDevs(true); }catch(e){ return; } if(!dm||dm[U.id]!=='owner') return; if(document.getElementById('pxOwn')||$('pxAct')!==h) return;
     var st='padding:8px 10px;border-radius:8px;border:1px solid #333;background:#171717;color:#ece6d8;font:inherit;min-width:0', bt='padding:8px 12px;border-radius:8px;border:1px solid #ffd36b;background:#2a2110;color:#ffd36b;font:inherit;cursor:pointer;white-space:nowrap';
@@ -717,7 +717,7 @@ body{background-image:none!important}
 </div>
 </div></main></div>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261120b"></script>
-<script src="https://frenchfries777.com/games/hub.js?v=20261116a"></script>
-<script src="https://frenchfries777.com/games/ff-sidemenu.js?v=20261117a" defer></script>
+<script src="https://frenchfries777.com/games/hub.js?v=20261120c"></script>
+<script src="https://frenchfries777.com/games/ff-sidemenu.js?v=20261120c" defer></script>
 </body>
 </html>

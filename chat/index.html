@@ -22,7 +22,7 @@
   try{ fetch(SUB+'manifest.webmanifest',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j&&j.short_name==='FF Chat') location.replace(SUB+location.search.replace(/^\?/,'?')+location.hash); }).catch(function(){}); }catch(e){} })();
 </script>
 <script>(function(){ try{ var t0=Date.parse(document.lastModified); if(!t0) return; fetch(location.pathname,{cache:'no-store',credentials:'omit'}).then(function(r){ var lm=Date.parse(r.headers.get('last-modified')||''); if(lm&&lm-t0>2000){ var k='ffc-fresh-'+lm; if(sessionStorage.getItem(k)) return; sessionStorage.setItem(k,'1'); var u=new URL(location.href); u.searchParams.set('_',String(lm)); location.replace(u.toString()); } }).catch(function(){}); }catch(e){} })();</script>
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261120b"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261120c"></script>
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261120b"></script>
 <style>
 :root{--bg:#0e0e0e;--panel:#151515;--line:rgba(217,180,95,.35);--fry:#d9b45f;--text:#ece6d8;--dim:#9a937f;--mine:#d9b45f;--mineText:#1c1405;--other:#232323;--h:100dvh}
@@ -1153,7 +1153,7 @@ function imageBox(meta){
 /* ---------- 🖼 프로필 사진: 허브에서 고른 사진(ff_avatar), 없으면 게임 캐릭터 ---------- */
 var AVB='https://frenchfries777.com/games/', avs={}, avWant={}, profLoad=null;
 function avUrlOf(pick){ return /^[a-z0-9_-]{1,30}$/i.test(pick)?AVB+'avatars/'+pick+(/^(stk|ce|bf|ip|dp|vk)_/.test(pick)?'.png':'.svg'):''; }
-function profileLib(){ if(window.FFProfile) return Promise.resolve(true); if(!profLoad) profLoad=loadScript(AVB+'ff-profile.js?v=20261115c').then(function(){ return !!window.FFProfile; },function(){ return false; }); return profLoad; }
+function profileLib(){ if(window.FFProfile) return Promise.resolve(true); if(!profLoad) profLoad=loadScript(AVB+'ff-profile.js?v=20261120c').then(function(){ return !!window.FFProfile; },function(){ return false; }); return profLoad; }
 var avTimer=null;
 function avRepaint(){ avVer++; clearTimeout(avTimer); avTimer=setTimeout(function(){ paintList(); if(cur){ var keepY=$('#msgs'); paintHead(); paintMsgs(false); } },60); }
 async function loadAvatars(ids){
