@@ -1,7 +1,7 @@
 /* 앱 스토어 색: frenchfries777.com 의 다크/라이트 설정을 그대로 따라요.
    frenchfries777.com 에서는 localStorage 'ff.theme', 다른 주소(apps.)에서는 쿠키 'ffth' 를 읽어요. */
 (function(){try{
-  var T=['dark','light','yellow','red','blue'],v='';
+  var T=['dark','light'],v='';
   try{v=localStorage.getItem('ff.theme')||'';}catch(e){}
   if(T.indexOf(v)<0){var m=document.cookie.match(/(?:^|; )ffth=([a-z]+)/);v=m?m[1]:'';}
   if(T.indexOf(v)<0)v='dark';
