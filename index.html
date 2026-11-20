@@ -75,11 +75,13 @@ img{max-width:100%}
 </aside>
 
 <main style="position:relative;overflow:hidden;flex:1 1 640px;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;background:#000000">
-<img src="/pics/pixel-bg.png?v=20261117" alt="도트 풍경: 노을 지는 바다와 등대" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
+<style>#ffHubArt{position:absolute;left:0;top:0;width:100%;aspect-ratio:480/270;overflow:hidden}#ffHubArt canvas,#ffHubArt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%;image-rendering:pixelated;display:block}@media(max-width:700px){#ffHubArt{aspect-ratio:auto;height:440px;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}#ffHubArt canvas,#ffHubArt img{object-position:72% 100%}}</style><div id="ffHubArt" role="img" aria-label="도트 풍경: 유럽 도시 광장"><canvas id="ffSkyCv" width="480" height="270"></canvas><img src="/pics/hub-fg.png?v=20261120" alt=""></div>
+<script src="/ff-sky.js?v=20261120"></script><script>(function(){var c=document.getElementById('ffSkyCv');if(!c||!window.FFSky)return;var x=c.getContext('2d');function d(){if(!document.hidden)FFSky.draw(x,new Date())}d();setInterval(d,30000);document.addEventListener('visibilitychange',d)})()</script>
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,0) 0,rgba(14,14,14,0) 420px,rgba(14,14,14,.74) 780px,rgba(14,14,14,.74) 100%)"></div>
 
 <div style="position:relative;min-height:720px;display:flex;flex-direction:column;overflow:hidden">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.15) 0%,rgba(14,14,14,0) 35%,rgba(14,14,14,.82) 100%)"></div>
+<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,rgba(10,10,14,.72) 0,rgba(10,10,14,.5) 38%,rgba(10,10,14,0) 68%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column;flex:1">
 <div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261120d';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <style>#annBar:empty{display:none}#annBar{display:flex;flex-direction:column;gap:8px;margin:14px 0 0;position:relative;z-index:2}

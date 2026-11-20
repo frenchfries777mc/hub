@@ -1,0 +1,68 @@
+/* © 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)
+   허브 배경 하늘: 지금 시각과 날짜에 맞는 하늘 색, 해·달 위치, 실제 달 위상을 480x270 도트로 그려요.
+   FFSky.draw(ctx, date) : 하늘+해/달+별+구름+먼 언덕까지 그려요 (건물·바닥은 따로 겹치는 PNG)
+   FFSky.info(date)      : 달 나이·위상 이름·밝은 비율·일출/일몰 시각 */
+(function(){
+'use strict';
+var W=480,H=270,HOR=167,PW=170;
+var NIGHT=[[8,10,30],[14,18,48],[22,28,70],[34,40,92],[48,52,112],[60,62,126],[72,70,134]],
+    DAWN=[[52,56,110],[110,86,150],[196,128,156],[246,176,152],[255,208,164],[255,232,192],[255,244,216]],
+    DAY=[[78,138,220],[104,164,232],[136,190,242],[172,214,248],[204,230,252],[226,242,255],[240,249,255]],
+    DUSK=[[22,18,52],[44,26,72],[92,38,88],[166,58,84],[228,104,76],[250,162,88],[255,214,128]];
+var CL={night:[[44,52,100],[60,68,120]],dawn:[[236,150,150],[255,196,170]],day:[[246,248,255],[255,255,255]],dusk:[[236,150,120],[250,190,140]]};
+var B4=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+var SYN=29.530588853, NEWMOON=Date.UTC(2000,0,6,18,14);
+function mix(a,b,t){ return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]; }
+function mixPal(a,b,t){ var o=[]; for(var i=0;i<a.length;i++) o.push(mix(a[i],b[i],t)); return o; }
+function sun(date){ /* 위도 약 37도, 한국 표준시 기준의 근사 일출·일몰 */
+  var s=Date.UTC(date.getFullYear(),0,0), doy=Math.floor((Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())-s)/864e5);
+  var len=12+2.9*Math.sin(2*Math.PI*(doy-80)/365.25), noon=12.5;
+  return {sr:noon-len/2, ss:noon+len/2, len:len}; }
+function moonAge(date){ var a=((date.getTime()-NEWMOON)/864e5)%SYN; return a<0?a+SYN:a; }
+function phaseName(age){ var p=age/SYN; if(p<.03||p>=.97) return '신월(그믐)'; if(p<.22) return '초승달'; if(p<.28) return '상현달'; if(p<.47) return '차오르는 달'; if(p<.53) return '보름달'; if(p<.72) return '기우는 달'; if(p<.78) return '하현달'; return '그믐달'; }
+function sky(h,sr,ss){ /* 시각 -> 하늘 팔레트·구름색·밤 정도 */
+  var st=[[sr-1.5,NIGHT,'night'],[sr,DAWN,'dawn'],[sr+1.5,DAY,'day'],[ss-1.5,DAY,'day'],[ss,DUSK,'dusk'],[ss+1.5,NIGHT,'night']];
+  if(h<=st[0][0]||h>=st[5][0]) return {pal:NIGHT,c:CL.night,dark:1};
+  for(var i=0;i<5;i++){ if(h>=st[i][0]&&h<st[i+1][0]){ var t=(h-st[i][0])/(st[i+1][0]-st[i][0]); t=t*t*(3-2*t);
+      var dk=(st[i][2]==='night'?1-t:0)+(st[i+1][2]==='night'?t:0);
+      return {pal:mixPal(st[i][1],st[i+1][1],t),c:[mix(CL[st[i][2]][0],CL[st[i+1][2]][0],t),mix(CL[st[i][2]][1],CL[st[i+1][2]][1],t)],dark:dk}; } }
+  return {pal:DAY,c:CL.day,dark:0}; }
+function rng(seed){ return function(){ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; }; }
+var STARS=(function(){ var r=rng(7),a=[]; for(var i=0;i<170;i++) a.push([Math.floor(r()*W),Math.floor(r()*(HOR-18)),r()]); return a; })();
+function hillsH(seed,amp){ var r=rng(seed),h=amp,a=[]; for(var x=0;x<W;x+=4){ h=Math.max(amp*.3,Math.min(amp,h+[-3,-2,0,2,3][Math.floor(r()*5)])); a.push(Math.floor(h)); } return a; }
+var HILL1=hillsH(7,43),HILL2=hillsH(9,24);
+function info(date){ date=date||new Date(); var s=sun(date),age=moonAge(date),k=Math.cos(2*Math.PI*age/SYN);
+  return {sunrise:s.sr,sunset:s.ss,age:age,phase:phaseName(age),lit:(1-k)/2,waxing:age<SYN/2,moonrise:s.sr+age/SYN*24.84}; }
+function draw(ctx,date){
+  date=date||new Date(); var h=date.getHours()+date.getMinutes()/60+date.getSeconds()/3600, s=sun(date), S=sky(h,s.sr,s.ss), pal=S.pal, n=pal.length-1;
+  var im=ctx.createImageData(W,H), d=im.data, x, y, i, k;
+  for(y=0;y<H;y++){ var t=Math.min(1,y/PW), row=B4[y&3];
+    for(x=0;x<W;x++){ var v=Math.min(.999,t)*n+(row[x&3]/16-.5)*.9+.5, ix=Math.max(0,Math.min(n,Math.floor(v))), c=pal[ix], o=(y*W+x)*4; d[o]=c[0]; d[o+1]=c[1]; d[o+2]=c[2]; d[o+3]=255; } }
+  function px(x,y,c){ x|=0; y|=0; if(x<0||y<0||x>=W||y>=H) return; var o=(y*W+x)*4; d[o]=c[0]; d[o+1]=c[1]; d[o+2]=c[2]; }
+  function rect(x,y,w,hh,c){ for(var yy=0;yy<hh;yy++) for(var xx=0;xx<w;xx++) px(x+xx,y+yy,c); }
+  function disc(cx,cy,r,c){ for(var yy=-r;yy<=r;yy++) for(var xx=-r;xx<=r;xx++) if(xx*xx+yy*yy<=r*r+r*.4) px(cx+xx,cy+yy,c); }
+  /* 별 (밤일수록 많이) */
+  if(S.dark>.25){ var cnt=Math.floor(STARS.length*Math.min(1,(S.dark-.25)/.7)); for(i=0;i<cnt;i++){ var st=STARS[i]; px(st[0],st[1],st[2]<.7?[255,244,220]:[190,200,255]); } }
+  function arc(t,lo){ /* 뜰 때와 질 때는 건물 뒤에서 빨리 오르내리고, 낮엔 지붕 위 하늘에 머물러요 */ var u=Math.pow(Math.max(0,1-Math.sin(Math.PI*t)),3); if(t<0||t>1) u=1+Math.abs(t<0?t:t-1)*4; return [Math.round(40+t*(W-80)), Math.round(lo+(HOR+8-lo)*u)]; }
+  /* 해 */
+  var ts=(h-s.sr)/(s.ss-s.sr);
+  if(ts>-.04&&ts<1.04){ var p=arc(ts,22), low=1-Math.min(1,Math.sin(Math.PI*Math.max(0,Math.min(1,ts)))*2.2), col=mix([255,250,214],[255,206,120],low);
+    disc(p[0],p[1],19,mix(pal[4],col,.18)); disc(p[0],p[1],15,mix(pal[5],col,.5)); disc(p[0],p[1],11,col); }
+  /* 달 (달 나이에 맞는 위상, 뜨고 지는 시각도 위상에 맞춰 늦어져요) */
+  var age=moonAge(date), mr=s.sr+age/SYN*24.84, tm=(((h-mr)%24)+24)%24/12;
+  if(tm<=1.04){ var q=arc(tm,34), r=10, kk=Math.cos(2*Math.PI*age/SYN), wax=age<SYN/2;
+    for(var dy=-r;dy<=r;dy++) for(var dx=-r;dx<=r;dx++){ if(dx*dx+dy*dy>r*r+r*.3) continue; var xn=dx/r, yn=dy/r, w=Math.sqrt(Math.max(0,1-yn*yn)), lit=wax?(xn>kk*w):(xn<-kk*w);
+      if(lit){ var cr=((dx*7+dy*13)%11===0)||(dx===-3&&dy===-2)||(dx===3&&dy===4)||(dx===2&&dy===-5); px(q[0]+dx,q[1]+dy,cr?[206,214,238]:[240,244,255]); }
+      else if(S.dark>.5) px(q[0]+dx,q[1]+dy,[32,38,74]); } }
+  /* 구름 */
+  var cc=S.c, CLD=[[70,40,80],[215,26,64],[400,56,90],[130,95,60]];
+  for(i=0;i<CLD.length;i++){ var cl=CLD[i], wd=cl[2], bx=Math.round(cl[0]-wd/2);
+    for(k=0;k<wd;k+=6){ var hh=2+Math.round(3*Math.sin(k/wd*Math.PI)); rect(bx+k,cl[1]-hh,6,hh*2,cc[0]); rect(bx+k,cl[1]-hh,6,1,cc[1]); } }
+  /* 먼 언덕 (하늘 아래쪽 색에서 따와요) */
+  var hc1=mix(pal[5],[34,30,66],.62), hc2=mix(pal[5],[26,22,52],.78);
+  for(i=0;i<HILL1.length;i++) rect(i*4,HOR+0-HILL1[i],4,HILL1[i]+20,hc1);
+  for(i=0;i<HILL2.length;i++) rect(i*4,HOR+2-HILL2[i],4,HILL2[i]+20,hc2);
+  ctx.putImageData(im,0,0);
+}
+window.FFSky={draw:draw,info:info,W:W,H:H};
+})();
