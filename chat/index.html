@@ -335,7 +335,14 @@ function roomTitle(rm){
   if(rm.kind==='group') return (rm.name||'그룹 채팅');
   var o=rm.members.find(function(i){return i!==me.id;}); return (o&&names[o])||'알 수 없음';
 }
+var baseTitle=document.title;
+function paintBadge(){
+  var n=0; rooms.forEach(function(r){ n+=r.unread||0; });
+  try{ document.title=(n?'('+(n>99?'99+':n)+') ':'')+baseTitle; }catch(e){}
+  try{ if(n){ if(navigator.setAppBadge) navigator.setAppBadge(n).catch(function(){}); } else if(navigator.clearAppBadge) navigator.clearAppBadge().catch(function(){}); }catch(e){}
+}
 function paintList(){
+  paintBadge();
   var list=$('#list'); if(!list) return; list.innerHTML='';
   if(tab==='friends'){
     if(!friends.length){ list.appendChild(el('div','empty','아직 친구가 없어요.\n계정 메뉴의 친구에서 친구를 추가해 보세요.')); return; }
@@ -395,7 +402,9 @@ function paintMain(){
   var hav=roomAv(cur); t.style.cursor='pointer'; t.onclick=membersModal; ch.appendChild(back); ch.appendChild(hav); ch.appendChild(t); ch.appendChild(more); main.appendChild(ch);
   var box=el('div','msgs'); box.id='msgs'; main.appendChild(box); setTimeout(paintNotice,0);
   pendSt=null; var bar=el('div','bar'); var ta=el('textarea'); ta.rows=1; ta.maxLength=2000; ta.placeholder='메시지를 입력하세요'; var send=el('button','','전송'); send.disabled=true;
-  ta.oninput=function(){ if(ta.value.trim()) typeSend(); send.disabled=!(ta.value.trim()||pend.length||pendSt); ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,120)+'px'; };
+  var rid0=cur.id; function dsave(v){ try{ if(v) localStorage.setItem('ffc_dr:'+rid0,v); else localStorage.removeItem('ffc_dr:'+rid0); }catch(e){} }
+  try{ var d0=localStorage.getItem('ffc_dr:'+rid0); if(d0){ ta.value=d0; send.disabled=false; setTimeout(function(){ ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,120)+'px'; },0); } }catch(e){}
+  ta.oninput=function(){ dsave(ta.value); if(ta.value.trim()) typeSend(); send.disabled=!(ta.value.trim()||pend.length||pendSt); ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,120)+'px'; };
   ta.onpaste=function(e){ var fs=[].filter.call((e.clipboardData&&e.clipboardData.files)||[],function(f){ return /^image\//.test(f.type); }); if(fs.length){ e.preventDefault(); addPend(fs); } };
   main.ondragover=function(e){ if(e.dataTransfer&&[].some.call(e.dataTransfer.items||[],function(i){ return i.kind==='file'; })){ e.preventDefault(); main.classList.add('drop'); } };
   main.ondragleave=function(e){ if(e.target===main||!main.contains(e.relatedTarget)) main.classList.remove('drop'); };
@@ -403,11 +412,11 @@ function paintMain(){
   ta.onkeydown=function(e){ if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){ e.preventDefault(); go(); } };
   async function go(){ var v=ta.value.trim(); if(!cur||(!v&&!pend.length&&!pendSt)) return; if(go.busy) return; go.busy=true;
     try{ if(pend.length){ var ok=await sendPend(); if(!ok){ return; } if(!v&&!pendSt){ send.disabled=true; return; } } } finally{ go.busy=false; }
-    if(pendSt){ var st=pendSt; pendSt=null; paintStBar(); ta.value=''; send.disabled=true; ta.style.height='auto'; var sm=Object.assign({},st.meta); if(v) sm.t=v.slice(0,1000); if(replyTo&&V2) sm.reply=replyTo; replyTo=null; paintReplyBar(); var sr=await sendKind('sticker','(스티커) '+st.name+(v?' '+v:''),sm); if(!sr){ pendSt=st; paintStBar(); ta.value=v; send.disabled=false; } return; }
-    ta.value=''; send.disabled=true; ta.style.height='auto';
+    if(pendSt){ var st=pendSt; pendSt=null; paintStBar(); ta.value=''; send.disabled=true; ta.style.height='auto'; var sm=Object.assign({},st.meta); if(v) sm.t=v.slice(0,1000); if(replyTo&&V2) sm.reply=replyTo; replyTo=null; paintReplyBar(); dsave(''); var sr=await sendKind('sticker','(스티커) '+st.name+(v?' '+v:''),sm); if(!sr){ pendSt=st; paintStBar(); ta.value=v; dsave(v); send.disabled=false; } return; }
+    ta.value=''; dsave(''); send.disabled=true; ta.style.height='auto';
     var row={room_id:cur.id,user_id:me.id,body:v}; if(replyTo&&V2){ row.meta={reply:replyTo}; } replyTo=null; paintReplyBar();
     var r=await sb.from('ffc_msgs').insert(row).select(COLS).single();
-    if(r.error){ toast('보내지 못했어요'); ta.value=v; send.disabled=false; return; } add(r.data);
+    if(r.error){ toast('보내지 못했어요'); ta.value=v; dsave(v); send.disabled=false; return; } add(r.data);
     var am=AIRE.exec(v); if(am&&V2) askAI(aiKey(am[1]),v.replace(AIRE,'').trim()); }
   send.onclick=go;
   var tools=el('div','tools');
@@ -1366,7 +1375,7 @@ window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); i
   window.addEventListener('appinstalled',function(){ var d=document.getElementById('ffInstBar'); if(d) d.remove(); });
 })();
 window.addEventListener('appinstalled',function(){ instEv=null; instPaint(); });
-try{ if('serviceWorker' in navigator && /(^|\.)frenchfries777\.com$/.test(location.hostname)) navigator.serviceWorker.register('sw.js?v=2').catch(function(){}); }catch(e){}
+try{ if('serviceWorker' in navigator && /(^|\.)frenchfries777\.com$/.test(location.hostname)) navigator.serviceWorker.register('sw.js?v=3').catch(function(){}); }catch(e){}
 /* 새 메시지 알림(Web Push): 위쪽 🔔 버튼으로 켜고 꺼요. 아이폰은 홈 화면에 설치한 앱에서만 돼요. */
 var PUSHFN='https://kebsbuvuutilitwlvxzv.supabase.co/functions/v1/ff-chat-push', pushOn=false, pushInit=false, pushBusy=false;
 function pushOk(){ return ('serviceWorker' in navigator)&&('PushManager' in window)&&('Notification' in window); }
@@ -1392,7 +1401,7 @@ async function pushToggle(){ if(pushBusy){ pushNote('처리 중이에요. 잠시
       pushOn=true; toast('새 메시지 알림을 켰어요'); }
   }catch(e){ var why=String((e&&(e.message||e.name))||e||'').slice(0,80); toast('알림을 바꾸지 못했어요'); pushNote('알림을 바꾸지 못했어요. 잠시 뒤 다시 눌러 주세요. (이유: '+why+')'); }
   pushBusy=false; pushPaint(); }
-try{ if('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message',function(e){ var d=e.data; if(d&&d.room&&typeof openRoom==='function') openRoom(d.room); }); }catch(e){}
+try{ if('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message',function(e){ var d=e.data; if(d&&d.clr){ if(cur&&cur.id===d.clr&&document.visibilityState==='visible') clearNotes(); return; } if(d&&d.room&&typeof openRoom==='function') openRoom(d.room); }); }catch(e){}
 setInterval(function(){ if(me&&!pushInit){ pushInit=true; pushRead(); } else pushPaint(); },1500);
 
 setInterval(instPaint,1500);
