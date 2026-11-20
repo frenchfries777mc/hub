@@ -1023,15 +1023,14 @@ async function betModal(){
   var md=el('div','modal'), box=el('div','box'); box.appendChild(el('h3','','🎲 Hub Coin 내기'));
   var f=el('div','form');
   var who=el('select'); others().forEach(function(i){ var o=el('option','',names[i]||'?'); o.value=i; who.appendChild(o); });
-  var game=el('select'); Object.keys(GAMES).forEach(function(k){ var o=el('option','',GAMES[k]); o.value=GAMES[k]; game.appendChild(o); }); var o2=el('option','','기타'); o2.value='기타'; game.appendChild(o2);
   var n=el('input'); n.type='number'; n.min=1; n.max=100; n.value=10;
   var mine=el('div','hint',''); try{ var c=await sb.from('ff_coins').select('coins').eq('user_id',me.id).maybeSingle(); mine.textContent='내 Hub Coin: '+((c&&c.data&&c.data.coins)||0); }catch(e){}
-  [['상대',who],['게임',game],['걸 코인 (1~100)',n]].forEach(function(x){ var l=el('label','fl2'); l.appendChild(el('span','',x[0])); l.appendChild(x[1]); f.appendChild(l); });
+  [['상대',who],['걸 코인 (1~100)',n]].forEach(function(x){ var l=el('label','fl2'); l.appendChild(el('span','',x[0])); l.appendChild(x[1]); f.appendChild(l); });
   f.appendChild(mine); f.appendChild(el('div','hint','상대가 받으면 둘 다 같은 코인을 걸고, 바로 랜덤(동전 던지기)으로 승자가 정해져요. 승자가 코인을 모두 가져가요.'));
   box.appendChild(f);
   var act=el('div','act'); var no=el('button','','취소'), ok=el('button','ok','내기 걸기'); no.onclick=function(){ md.remove(); };
   ok.onclick=async function(){ var v=Math.round(+n.value); if(!(v>=1&&v<=100)){ toast('1~100 사이로 정해 주세요'); return; } ok.disabled=true;
-    var r=await sb.rpc('ffc_bet_new',{rid:cur.id,opp:who.value,gname:game.value,n:v}); ok.disabled=false;
+    var r=await sb.rpc('ffc_bet_new',{rid:cur.id,opp:who.value,gname:'',n:v}); ok.disabled=false;
     if(r.error){ toast(/not enough/.test(r.error.message)?'Hub Coin이 모자라요':'내기를 걸지 못했어요'); return; } md.remove(); };
   act.appendChild(no); act.appendChild(ok); box.appendChild(act); md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
 }
@@ -1040,7 +1039,7 @@ async function needBet(id){ if(bets[id]||betWant[id]) return; betWant[id]=1; var
 function betCard(id){
   var c=el('div','card bet'); c.dataset.bet=id; var d=bets[id]; if(!d){ needBet(id); c.appendChild(el('div','ct','🎲 내기 불러오는 중…')); return c; }
   var A=names[d.a]||'?', B=names[d.b]||'?';
-  c.appendChild(el('div','ct','🎲 '+d.coins+' 코인 내기 · '+d.game));
+  c.appendChild(el('div','ct','🎲 '+d.coins+' 코인 내기'+(d.game&&d.game!=='기타'?' · '+d.game:'')));
   c.appendChild(el('div','vs',A+'  vs  '+B));
   var st=el('div','st'), act=el('div','ba');
   async function call(fn,args){ var r=await sb.rpc(fn,args); if(r.error){ toast(/not enough/.test(r.error.message)?'Hub Coin이 모자라요':'처리하지 못했어요'); return; } var x=await sb.from('ffc_bets').select('*').eq('id',id).maybeSingle(); if(x&&x.data){ bets[id]=x.data; paintMsgs(false); } }
