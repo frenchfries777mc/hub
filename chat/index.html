@@ -943,10 +943,11 @@ async function resultModal(){
   box.appendChild(pick); var act=el('div','act'); var no=el('button','','닫기'); no.onclick=function(){ md.remove(); }; act.appendChild(no); box.appendChild(act);
   md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
 }
-/* 프로그램 목록: 사용 기록(ff_played)을 남기는 프로그램. 새 프로그램이 기록을 남기기 시작하면 여기에 id를 더해요 (게임은 GAMES에서 자동) */
+/* 프로그램 목록: 사용 기록(ff_played)을 남기는 프로그램. 새 프로그램이 기록을 남기기 시작하면 여기에 id를 더해요 (게임·교육·도구는 위 GAMES/EDUS/TOOLS에서 자동) */
 var FF_REG=['kitchendefense'];
+function ffRegAll(){ return Object.keys(GAMES).concat(FF_REG, Object.keys(EDUS).map(function(k){ return 'edu_'+k.replace(/[^a-z0-9]/g,'').slice(0,16); }), Object.keys(TOOLS).map(function(k){ return 'tools_'+k.replace(/[^a-z0-9]/g,'').slice(0,16); })); }
 async function shareFF(all){
-  var reg=Object.keys(GAMES).concat(FF_REG), used=0, ach=0;
+  var reg=ffRegAll(), used=0, ach=0;
   all.forEach(function(r){ if(r.game==='railway') return; ach+=r.ach_done||0; if(reg.indexOf(r.game)>=0&&(r.plays||0)>0) used++; });
   var secs=0; try{ var pt=await sb.from('ff_playtime').select('secs').eq('user_id',me.id); ((pt&&pt.data)||[]).forEach(function(x){ secs+=x.secs||0; }); }catch(e){}
   var posts=0; try{ var pc=await sb.from('ff_posts').select('id',{count:'exact',head:true}).eq('user_id',me.id); posts=(pc&&pc.count)||0; }catch(e){}
