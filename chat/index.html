@@ -171,6 +171,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .res .cell{background:rgba(127,127,127,.1);border-radius:10px;padding:7px 9px;display:flex;flex-direction:column}
 .res .cell b{font-size:16px}.res .cell span{font-size:11px;color:var(--dim)}
 .res{border-color:color-mix(in srgb,var(--gc,#d9b45f) 55%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--gc,#d9b45f) 14%,var(--panel)),var(--panel) 60%);min-width:250px}.res .rhd{display:flex;align-items:center;gap:10px;margin-bottom:10px}.res .rico{width:38px;height:38px;border-radius:12px;background:var(--gc);display:flex;align-items:center;justify-content:center;font-size:21px}.res .rtt{display:flex;flex-direction:column;min-width:0}.res .rtt b{font-size:15px}.res .rtt span{font-size:11px;color:var(--dim)}.res .rhero{display:flex;gap:8px;margin-bottom:10px}.res .rbg{flex:1;background:rgba(127,127,127,.12);border-radius:10px;padding:7px 8px;text-align:center}.res .rbg b{display:block;font-size:20px;color:var(--gc)}.res .rbg span{font-size:11px;color:var(--dim)}.res .rpb{margin-top:7px}.res .rpt{display:flex;justify-content:space-between;font-size:12px}.res .rpt span{color:var(--dim)}.res .rtr{height:6px;border-radius:99px;background:rgba(127,127,127,.2);margin-top:3px;overflow:hidden}.res .rtr i{display:block;height:100%;background:var(--gc);border-radius:99px}.res .rchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.res .rchips span{font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(127,127,127,.14)}
+.res.ffs{background:linear-gradient(135deg,#ffe27a,#f0b429 55%,#c9861f);border-color:#f0b429;color:#2a1c00}.res.ffs .rtt span{color:rgba(42,28,0,.7)}.res.ffs .rico{background:rgba(255,255,255,.35)}.res.ffs .ffg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.res.ffs .rbg{background:rgba(42,28,0,.14)}.res.ffs .rbg b{color:#2a1c00}.res.ffs .rbg span{color:rgba(42,28,0,.75)}
 .res .last{margin-top:8px;font-size:13px;font-weight:700}.res .last.w{color:#4cc38a}.res .last.l{color:#e5484d}
 .bet .vs{font-weight:800;font-size:15px;margin-bottom:6px}.bet .st,.brk .st{font-size:13px;color:var(--dim);margin-top:6px}
 .poll .po,.poll .pcl{color:var(--text)}.poll .po{position:relative;display:flex;justify-content:space-between;gap:10px;width:100%;margin-top:6px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:none;overflow:hidden;font-weight:700;font-size:13px;text-align:left}.poll .po.on{border-color:var(--fry)}.poll .pb{position:absolute;left:0;top:0;bottom:0;background:rgba(217,180,95,.22);z-index:0;transition:width .25s}.poll .pt,.poll .pn{position:relative;z-index:1}.poll .pn{color:var(--dim);font-weight:600;white-space:nowrap}.poll .st{font-size:12px;color:var(--dim);margin-top:8px}.poll .pcl{margin-top:8px;padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:none;font-size:12px;font-weight:700}.popts{display:flex;flex-direction:column;gap:6px;margin-top:6px}
@@ -516,7 +517,7 @@ function groupModal(){
 /* ===== 확장: 스티커, 전적 카드, 자체 AI, Hub Coin 내기, 대진표, 위키 미리보기 ===== */
 var V2=false, PL=false, polls={}, pollVotes={}, pollWant={}, bets={}, wikiPages=null, aiBusy=false;
 var GAMES={stickseum:'Stickseum',crownenvoy:'Crown Envoy',beaconfall:'Beaconfall',tumblecrown:'Tumble Crown',gatecrash:'Gatecrash',dummyparty:'Dummy Party',vowkeep:'Vowkeep',isleport:'Isleport'};
-function gname(g){ return g==='hub'?'허브':(GAMES[g]||g); }
+function gname(g){ return g==='hub'?'허브':g==='ff'?'Frenchfries777':(GAMES[g]||g); }
 var COLS='id,user_id,body,created_at';
 async function detectV2(){ try{ var t=await sb.from('ffc_msgs').select('kind,meta').limit(1); V2=!t.error; }catch(e){ V2=false; } if(V2) COLS='id,user_id,body,created_at,kind,meta'; }
 
@@ -934,12 +935,22 @@ function renderBody(m){
 async function resultModal(){
   if(!V2){ toast('아직 준비 중이에요'); return; }
   var pl=await sb.from('ff_played').select('game,plays,last_at,ach_done,ach_total').eq('user_id',me.id).order('last_at',{ascending:false});
-  var rows=((pl&&pl.data)||[]).filter(function(r){ return GAMES[r.game]||r.game==='hub'; }); if(!rows.length){ toast('아직 기록된 게임이 없어요'); return; }
+  var all=(pl&&pl.data)||[], rows=all.filter(function(r){ return GAMES[r.game]; });
   var md=el('div','modal'), box=el('div','box'); box.appendChild(el('h3','','🎮 전적 공유'));
-  var pick=el('div','pick'); rows.forEach(function(r){ var b=el('button','row'); b.innerHTML='<span class="av">🎮</span><span class="rm"><b></b><span></span></span>'; $('b',b).textContent=gname(r.game); $('.rm>span',b).textContent=r.game==='hub'?'허브 방문 '+r.plays+'번':r.plays+'판 · 업적 '+(r.ach_done||0)+'/'+(r.ach_total||0);
+  var pick=el('div','pick'); var fb=el('button','row'); fb.innerHTML='<span class="av">🍟</span><span class="rm"><b></b><span></span></span>'; $('b',fb).textContent='Frenchfries777 통계'; $('.rm>span',fb).textContent='업적 · 사용한 프로그램 · 보낸 시간 · 게시물'; fb.onclick=async function(){ md.remove(); await shareFF(all); }; pick.appendChild(fb);
+  rows.forEach(function(r){ var b=el('button','row'); b.innerHTML='<span class="av">🎮</span><span class="rm"><b></b><span></span></span>'; $('b',b).textContent=gname(r.game); $('.rm>span',b).textContent=r.plays+'판 · 업적 '+(r.ach_done||0)+'/'+(r.ach_total||0);
     b.onclick=async function(){ md.remove(); await shareResult(r); }; pick.appendChild(b); });
   box.appendChild(pick); var act=el('div','act'); var no=el('button','','닫기'); no.onclick=function(){ md.remove(); }; act.appendChild(no); box.appendChild(act);
   md.appendChild(box); md.onclick=function(e){ if(e.target===md) md.remove(); }; document.body.appendChild(md);
+}
+/* 프로그램 목록: 사용 기록(ff_played)을 남기는 프로그램. 새 프로그램이 기록을 남기기 시작하면 여기에 id를 더해요 (게임은 GAMES에서 자동) */
+var FF_REG=['kitchendefense'];
+async function shareFF(all){
+  var reg=Object.keys(GAMES).concat(FF_REG), used=0, ach=0;
+  all.forEach(function(r){ if(r.game==='railway') return; ach+=r.ach_done||0; if(reg.indexOf(r.game)>=0&&(r.plays||0)>0) used++; });
+  var secs=0; try{ var pt=await sb.from('ff_playtime').select('secs').eq('user_id',me.id); ((pt&&pt.data)||[]).forEach(function(x){ secs+=x.secs||0; }); }catch(e){}
+  var posts=0; try{ var pc=await sb.from('ff_posts').select('id',{count:'exact',head:true}).eq('user_id',me.id); posts=(pc&&pc.count)||0; }catch(e){}
+  await sendKind('result','🍟 Frenchfries777 통계',{game:'ff',ach:ach,used:used,total:reg.length,secs:secs,posts:posts});
 }
 async function shareResult(p){
   var meta={game:p.game,plays:p.plays,ach:[p.ach_done||0,p.ach_total||0],last:p.last_at};
@@ -954,7 +965,14 @@ async function shareResult(p){
 var GCOL={stickseum:['#ff7a45','🥊'],crownenvoy:['#d4a63a','👑'],beaconfall:['#4fb3e8','🔥'],tumblecrown:['#e5566d','🎪'],gatecrash:['#9b6bff','🚪'],dummyparty:['#4cc38a','🎉'],vowkeep:['#8d7bd8','🏰'],isleport:['#2fb8b0','⚓'],hub:['#ffd54a','🏠']};
 function agoText(t){ var d=Math.floor((Date.now()-new Date(t).getTime())/86400000); if(!t||isNaN(d)) return ''; return d<=0?'오늘 플레이':d===1?'어제 플레이':d<30?d+'일 전 플레이':Math.floor(d/30)+'달 전 플레이'; }
 function timeText(secs){ var m=Math.round(secs/60); return m<60?m+'분':(Math.round(secs/360)/10)+'시간'; }
+function ffCard(d){
+  var c=el('div','card res ffs'); var hd=el('div','rhd'); hd.appendChild(el('span','rico','🍟')); var ht=el('div','rtt'); ht.appendChild(el('b','','Frenchfries777')); ht.appendChild(el('span','','전체 통계')); hd.appendChild(ht); c.appendChild(hd);
+  var g=el('div','ffg'); function cell(v,k){ var x=el('div','rbg'); x.appendChild(el('b','',v)); x.appendChild(el('span','',k)); g.appendChild(x); }
+  cell(String(d.ach||0),'클리어한 업적'); cell((d.used||0)+'/'+(d.total||0),'사용한 프로그램'); cell(d.secs?timeText(d.secs):'0분','보낸 시간'); cell(String(d.posts||0),'올린 게시물');
+  c.appendChild(g); return c;
+}
 function resultCard(d){
+  if(d.game==='ff') return ffCard(d);
   var g0=GCOL[d.game]||['#d9b45f','🎮'], c=el('div','card res'); c.style.setProperty('--gc',g0[0]);
   var hd=el('div','rhd'); hd.appendChild(el('span','rico',g0[1])); var ht=el('div','rtt'); ht.appendChild(el('b','',gname(d.game||''))); var ag=agoText(d.last); if(ag) ht.appendChild(el('span','',ag)); hd.appendChild(ht); c.appendChild(hd);
   var hero=el('div','rhero'); function big(v,k){ var x=el('div','rbg'); x.appendChild(el('b','',v)); x.appendChild(el('span','',k)); hero.appendChild(x); }
