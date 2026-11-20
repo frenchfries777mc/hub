@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
-<script src="https://frenchfries777.com/games/ff-lang.js?v=20261116e"></script>
+<script src="https://frenchfries777.com/games/ff-lang.js?v=20261120b"></script>
 <script src="https://frenchfries777.com/games/ff-offline.js?v=20261115a"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
@@ -664,9 +664,9 @@ body{background-image:none!important}
   function row(title,sub,ctl,cls){ return '<div class="sx-r'+(cls?' '+cls:'')+'"><span class="sx-rt"><b>'+esc(title)+'</b>'+(sub?'<span>'+esc(sub)+'</span>':'')+'</span><span class="sx-rc">'+ctl+'</span></div>'; }
   function seg(attrs,items,cur){ return '<span class="sx-seg">'+items.map(function(i){ return '<button type="button" '+attrs+'="'+i[0]+'"'+(String(i[0])===String(cur)?' class="on"':'')+'>'+esc(i[1])+'</button>'; }).join('')+'</span>'; }
   function sw(attr,on,label){ return '<button type="button" class="sx-sw'+(on?' on':'')+'" '+attr+' role="switch" aria-checked="'+(on?'true':'false')+'" aria-label="'+esc(label)+'"></button>'; }
-  var SW={dark:['#000000','#ffd54a','#ffd54a'],light:['#f3ecdc','#b8892a','#262626'],yellow:['#f0cf3a','#1a1814','#262626'],red:['#c0392b','#fff','#262626'],blue:['#2f6fc2','#fff','#262626']};
+  var SW={dark:['#000000','#ffd54a','#ffd54a'],light:['#f3ecdc','#b8892a','#262626']};
   function theme(){ var c=window.FFTheme?FFTheme.get():{theme:'dark',size:'m'};
-    var ths=['dark','light','yellow','red','blue'].map(function(k){ var v=SW[k]; return '<button type="button" class="sx-th'+(c.theme===k?' on':'')+'" data-th="'+k+'"><span class="sx-sw2" style="background:'+v[0]+'"><i style="background:'+v[1]+'"></i></span><span>'+esc(x(k))+'</span></button>'; }).join('');
+    var ths=['dark','light'].map(function(k){ var v=SW[k]; return '<button type="button" class="sx-th'+(c.theme===k?' on':'')+'" data-th="'+k+'"><span class="sx-sw2" style="background:'+v[0]+'"><i style="background:'+v[1]+'"></i></span><span>'+esc(x(k))+'</span></button>'; }).join('');
     $('display').innerHTML=head('disp',t.disp,x('dispN'))+row(t.theme,x('themeD'),'<span class="sx-ths">'+ths+'</span>')+row(t.size,x('sizeD'),seg('data-sz',(window.FFTheme?FFTheme.sizes:['s','m','l','xl']).map(function(z){ return [z,t[z]||z]; }),c.size));
     [].forEach.call($('display').querySelectorAll('[data-th]'),function(b){ b.onclick=function(){ FFTheme.set(b.getAttribute('data-th')); theme(); }; });
     [].forEach.call($('display').querySelectorAll('[data-sz]'),function(b){ b.onclick=function(){ FFTheme.set(null,b.getAttribute('data-sz')); theme(); }; }); }
@@ -722,7 +722,7 @@ body{background-image:none!important}
   
 </div>
 </div></main></div>
-<script src="https://frenchfries777.com/games/ff-auth.js?v=20261120a"></script>
+<script src="https://frenchfries777.com/games/ff-auth.js?v=20261120b"></script>
 <script src="https://frenchfries777.com/games/hub.js?v=20261116a"></script>
 <script src="https://frenchfries777.com/games/ff-sidemenu.js?v=20261117a" defer></script>
 </body>
