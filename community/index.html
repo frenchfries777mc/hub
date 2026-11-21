@@ -602,7 +602,27 @@ body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hi
 <div style="margin-top:auto;padding:14px 12px;border-top:1px solid #262626;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#9a9a9a"><span>Made by Frenchfries777 with Claude AI</span><span>© 2026 Frenchfries777 · CC BY-NC-ND 4.0</span></div>
 </aside>
 <main style="position:relative;overflow:hidden;flex:1 1 640px;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;background:#000000">
-<img src="/pics/pixel-bg.png?v=20261117" alt="도트 풍경" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
+<style>#ffHubArt{position:absolute;left:0;top:0;width:100%;aspect-ratio:480/270;overflow:hidden}#ffHubArt .art{position:absolute;top:0;height:100%;aspect-ratio:480/270;left:72%;transform:translateX(-72%)}#ffHubArt .art canvas,#ffHubArt .art img{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;display:block;pointer-events:none}@media(max-width:700px){#ffHubArt{aspect-ratio:auto;height:440px;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}}</style><div id="ffHubArt" role="img" aria-label="도트 풍경: 유럽 도시 광장"><div class="art" id="ffArt"><canvas id="ffSkyCv" width="480" height="270"></canvas><img id="ffFg" src="/pics/hub-fg.png?v=20261120" alt=""><canvas id="ffFxCv" width="480" height="270"></canvas></div></div>
+<script src="/ff-sky.js?v=20261121"></script><script>(function(){
+var art=document.getElementById('ffArt'),c=document.getElementById('ffSkyCv'),fg=document.getElementById('ffFg'),fx=document.getElementById('ffFxCv');if(!art||!window.FFSky)return;
+var x=c.getContext('2d'),f=fx.getContext('2d'),still=false;try{still=matchMedia('(prefers-reduced-motion:reduce)').matches}catch(e){}
+var cl=FFSky.cloudLayer(art,fg),bc=document.createElement('canvas');bc.width=480;bc.height=270;art.insertBefore(bc,fg);var b=bc.getContext('2d');
+function paint(){var d=new Date();FFSky.draw(x,d,{noClouds:true});cl.paint(d)}
+paint();setInterval(function(){if(!document.hidden)paint()},30000);document.addEventListener('visibilitychange',function(){if(!document.hidden)paint()});
+if(still){cl.move(40);return}
+var t0=performance.now(),last=0,UP=[[-3,-2],[-2,-1],[-1,0],[0,0],[1,0],[2,-1],[3,-2]],DN=[[-3,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[3,1]];
+function dayNow(){var d=new Date(),h=d.getHours()+d.getMinutes()/60,i=FFSky.info(d);return h>i.sunrise+.3&&h<i.sunset-.3}
+function loop(now){requestAnimationFrame(loop);if(document.hidden||now-last<33)return;last=now;var t=(now-t0)/1000;
+ cl.move(t);
+ /* 새 떼: 35초마다 18초 동안 가로질러요 */
+ b.clearRect(0,0,480,270);var u=(t%35)/18;if(u<1&&dayNow()){var n=4;b.fillStyle='rgb(46,44,64)';for(var k=0;k<n;k++){var bx=-12+u*520-k*11,by=70+k*7+Math.round(6*Math.sin(t*.8+k)),fr=(Math.floor(t*5+k)%2)?UP:DN;for(var j=0;j<7;j++)b.fillRect(Math.round(bx)+fr[j][0],by+fr[j][1],1,1)}}
+ /* 분수 물방울과 물결 반짝임 */
+ f.clearRect(0,0,480,270);var s=Math.floor(t*8);
+ for(var i=0;i<9;i++){var h=(s*7+i*13)%47,ox=((s*3+i*5)%9)-4;f.fillStyle=(i%3)?'rgba(235,248,255,.9)':'rgba(170,220,240,.8)';f.fillRect(240+ox+(i%2?2:-2)*((h%5)/2|0),168+h,1,1)}
+ for(var i=0;i<14;i++){var px=196+((i*29+s*11)%96),py=226+((i*7+s*3)%9);f.fillStyle=(i%2)?'rgba(220,244,255,.75)':'rgba(120,180,210,.7)';f.fillRect(px,py,2,1)}
+}
+requestAnimationFrame(loop)})()</script>
+<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,rgba(10,10,14,.72) 0,rgba(10,10,14,.5) 38%,rgba(10,10,14,0) 68%)"></div>
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
 <div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261120d';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
