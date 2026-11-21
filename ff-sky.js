@@ -1,4 +1,5 @@
-/* © 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)
+/* SPDX-License-Identifier: CC-BY-NC-ND-4.0
+   © 2026 Frenchfries777. CC BY-NC-ND 4.0 (https://creativecommons.org/licenses/by-nc-nd/4.0/)
    허브 배경 하늘: 지금 시각과 날짜에 맞는 하늘 색, 해·달 위치, 실제 달 위상을 480x270 도트로 그려요.
    FFSky.draw(ctx, date) : 하늘+해/달+별+구름+먼 언덕까지 그려요 (건물·바닥은 따로 겹치는 PNG)
    FFSky.info(date)      : 달 나이·위상 이름·밝은 비율·일출/일몰 시각 */
