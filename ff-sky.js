@@ -33,7 +33,25 @@ function hillsH(seed,amp){ var r=rng(seed),h=amp,a=[]; for(var x=0;x<W;x+=4){ h=
 var HILL1=hillsH(7,43),HILL2=hillsH(9,24);
 function info(date){ date=date||new Date(); var s=sun(date),age=moonAge(date),k=Math.cos(2*Math.PI*age/SYN);
   return {sunrise:s.sr,sunset:s.ss,age:age,phase:phaseName(age),lit:(1-k)/2,waxing:age<SYN/2,moonrise:s.sr+age/SYN*24.84}; }
-function draw(ctx,date){
+var CLOUDS=[[70,40,80],[215,26,64],[400,56,90],[130,95,60]];
+function hourOf(date){ return date.getHours()+date.getMinutes()/60+date.getSeconds()/3600; }
+function css(c){ return 'rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')'; }
+/* 구름만 따로: t초 동안 천천히 흘러가요 (투명 캔버스에 그려요) */
+function clouds(ctx,date,t){ date=date||new Date(); var s=sun(date), S=sky(hourOf(date),s.sr,s.ss), i,k; ctx.clearRect(0,0,W,H);
+  for(i=0;i<CLOUDS.length;i++){ var cl=CLOUDS[i], wd=cl[2], sp=1.2+i*.7, cx=((cl[0]+t*sp+wd)%(W+2*wd))-wd, bx=Math.round(cx-wd/2);
+    for(k=0;k<wd;k+=6){ var hh=2+Math.round(3*Math.sin(k/wd*Math.PI)); ctx.fillStyle=css(S.c[0]); ctx.fillRect(bx+k,cl[1]-hh,6,hh*2); ctx.fillStyle=css(S.c[1]); ctx.fillRect(bx+k,cl[1]-hh,6,1); } } }
+/* 구름을 DOM 캔버스로: 화면 크기에 맞춰 부드럽게 흘러요. host(위치 잡힌 상자)에 넣어요 */
+function cloudLayer(host,before){ var els=[],i; for(i=0;i<CLOUDS.length;i++){ var cl=CLOUDS[i], c=document.createElement('canvas'); c.width=cl[2]; c.height=12; c.style.cssText='position:absolute;image-rendering:pixelated;pointer-events:none;width:'+(cl[2]/W*100)+'%;height:'+(12/H*100)+'%;top:'+((cl[1]-6)/H*100)+'%;left:-50%'; host.insertBefore(c,before||null); els.push(c); }
+  return {
+    paint:function(date){ date=date||new Date(); var s=sun(date), S=sky(hourOf(date),s.sr,s.ss), k,j; for(j=0;j<els.length;j++){ var cx=els[j].getContext('2d'), wd=CLOUDS[j][2]; cx.clearRect(0,0,wd,12); for(k=0;k<wd;k+=6){ var hh=2+Math.round(3*Math.sin(k/wd*Math.PI)); cx.fillStyle=css(S.c[0]); cx.fillRect(k,6-hh,6,hh*2); cx.fillStyle=css(S.c[1]); cx.fillRect(k,6-hh,6,1); } } },
+    move:function(t){ for(var j=0;j<els.length;j++){ var cl=CLOUDS[j], wd=cl[2], sp=1.6+j*.9, cx=((cl[0]+t*sp+wd)%(W+2*wd))-wd; els[j].style.left=((cx-wd/2)/W*100)+'%'; } }
+  }; }
+/* 움직이는 바다: 하늘 색에서 바다 색을 따오고 물결이 흘러요 (y0~y1 줄) */
+function sea(ctx,date,t,y0,y1){ date=date||new Date(); var s=sun(date), S=sky(hourOf(date),s.sr,s.ss), p=S.pal, top=mix(p[5],[52,132,160],.5), bot=mix(p[3],[22,74,104],.72), hi=mix(p[6],[255,255,255],.35), lo=mix(bot,[8,28,50],.4), st=Math.floor(t*3), y,x;
+  for(y=y0;y<y1;y++){ var tt=(y-y0)/(y1-y0), c=mix(top,bot,tt); ctx.fillStyle=css(c); ctx.fillRect(0,y,W,1);
+    for(x=0;x<W;x+=2){ var v=(x*7+y*13+st*5)%29; if(v===0){ ctx.fillStyle=css(hi); ctx.fillRect(x,y,2,1); } else if(((x>>1)+y*3)%11===0&&(y&1)){ ctx.fillStyle=css(lo); ctx.fillRect(x,y,2,1); } }
+    if(y%5===0){ ctx.fillStyle=css(hi); for(x=((y*17+st*3)%23);x<W;x+=23){ ctx.fillRect(x,y,3,1); } } } }
+function draw(ctx,date,opt){
   date=date||new Date(); var h=date.getHours()+date.getMinutes()/60+date.getSeconds()/3600, s=sun(date), S=sky(h,s.sr,s.ss), pal=S.pal, n=pal.length-1;
   var im=ctx.createImageData(W,H), d=im.data, x, y, i, k;
   for(y=0;y<H;y++){ var t=Math.min(1,y/PW), row=B4[y&3];
@@ -54,15 +72,15 @@ function draw(ctx,date){
     for(var dy=-r;dy<=r;dy++) for(var dx=-r;dx<=r;dx++){ if(dx*dx+dy*dy>r*r+r*.3) continue; var xn=dx/r, yn=dy/r, w=Math.sqrt(Math.max(0,1-yn*yn)), lit=wax?(xn>kk*w):(xn<-kk*w);
       if(lit){ var cr=((dx*7+dy*13)%11===0)||(dx===-3&&dy===-2)||(dx===3&&dy===4)||(dx===2&&dy===-5); px(q[0]+dx,q[1]+dy,cr?[206,214,238]:[240,244,255]); }
       else if(S.dark>.5) px(q[0]+dx,q[1]+dy,[32,38,74]); } }
-  /* 구름 */
-  var cc=S.c, CLD=[[70,40,80],[215,26,64],[400,56,90],[130,95,60]];
+  /* 구름 (움직이는 배경에서는 따로 그려요) */
+  if(!(opt&&opt.noClouds)){ var cc=S.c, CLD=CLOUDS;
   for(i=0;i<CLD.length;i++){ var cl=CLD[i], wd=cl[2], bx=Math.round(cl[0]-wd/2);
-    for(k=0;k<wd;k+=6){ var hh=2+Math.round(3*Math.sin(k/wd*Math.PI)); rect(bx+k,cl[1]-hh,6,hh*2,cc[0]); rect(bx+k,cl[1]-hh,6,1,cc[1]); } }
+    for(k=0;k<wd;k+=6){ var hh=2+Math.round(3*Math.sin(k/wd*Math.PI)); rect(bx+k,cl[1]-hh,6,hh*2,cc[0]); rect(bx+k,cl[1]-hh,6,1,cc[1]); } } }
   /* 먼 언덕 (하늘 아래쪽 색에서 따와요) */
   var hc1=mix(pal[5],[34,30,66],.62), hc2=mix(pal[5],[26,22,52],.78);
   for(i=0;i<HILL1.length;i++) rect(i*4,HOR+0-HILL1[i],4,HILL1[i]+20,hc1);
   for(i=0;i<HILL2.length;i++) rect(i*4,HOR+2-HILL2[i],4,HILL2[i]+20,hc2);
   ctx.putImageData(im,0,0);
 }
-window.FFSky={draw:draw,info:info,W:W,H:H};
+window.FFSky={draw:draw,clouds:clouds,cloudLayer:cloudLayer,sea:sea,info:info,W:W,H:H};
 })();
