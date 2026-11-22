@@ -453,7 +453,6 @@ button{font:inherit}
 [hidden]{display:none!important}
 img{max-width:100%}
 #ffTop{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-end;gap:14px;padding:20px 0;height:84px;box-sizing:border-box}
-@media(max-width:560px){#ffTop{flex-wrap:wrap;height:auto;gap:8px 10px}#onlineBar{max-width:none;order:3;flex:1 0 100%}}
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #262626;font-size:14px;color:#ffffff}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
@@ -625,7 +624,7 @@ requestAnimationFrame(loop)})()</script>
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,rgba(10,10,14,.72) 0,rgba(10,10,14,.5) 38%,rgba(10,10,14,0) 68%)"></div>
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.1) 0,rgba(14,14,14,.1) 120px,rgba(14,14,14,.8) 430px,rgba(14,14,14,.78) 100%)"></div>
 <div style="position:relative;padding:0 40px;display:flex;flex-direction:column">
-<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261120d';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
+<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261122a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <div style="padding:70px 0 34px;display:flex;flex-direction:column;gap:16px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#ffd54a">COMMUNITY</span>
 <h1 style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:.01em">Community</h1>
@@ -648,14 +647,17 @@ requestAnimationFrame(loop)})()</script>
 </div>
 </div></main></div>
 <script>(function(){var d=document,b=d.body;
-function open(t){b.classList.add('cmx-o'); var x=d.querySelector('.cm-tabs [data-t="'+t+'"]'); if(x&&!x.classList.contains('on')) x.click();}
+var skip=0;
+function openSec(){ if(!b.classList.contains('cmx-o')){ try{ history.pushState({cmxo:1},''); }catch(e){} } }
+window.addEventListener('popstate',function(){ if(skip>0){ skip--; return; } var st=history.state; if(b.classList.contains('cmx-o')&&!(st&&(st.cmxo||st.ffpost))){ b.classList.remove('cmx-o'); window.scrollTo(0,0); } });
+function open(t){openSec();b.classList.add('cmx-o'); var x=d.querySelector('.cm-tabs [data-t="'+t+'"]'); if(x&&!x.classList.contains('on')) x.click();}
 function auto(){return /[?&]post=\d+/.test(location.search)||/^#(feedback|lfg|gallery|friends|chat|community)$/.test(location.hash);}
 d.addEventListener('click',function(e){var a=e.target.closest('[data-cmo]'); if(a){e.preventDefault(); open(a.getAttribute('data-cmo')); window.scrollTo(0,0); return;}
- if(e.target.closest('#cmx-back')){b.classList.remove('cmx-o'); window.scrollTo(0,0);}});
+ if(e.target.closest('#cmx-back')){b.classList.remove('cmx-o'); window.scrollTo(0,0); if(history.state&&history.state.cmxo){ skip++; history.back(); }}});
 if(auto()) b.classList.add('cmx-o');
 window.addEventListener('hashchange',function(){ if(auto()) b.classList.add('cmx-o'); });
 })();</script><script src="https://frenchfries777.com/games/ff-auth.js?v=20261120b"></script>
-<script src="https://frenchfries777.com/games/hub.js?v=20261120d"></script>
+<script src="https://frenchfries777.com/games/hub.js?v=20261122a"></script>
 <script src="https://frenchfries777.com/games/ff-sidemenu.js?v=20261120c" defer></script>
 </body>
 </html>
