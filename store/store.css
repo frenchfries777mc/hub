@@ -35,6 +35,8 @@ label.f>span{display:block;font-weight:700;margin-bottom:4px}
 label.f small{display:block;color:var(--dim);margin-top:3px;font-size:12px}
 input[type=text],input[type=url],select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 textarea{min-height:120px;resize:vertical}
+label.f{min-width:0}
+input[type=file]{max-width:100%;min-width:0}
 input:focus,select:focus,textarea:focus{border-color:var(--fry);outline:0}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
 .btn{border:0;border-radius:999px;padding:10px 22px;font-weight:800;background:var(--fry);color:var(--fryfg);text-decoration:none;display:inline-block}
