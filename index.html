@@ -29,6 +29,46 @@ img{max-width:100%}
 #ffTop{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-end;gap:14px;padding:20px 0;height:84px;box-sizing:border-box}
 @media(max-width:560px){#ffTop{flex-wrap:wrap;height:auto;gap:8px 10px}#onlineBar{max-width:none;order:3;flex:1 0 100%}}
 @media(max-width:700px){.ffh1{font-size:clamp(30px,9.6vw,56px)!important}}
+@media(max-width:700px){
+html body .ffx-root>aside{padding:6px 8px!important;gap:2px!important;border-bottom:1px solid #262626}
+html body .ffx-root>aside>a:first-child{font-size:15px!important;padding:0 8px 0 2px!important}
+html body .ffx-root>aside a.ffsm{padding:7px 11px!important;gap:6px!important;font-size:13px!important}
+html body .ffx-root>aside a.ffsm svg{width:15px!important;height:15px!important}
+.ffx-root{min-height:0!important}.ffx-root>main{flex:0 0 auto!important}
+.ffm-hero{min-height:540px!important}
+.ffm-pad,.ffm-pad2{padding-left:14px!important;padding-right:14px!important}
+#ffTop{flex-wrap:nowrap!important;height:auto!important;padding:10px 0!important;gap:8px!important}
+#ffTop .srx-btn{width:38px;height:38px}
+html body #onlineBar{order:0!important;flex:1 1 auto!important;min-width:0;max-width:none!important;height:38px!important;padding:0 10px!important;gap:6px 8px!important;font-size:12px!important;display:flex}
+html body #onlineBar .on-n,html body #onlineBar .on-c,html body #onlineBar .on-c>span,html body #onlineBar .on-c b{font-size:12px!important}
+#annBar{margin-top:8px!important;gap:6px!important}
+.ann{font-size:12px!important;padding:8px 28px 8px 10px!important;gap:3px 8px!important;border-radius:10px!important}
+.ann .ae{font-size:11px!important}.ann .ab{min-width:0!important}.ann .ax{font-size:17px!important;top:4px!important;right:6px!important}
+.ffm-txt{padding:150px 0 26px!important;gap:12px!important}
+.ffm-txt>span:first-child{font-size:10px!important;letter-spacing:.1em!important}
+.ffm-txt .ffh1{font-size:clamp(30px,10vw,40px)!important}
+.ffm-txt>p{font-size:14px!important;line-height:1.65!important}
+#heroInstall{margin-top:4px!important}
+#heroInstall button,#heroAuth button{padding:10px 18px!important;font-size:14px!important}
+.ffm-pad2>section{padding:24px 0 8px!important;gap:12px!important;margin-top:0!important}
+.ffm-pad2 h2{font-size:20px!important}
+.ffm-pad2 section>div[style*="grid"]{grid-template-columns:1fr 1fr!important;gap:10px!important}
+.ffm-pad2>section:first-of-type>div>a:last-child{grid-column:1/-1}
+.ffm-pad2 section>div[style*="grid"]>a>div{padding:12px!important;gap:4px!important}
+.ffm-pad2 section>div[style*="grid"]>a b{font-size:16px!important}
+.ffm-pad2 section>div[style*="grid"]>a span{font-size:12px!important;line-height:1.5!important}
+.ffm-pad2 section>div[style*="grid"]>a>span{padding:12px!important}
+.ffm-pad2 section>div[style*="grid"]>a>img[style*="width:46%"]{width:38%!important}
+.ffm-pad2 section>div[style*="grid"]>a>span b{font-size:15px!important}
+.ffm-pad2 section>div[style*="grid"]>div{padding:14px!important;gap:6px!important}
+.ffm-pad2 section>div[style*="grid"]>div b{font-size:15px!important}
+.ffm-pad2 section>div[style*="grid"]>div span:first-child{width:26px!important;height:26px!important;font-size:13px!important}
+.ffm-pad2 section>div[style*="grid"]>div span:last-child{font-size:12px!important;line-height:1.5!important}
+.ffm-pad2>section[style*="min-height:320px"]{min-height:0!important;margin:20px 0 8px!important}
+.ffm-pad2>section[style*="min-height:320px"]>div:last-child{padding:20px!important;gap:10px!important}
+.ffm-pad2>section[style*="min-height:320px"] p{font-size:13px!important;line-height:1.65!important}
+}
+
 #onlineBar{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;max-width:62vw;gap:8px 12px;height:44px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #262626;font-size:14px;color:#ffffff}
 #onlineBar:empty{display:none}
 #ffTop .tb{margin:0}
@@ -78,9 +118,9 @@ img{max-width:100%}
 <img src="/pics/pixel-bg.png?v=20261117" alt="도트 풍경: 노을 지는 바다와 등대" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,0) 0,rgba(14,14,14,0) 420px,rgba(14,14,14,.74) 780px,rgba(14,14,14,.74) 100%)"></div>
 
-<div style="position:relative;min-height:720px;display:flex;flex-direction:column;overflow:hidden">
+<div class="ffm-hero" style="position:relative;min-height:720px;display:flex;flex-direction:column;overflow:hidden">
 <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.15) 0%,rgba(14,14,14,0) 35%,rgba(14,14,14,.82) 100%)"></div>
-<div style="position:relative;padding:0 40px;display:flex;flex-direction:column;flex:1">
+<div class="ffm-pad" style="position:relative;padding:0 40px;display:flex;flex-direction:column;flex:1">
 <div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261120d';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
 <style>#annBar:empty{display:none}#annBar{display:flex;flex-direction:column;gap:8px;margin:14px 0 0;position:relative;z-index:2}
 .ann{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:11px 40px 11px 14px;border-radius:12px;position:relative;font-size:15px;color:#fff;border:1px solid rgba(255,213,74,.45);background:rgba(20,16,4,.82);backdrop-filter:blur(4px)}
@@ -89,7 +129,7 @@ img{max-width:100%}
 .ann .ax{position:absolute;top:6px;right:8px;background:none;border:0;color:#9a9a9a;font-size:20px;cursor:pointer;line-height:1}.ann .ax:hover{color:#fff}
 html[data-ff-theme=light] .ann .ak,html[data-ff-theme=light] .ann .al{color:#965a00}</style>
 <div id="annBar"></div>
-<div style="margin-top:auto;padding:80px 0 52px;display:flex;flex-direction:column;gap:20px">
+<div class="ffm-txt" style="margin-top:auto;padding:80px 0 52px;display:flex;flex-direction:column;gap:20px">
 <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#ffd54a">BY FRENCHFRIES777 · WITH CLAUDE AI</span>
 <h1 class="ffh1" style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(56px,9vw,128px);line-height:.92;letter-spacing:.01em">Frenchfries777</h1>
 <p style="margin:0;max-width:620px;font-size:18px;line-height:1.7;color:#ffffff">Claude AI와 함께 만드는 사이트 모음이에요. 브라우저에서 바로 하는 게임, 놀면서 배우는 교육 게임, 직접 쓰려고 만든 도구가 있어요. 계정은 하나만 만들면 되고 설치는 필요 없어요.</p>
@@ -105,7 +145,7 @@ html[data-ff-theme=light] .ann .ak,html[data-ff-theme=light] .ann .al{color:#965
 </div>
 </div>
 
-<div style="position:relative;box-sizing:border-box;padding:0 40px;display:flex;flex-direction:column">
+<div class="ffm-pad2" style="position:relative;box-sizing:border-box;padding:0 40px;display:flex;flex-direction:column">
 
 <section style="padding:56px 0 24px;display:flex;flex-direction:column;gap:26px">
 <h2 style="margin:0;font-family:'Oswald',sans-serif;font-weight:600;font-size:32px;letter-spacing:.04em;text-transform:uppercase">세 가지 공간</h2>
