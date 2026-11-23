@@ -58,7 +58,7 @@ var css='.ffr{--fg:var(--ffr-fg,#1d1d1f);--dim:var(--ffr-dim,#6e6e73);--line:var
 +'.ffr *{box-sizing:border-box}.ffr h3{margin:0 0 14px;font-size:22px;line-height:1.2}'
 +'.ffr .sum{display:flex;align-items:center;gap:14px;margin-bottom:16px}.ffr .sum b{font-size:44px;line-height:1;font-weight:800}.ffr .sum .st{color:var(--star);font-size:20px;letter-spacing:2px}.ffr .sum small{display:block;color:var(--dim);font-size:13px}'
 +'.ffr .box{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:18px}'
-+'.ffr .pick{display:flex;gap:2px;margin:0 0 8px}.ffr .pick button{border:0;background:none;padding:2px 4px;font-size:30px;line-height:1;color:var(--line);cursor:pointer}.ffr .pick button.on{color:var(--star)}'
++'.ffr .pick{display:flex;gap:2px;margin:0 0 8px}.ffr .pick button{border:0;background:none;padding:6px 5px;font-size:32px;line-height:1;color:var(--dim);opacity:.45;cursor:pointer}.ffr .pick button.on{color:var(--star);opacity:1}'
 +'.ffr textarea{display:block;width:100%;min-height:86px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:transparent;color:inherit;font:inherit;padding:10px}'
 +'.ffr textarea:focus,.ffr select:focus{outline:2px solid var(--acc);outline-offset:1px}'
 +'.ffr .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}.ffr .row .cnt{margin-left:auto;font-size:12px;color:var(--dim)}'
