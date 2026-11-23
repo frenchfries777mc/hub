@@ -647,6 +647,8 @@ requestAnimationFrame(loop)})()</script>
 </div>
 </div></main></div>
 <script>(function(){var d=document,b=d.body;
+/* 새로고침·뒤로가기 때 브라우저가 옛 스크롤 위치(위쪽 줄이 가려진 상태)로 돌리지 않게, 처음엔 항상 맨 위에서 시작해요 (#글·?post 로 온 경우만 예외) */
+if(!location.hash&&!/[?&]post=/.test(location.search)){ try{ history.scrollRestoration='manual'; }catch(e){} window.scrollTo(0,0); }
 var skip=0;
 function openSec(){ if(!b.classList.contains('cmx-o')){ try{ history.pushState({cmxo:1},''); }catch(e){} } }
 window.addEventListener('popstate',function(){ if(skip>0){ skip--; return; } var st=history.state; if(b.classList.contains('cmx-o')&&!(st&&(st.cmxo||st.ffpost))){ b.classList.remove('cmx-o'); window.scrollTo(0,0); } });
