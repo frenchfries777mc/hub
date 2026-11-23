@@ -480,6 +480,7 @@ async function clearNotes(){
 async function markRead(){
   if(!cur) return; cur.unread=0; paintList();
   if(document.visibilityState==='hidden') return;
+  try{ if(window.FFAuth&&FFAuth.readChat) FFAuth.readChat(others()); }catch(e){}   /* 지금 보는 대화의 '채팅을 보냈어요' 알림은 읽음 */
   var last=null; msgs.forEach(function(x){ if(x.created_at&&(!last||x.created_at>last)) last=x.created_at; });
   var ts=last||new Date().toISOString(); if(cur.read&&cur.read>ts) ts=cur.read;
   cur.read=ts; clearNotes();
@@ -1359,6 +1360,7 @@ async function syncNow(full){
 }
 var tick=0; setInterval(function(){ tick++; if(document.visibilityState!=='hidden'&&(!live||tick%8===0)) syncNow(false); }, 4000);
 document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible'){ syncNow(true); markRead(); } });
+window.ffChatViewing=function(actor){ return !!(cur&&document.visibilityState==='visible'&&cur.members&&cur.members.indexOf(actor)>=0); };
 window.addEventListener('online',function(){ syncNow(true); });
 window.addEventListener('focus',function(){ syncNow(false); markRead(); });
 
