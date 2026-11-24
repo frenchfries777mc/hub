@@ -1401,7 +1401,7 @@ function pushNote(t){ var m=document.getElementById('pushMsg'); if(!t){ if(m) m.
 function pushWait(pr,ms){ return Promise.race([pr,new Promise(function(_,rej){ setTimeout(function(){ rej(new Error('timeout')); },ms); })]); }
 function pushKey(u){ var p='='.repeat((4-u.length%4)%4), r=atob((u+p).replace(/-/g,'+').replace(/_/g,'/')), a=new Uint8Array(r.length); for(var i=0;i<r.length;i++) a[i]=r.charCodeAt(i); return a; }
 async function pushRead(){ try{ var reg=await navigator.serviceWorker.ready, sub=await reg.pushManager.getSubscription(); pushOn=!!sub&&Notification.permission==='granted'; if(pushOn&&me){ var r=await sb.from('ffc_push_subs').select('id').eq('endpoint',sub.endpoint).limit(1); if(!(r&&r.data&&r.data.length)) pushOn=false; } }catch(e){ pushOn=false; } pushPaint(); }
-async function pushToggle(){ if(pushBusy){ pushNote('처리 중이에요. 잠시만 기다려 주세요'); return; }
+async function pushToggle(){ if(pushBusy) return;
   if(instIOS()&&!instStandalone()){ toast('공유 버튼 → 홈 화면에 추가로 설치한 뒤, 설치한 앱에서 켤 수 있어요'); pushNote('아이폰은 공유 버튼 → 홈 화면에 추가로 설치한 뒤, 설치한 앱에서 켤 수 있어요'); return; }
   if(!pushOk()){ toast('이 브라우저는 알림을 지원하지 않아요'); pushNote('이 브라우저는 알림을 지원하지 않아요. 크롬이나 엣지에서 열어 주세요'); return; }
   pushBusy=true; pushNote('');
