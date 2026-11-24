@@ -97,6 +97,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .b{padding:9px 12px;border-radius:4px 16px 16px 16px;background:var(--other);white-space:pre-wrap;word-break:break-word;line-height:1.5}
 .m.me .b{background:var(--mine);color:var(--mineText);border-radius:16px 4px 16px 16px}
 .tm{font-size:11px;color:var(--dim);flex:none;padding-bottom:2px}
+.tmw{display:flex;flex-direction:column;align-items:flex-start;flex:none}.m.me .tmw{align-items:flex-end}.unr{font-size:11px;font-weight:800;color:var(--fry);line-height:1.2}
 .m.gap{margin-top:8px}
 .bar{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--panel)}
 .bar textarea{flex:1;resize:none;max-height:120px;min-height:42px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;line-height:1.4}
@@ -372,13 +373,13 @@ async function openRoom(id){
   var rm=rooms.find(function(x){return x.id===id;});
   if(!rm){ await loadRooms(); rm=rooms.find(function(x){return x.id===id;}); }
   if(!rm){ toast('대화방을 찾을 수 없어요'); return; }
-  cur=rm; msgs=[]; seen={}; oldest=null; rowCache={}; typeOpen();
+  cur=rm; msgs=[]; seen={}; oldest=null; rowCache={}; rd={}; typeOpen();
   $('#app').classList.add('open'); paintMain(); paintList();
   var r=await sb.from('ffc_msgs').select(COLS).eq('room_id',id).order('id',{ascending:false}).limit(60);
   var rows=((r&&r.data)||[]).reverse(); await nameOf(rows.map(function(x){return x.user_id;})); loadAvatars(rows.map(function(x){return x.user_id;}));
   await loadReacts(rows.map(function(x){return x.id;}));
   rows.forEach(function(x){ seen[x.id]=1; msgs.push(x); }); oldest=rows.length?rows[0].id:null;
-  paintMsgs(true); markRead();
+  paintMsgs(true); markRead(); loadReads(id);
 }
 var pend=[], pendRoom=null, pendSt=null;
 function pendClear(){ pend.forEach(function(x){ try{ URL.revokeObjectURL(x.u); }catch(e){} }); pend=[]; }
@@ -435,7 +436,11 @@ function paintMain(){
   document.addEventListener('click',function(e){ [].forEach.call(document.querySelectorAll('.stkp,.aip'),function(p){ if(!p.contains(e.target)) p.remove(); }); });
   var comp=el('div','comp'); comp.appendChild(tools); var row2=el('div','row2'); row2.appendChild(ta); row2.appendChild(send); comp.appendChild(row2); bar.appendChild(comp); var tp=el('div','typing'); tp.id='typing'; main.appendChild(tp); main.appendChild(bar); typePaint(); paintPend(); paintReplyBar();
 }
-var rowCache={}, avVer=0;
+var rowCache={}, avVer=0, rd={}, rdT=null;
+function unreadN(m){ if(!cur||!m.created_at||m.kind==='del'||m.kind==='sys') return 0; var t=Date.parse(m.created_at), n=0;
+  cur.members.forEach(function(u){ if(u===m.user_id||u===me.id) return; var r=rd[u]; if(!r) return; if(Date.parse(r.joined)>t) return; if(!r.read||Date.parse(r.read)<t) n++; }); return n; }
+async function loadReads(rid){ try{ var r=await sb.from('ffc_members').select('user_id,joined_at,last_read_at').eq('room_id',rid); if(!cur||cur.id!==rid) return; var o={}; ((r&&r.data)||[]).forEach(function(x){ o[x.user_id]={joined:x.joined_at,read:x.last_read_at}; }); rd=o; paintMsgs(false); }catch(e){} }
+function rdRepaint(){ if(rdT) return; rdT=setTimeout(function(){ rdT=null; if(cur) paintMsgs(false); },300); }
 function paintMsgs(bottom){
   var box=$('#msgs'); if(!box) return; var keep=box.scrollHeight-box.scrollTop; box.innerHTML='';
   if(oldest!==null&&msgs.length>=60){ var ob=el('button','older','이전 대화 보기'); ob.onclick=older; box.appendChild(ob); }
@@ -445,7 +450,7 @@ function paintMsgs(bottom){
     var dk=dayKey(m.created_at); if(dk!==lastDay){ box.appendChild(el('div','day',dayLabel(m.created_at))); lastDay=dk; lastU=null; }
     var mine=m.user_id===me.id, first=lastU!==m.user_id, nx=msgs[i+1], last=!(nx&&nx.user_id===m.user_id&&dayKey(nx.created_at)===dk&&hm(nx.created_at)===hm(m.created_at));
     var cacheable=['text','ai','sticker','image','del',undefined,null,''].indexOf(m.kind)>=0&&m.id, sig='';
-    if(cacheable){ sig=[mine,first,last,cur.kind,avVer,names[m.user_id]||'',m.kind,m.body,JSON.stringify(m.meta||null),JSON.stringify(reacts[m.id]||null),hm(m.created_at)].join('\u0001'); var cc=rowCache[m.id]; if(cc&&cc.sig===sig){ box.appendChild(cc.node); lastU=m.user_id; return; } }
+    if(cacheable){ sig=[mine,first,last,cur.kind,avVer,names[m.user_id]||'',m.kind,m.body,JSON.stringify(m.meta||null),JSON.stringify(reacts[m.id]||null),hm(m.created_at),unreadN(m)].join('\u0001'); var cc=rowCache[m.id]; if(cc&&cc.sig===sig){ box.appendChild(cc.node); lastU=m.user_id; return; } }
     var row=el('div','m'+(mine?' me':'')+(first?' gap':''));
     if(V2&&m.kind==='sys'){ box.appendChild(el('div','sys',(names[m.user_id]||'')+'님이 '+m.body)); lastU=null; return; }
     if(!mine){ var av=profLink(avEl(m.user_id),m.user_id); if(!first) av.style.visibility='hidden'; row.appendChild(av); }
@@ -457,7 +462,7 @@ function paintMsgs(bottom){
     var rx=reactRow(m); if(rx) col.appendChild(rx);
     if(m.kind!=='del'&&m.id) row.appendChild(hookMsg(m,rb));
     row.appendChild(col);
-    if(last) row.appendChild(el('span','tm',hm(m.created_at)));
+    var un=unreadN(m); if(last||un){ var tw=el('span','tmw'); if(un) tw.appendChild(el('span','unr',String(un))); if(last) tw.appendChild(el('span','tm',hm(m.created_at))); row.appendChild(tw); }
     box.appendChild(row); lastU=m.user_id; if(cacheable) rowCache[m.id]={sig:sig,node:row};
   });
   if(bottom) box.scrollTop=box.scrollHeight; else box.scrollTop=box.scrollHeight-keep;
@@ -512,7 +517,7 @@ function subscribe(){
     if(!rm){ await loadRooms(); paintList(); return; }
     rm.last_text=m.body.slice(0,80); rm.last_at=m.created_at; if(m.user_id!==me.id) rm.unread++;
     rooms.sort(function(a,b){return new Date(b.last_at)-new Date(a.last_at);}); paintList();
-  }).on('postgres_changes',{event:'INSERT',schema:'public',table:'ffc_members',filter:'user_id=eq.'+me.id},async function(){ await loadRooms(); paintList(); });
+  }).on('postgres_changes',{event:'INSERT',schema:'public',table:'ffc_members',filter:'user_id=eq.'+me.id},async function(){ await loadRooms(); paintList(); }).on('postgres_changes',{event:'UPDATE',schema:'public',table:'ffc_members'},function(p){ var d=p.new; if(!d||!cur||d.room_id!==cur.id||d.user_id===me.id) return; var o=rd[d.user_id]; if(o) o.read=d.last_read_at; else rd[d.user_id]={joined:d.joined_at,read:d.last_read_at}; rdRepaint(); });
   chan=subscribeExt(chan).subscribe(function(st){ var was=live; live=st==='SUBSCRIBED'; if(live&&!was&&everLive) syncNow(true); if(live) everLive=true; });
 }
 function groupModal(){
