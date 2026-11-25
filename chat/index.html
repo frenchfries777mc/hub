@@ -56,6 +56,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .list{flex:1;overflow-y:auto;min-height:0}
 .row{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border:0;background:none;width:100%;text-align:left}
 .row:hover,.row.on{background:rgba(217,180,95,.1)}
+.av img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 .av{flex:none;width:44px;height:44px;border-radius:16px;background:linear-gradient(135deg,#3a3a3a,#232323);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--fry);border:1px solid var(--line)}
 .av.g{border-radius:50%}
 .rm{flex:1;min-width:0}
@@ -284,7 +285,7 @@ function start(){
     var a=el('a','','← Frenchfries777'); a.href='https://frenchfries777.com/'; a.style.color='var(--dim)'; l.appendChild(a);
     root.appendChild(l); return;
   }
-  layout(); loadAll(); subscribe();
+  layout(); sb.rpc('ff_news_ensure').then(function(){ return loadAll(); },function(){ return loadAll(); }); subscribe();
 }
 function layout(){
   var app=el('div','app'); app.id='app';
@@ -318,9 +319,9 @@ async function loadFriends(){
   friends=ids.map(function(i){return {id:i,name:names[i]||'알 수 없음'};}).sort(function(a,b){return a.name.localeCompare(b.name,'ko');});
 }
 async function loadRooms(){
-  var r=await sb.from('ffc_members').select('room_id,last_read_at,'+(V3?'ffc_rooms(id,kind,name,last_at,last_text,created_by,notice,bg)':'ffc_rooms(id,kind,name,last_at,last_text,created_by)')+'').eq('user_id',me.id);
+  var r=await sb.from('ffc_members').select('room_id,last_read_at,muted,'+(V3?'ffc_rooms(id,kind,name,last_at,last_text,created_by,notice,bg,dm_key)':'ffc_rooms(id,kind,name,last_at,last_text,created_by,dm_key)')+'').eq('user_id',me.id);
   if(r.error){ rooms=[]; root.dataset.err=r.error.message; return; }
-  rooms=((r.data)||[]).filter(function(x){return x.ffc_rooms;}).map(function(x){ var o=x.ffc_rooms; return {id:o.id,kind:o.kind,name:o.name,created_by:o.created_by,notice:o.notice||null,bg:o.bg||null,last_at:o.last_at,last_text:o.last_text,read:x.last_read_at,unread:0,members:[]}; });
+  rooms=((r.data)||[]).filter(function(x){return x.ffc_rooms;}).map(function(x){ var o=x.ffc_rooms; return {id:o.id,kind:o.kind,name:o.name,created_by:o.created_by,notice:o.notice||null,bg:o.bg||null,news:/^news_/.test(o.dm_key||''),muted:!!x.muted,last_at:o.last_at,last_text:o.last_text,read:x.last_read_at,unread:0,members:[]}; });
   if(!rooms.length) return;
   var ids=rooms.map(function(x){return x.id;});
   var m=await sb.from('ffc_members').select('room_id,user_id').in('room_id',ids);
@@ -330,9 +331,11 @@ async function loadRooms(){
     var c=await sb.from('ffc_msgs').select('id',{count:'exact',head:true}).eq('room_id',rm.id).neq('user_id',me.id).gt('created_at',rm.read);
     rm.unread=(c&&c.count)||0;
   }));
-  rooms.sort(function(a,b){return new Date(b.last_at)-new Date(a.last_at);});
+  rooms.sort(roomCmp);
 }
+function roomCmp(a,b){ if(!!a.news!==!!b.news) return a.news?-1:1; return new Date(b.last_at)-new Date(a.last_at); }
 function roomTitle(rm){
+  if(rm.news) return '업데이트 소식';
   if(rm.kind==='group') return (rm.name||'그룹 채팅');
   var o=rm.members.find(function(i){return i!==me.id;}); return (o&&names[o])||'알 수 없음';
 }
@@ -358,7 +361,7 @@ function paintList(){
     var t=roomTitle(rm), b=el('button','row'+(cur&&cur.id===rm.id?' on':''));
     b.innerHTML='<span class="av"></span><span class="rm"><b></b><span></span></span><span class="meta"><span class="tt"></span></span>';
     $('.av',b).replaceWith(roomAv(rm));
-    $('b',b).textContent=t; $('.rm>span',b).textContent=rm.last_text||'대화를 시작해 보세요';
+    $('b',b).textContent=t; $('.rm>span',b).textContent=rm.last_text||(rm.news?'새 소식이 여기로 와요':'대화를 시작해 보세요');
     $('.tt',b).textContent=rm.last_text?shortTime(rm.last_at):'';
     if(rm.unread){ var u=el('span','bd',rm.unread>99?'99+':rm.unread); $('.meta',b).appendChild(u); }
     b.onclick=function(){ openRoom(rm.id); }; list.appendChild(b);
@@ -399,7 +402,7 @@ function paintMain(){
     var nb2=el('button','','📌 공지 '+(cur.notice?'바꾸기':'올리기')); nb2.onclick=function(){ mn.remove(); noticeModal(); };
     var sb2=el('button','','⏰ 예약 메시지'); sb2.onclick=function(){ mn.remove(); schedModal(''); };
     var bb=el('button','','🖼 방 배경'); bb.onclick=function(){ mn.remove(); bgModal(); };
-    mn.appendChild(mb); if(V3){ if(canManage(cur)){ mn.appendChild(nb2); mn.appendChild(bb); } mn.appendChild(sb2); } mn.appendChild(cl); mn.appendChild(del); ch.appendChild(mn);
+    if(cur.news){ var mu=el('button','',cur.muted?'🔔 알림 켜기':'🔕 알림 끄기'); mu.onclick=async function(ev){ ev.stopPropagation(); var nv=!cur.muted; var rr=await sb.from('ffc_members').update({muted:nv}).eq('room_id',cur.id).eq('user_id',me.id); if(rr.error){ toast('바꾸지 못했어요'); return; } cur.muted=nv; mn.remove(); toast(nv?'알림을 껐어요':'알림을 켰어요'); }; mn.appendChild(mu); mn.appendChild(cl); ch.appendChild(mn); } else { mn.appendChild(mb); if(V3){ if(canManage(cur)){ mn.appendChild(nb2); mn.appendChild(bb); } mn.appendChild(sb2); } mn.appendChild(cl); mn.appendChild(del); ch.appendChild(mn); }
     setTimeout(function(){ document.addEventListener('click',function h(ev){ if(!mn.contains(ev.target)){ mn.remove(); document.removeEventListener('click',h); } }); },0); };
   var hav=roomAv(cur); t.style.cursor='pointer'; t.onclick=membersModal; ch.appendChild(back); ch.appendChild(hav); ch.appendChild(t); ch.appendChild(more); main.appendChild(ch);
   var box=el('div','msgs'); box.id='msgs'; main.appendChild(box); paintBg(); setTimeout(paintNotice,0);
@@ -434,7 +437,7 @@ function paintMain(){
   if(others().length) tb('🎲','Hub Coin 내기',betModal);
   if(!V2) [].forEach.call(tools.querySelectorAll('.tb'),function(b){ b.classList.add('off'); b.title='준비 중'; b.onclick=function(e){ e.preventDefault(); e.stopPropagation(); toast('아직 준비 중이에요'); }; });
   document.addEventListener('click',function(e){ [].forEach.call(document.querySelectorAll('.stkp,.aip'),function(p){ if(!p.contains(e.target)) p.remove(); }); });
-  var comp=el('div','comp'); comp.appendChild(tools); var row2=el('div','row2'); row2.appendChild(ta); row2.appendChild(send); comp.appendChild(row2); bar.appendChild(comp); var tp=el('div','typing'); tp.id='typing'; main.appendChild(tp); main.appendChild(bar); typePaint(); paintPend(); paintReplyBar();
+  var comp=el('div','comp'); comp.appendChild(tools); var row2=el('div','row2'); row2.appendChild(ta); row2.appendChild(send); comp.appendChild(row2); bar.appendChild(comp); var tp=el('div','typing'); tp.id='typing'; if(cur.news){ var nb0=el('div','bar'); nb0.style.cssText='justify-content:center;color:var(--dim);font-size:13px'; nb0.textContent='공식 알림 채널이에요'; main.appendChild(nb0); } else { main.appendChild(tp); main.appendChild(bar); } typePaint(); paintPend(); paintReplyBar();
 }
 var rowCache={}, avVer=0, rd={}, rdT=null;
 function unreadN(m){ if(!cur||!m.created_at||m.kind==='del'||m.kind==='sys') return 0; var t=Date.parse(m.created_at), n=0;
@@ -445,7 +448,7 @@ function paintMsgs(bottom){
   var box=$('#msgs'); if(!box) return; var keep=box.scrollHeight-box.scrollTop; box.innerHTML='';
   if(oldest!==null&&msgs.length>=60){ var ob=el('button','older','이전 대화 보기'); ob.onclick=older; box.appendChild(ob); }
   var lastDay='', lastU=null, lastT=0;
-  if(!(oldest!==null&&msgs.length>=60)){ var it=el('div','intro'); var ia=roomAv(cur); it.appendChild(ia); it.appendChild(el('b','',roomTitle(cur))); it.appendChild(el('span','',cur.kind==='group'?'멤버 '+cur.members.length+'명이 함께하는 그룹 채팅이에요.\n첫 인사를 건네 보세요.':'1:1 대화가 시작됐어요.\n첫 인사를 건네 보세요.')); it.lastChild.style.whiteSpace='pre-line'; if(cur.kind==='group'){ var mr=el('div','mrow'); cur.members.forEach(function(i){ var c=el('span','mchip'); c.appendChild(avEl(i,'xs')); c.appendChild(document.createTextNode((names[i]||'?')+(i===me.id?' (나)':''))); mr.appendChild(c); }); it.appendChild(mr); } box.appendChild(it); }
+  if(!(oldest!==null&&msgs.length>=60)){ var it=el('div','intro'); var ia=roomAv(cur); it.appendChild(ia); it.appendChild(el('b','',roomTitle(cur))); it.appendChild(el('span','',cur.news?'업데이트가 올라오면\n여기로 알려드려요.':cur.kind==='group'?'멤버 '+cur.members.length+'명이 함께하는 그룹 채팅이에요.\n첫 인사를 건네 보세요.':'1:1 대화가 시작됐어요.\n첫 인사를 건네 보세요.')); it.lastChild.style.whiteSpace='pre-line'; if(cur.kind==='group'){ var mr=el('div','mrow'); cur.members.forEach(function(i){ var c=el('span','mchip'); c.appendChild(avEl(i,'xs')); c.appendChild(document.createTextNode((names[i]||'?')+(i===me.id?' (나)':''))); mr.appendChild(c); }); it.appendChild(mr); } box.appendChild(it); }
   msgs.forEach(function(m,i){
     var dk=dayKey(m.created_at); if(dk!==lastDay){ box.appendChild(el('div','day',dayLabel(m.created_at))); lastDay=dk; lastU=null; }
     var mine=m.user_id===me.id, first=lastU!==m.user_id, nx=msgs[i+1], last=!(nx&&nx.user_id===m.user_id&&dayKey(nx.created_at)===dk&&hm(nx.created_at)===hm(m.created_at));
@@ -477,7 +480,7 @@ function add(m){
   if(seen[m.id]) return; seen[m.id]=1; msgs.push(m); if(typers[m.user_id]){ delete typers[m.user_id]; typePaint(); }
   var box=$('#msgs'), near=box&&box.scrollHeight-box.scrollTop-box.clientHeight<140;
   paintMsgs(near||m.user_id===me.id);
-  var rm=cur; if(rm){ rm.last_text=m.body.slice(0,80); rm.last_at=m.created_at; rm.unread=0; rooms.sort(function(a,b){return new Date(b.last_at)-new Date(a.last_at);}); paintList(); markRead(); }
+  var rm=cur; if(rm){ rm.last_text=m.body.slice(0,80); rm.last_at=m.created_at; rm.unread=0; rooms.sort(roomCmp); paintList(); markRead(); }
 }
 async function clearNotes(){
   try{ if(!cur||!navigator.serviceWorker) return; var rg=await navigator.serviceWorker.getRegistration(); if(!rg) return; var l=await rg.getNotifications(); l.forEach(function(n){ var r=n.data&&n.data.room; if(!r||r===cur.id) n.close(); }); }catch(e){}
@@ -516,7 +519,7 @@ function subscribe(){
     var rm=rooms.find(function(x){return x.id===m.room_id;});
     if(!rm){ await loadRooms(); paintList(); return; }
     rm.last_text=m.body.slice(0,80); rm.last_at=m.created_at; if(m.user_id!==me.id) rm.unread++;
-    rooms.sort(function(a,b){return new Date(b.last_at)-new Date(a.last_at);}); paintList();
+    rooms.sort(roomCmp); paintList();
   }).on('postgres_changes',{event:'INSERT',schema:'public',table:'ffc_members',filter:'user_id=eq.'+me.id},async function(){ await loadRooms(); paintList(); }).on('postgres_changes',{event:'UPDATE',schema:'public',table:'ffc_members'},function(p){ var d=p.new; if(!d||!cur||d.room_id!==cur.id||d.user_id===me.id) return; var o=rd[d.user_id]; if(o) o.read=d.last_read_at; else rd[d.user_id]={joined:d.joined_at,read:d.last_read_at}; rdRepaint(); });
   chan=subscribeExt(chan).subscribe(function(st){ var was=live; live=st==='SUBSCRIBED'; if(live&&!was&&everLive) syncNow(true); if(live) everLive=true; });
 }
@@ -1170,10 +1173,11 @@ async function loadAvatars(ids){
     await Promise.all(rest.map(function(i){ return Promise.resolve(window.FFProfile.avatarDataUrl(sb,i)).then(function(u){ if(u) avs[i]=u; },function(){}); })); }
   avRepaint();
 }
-function avEl(uid,cls,txt){ var d=el('div','av'+(cls?' '+cls:'')+(uid&&online[uid]&&uid!==me.id&&cls!=='mini'?' onl':'')); var u=uid&&avs[uid]; if(u){ var im=el('img'); im.src=u; im.alt=''; im.onerror=function(){ delete avs[uid]; d.textContent=txt||initial(names[uid]); }; d.appendChild(im); d.classList.add('pic'); } else d.textContent=txt!=null?txt:initial(names[uid]); return d; }
+function avEl(uid,cls,txt){ var d=el('div','av'+(cls?' '+cls:'')+(uid&&online[uid]&&uid!==me.id&&cls!=='mini'?' onl':'')); var u=uid&&avs[uid]; if(uid==='00000000-0000-4000-8000-0000000f0f01') u='https://frenchfries777.com/logo.svg'; if(u){ var im=el('img'); im.src=u; im.alt=''; im.onerror=function(){ delete avs[uid]; d.textContent=txt||initial(names[uid]); }; d.appendChild(im); d.classList.add('pic'); } else d.textContent=txt!=null?txt:initial(names[uid]); return d; }
 function roomOther(rm){ return rm.kind==='dm'?rm.members.find(function(i){return i!==me.id;}):null; }
 function roomAv(rm,cls){ if(rm.kind==='group'){ var g=el('div','av g'+(cls?' '+cls:'')); var ps=rm.members.filter(function(i){return i!==me.id;}).slice(0,4);
     if(ps.some(function(i){return avs[i];})){ g.classList.add('mosaic','n'+Math.min(ps.length,4)); ps.forEach(function(i){ var c=avEl(i,'mini'); g.appendChild(c); }); } else g.textContent='👥'; return g; }
+  if(rm.news){ var nv=el('div','av'+(cls?' '+cls:'')); var li=el('img'); li.src='https://frenchfries777.com/logo.svg'; li.alt=''; nv.appendChild(li); return nv; }
   var o=roomOther(rm); return avEl(o,cls,initial(roomTitle(rm))); }
 
 /* ---------- 👥 멤버 보기 · 초대 · 내보내기 ---------- */
@@ -1203,7 +1207,7 @@ function paintHead(){ var ch=$('.ch'); if(!ch||!cur) return; var a=$('.ch>.av',c
 var V3=false, reacts={}, replyTo=null, online={}, presTimer=null, schedTimer=null;
 var EMO=['👍','😂','🔥','❤️','😮','😢'];
 async function detectV3(){ if(!V2) return; try{ var t=await sb.from('ffc_reacts').select('msg_id').limit(1); V3=!t.error; }catch(e){ V3=false; } }
-function memberLine(rm){ var o=rm.members.filter(function(i){ return i!==me.id; }).map(function(i){ return names[i]||'?'; });
+function memberLine(rm){ if(rm.news) return '공식 알림'; var o=rm.members.filter(function(i){ return i!==me.id; }).map(function(i){ return names[i]||'?'; });
   if(rm.kind!=='group'){ var u=roomOther(rm), on=u&&online[u]; return on?'🟢 접속 중'+(on.game?' · '+gname(on.game):''):'1:1 대화'; }
   return (o.length?o.slice(0,4).join(', ')+(o.length>4?' 외 '+(o.length-4)+'명':'')+', 나':'나')+' · '+rm.members.length+'명'; }
 /* 접속 표시: ff_presence(최근 3분 안) */
