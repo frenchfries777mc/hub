@@ -1015,7 +1015,7 @@ function resultCard(d){
 
 /* ---------- 🤖 자체 AI (프레무스 · 렉투스 · 타리우스) ---------- */
 var AIS={premus:{id:'FF-Tools-8B',n:'프레무스'},lectus:{id:'FF-Tools-4B',n:'렉투스'},tarius:{id:'FF-Tools-1.7B',n:'타리우스'}};
-var AIRE=/^@(프레무스|렉투스|타리우스|premus|lectus|tarius)\b\s*/i;
+var AIRE=/^@(프레무스|렉투스|타리우스|premus|lectus|tarius)(?![A-Za-z0-9_가-힣])\s*/i;
 function aiKey(w){ w=w.toLowerCase(); return {'프레무스':'premus','렉투스':'lectus','타리우스':'tarius'}[w]||w; }
 function aiName(k){ return (AIS[k]&&AIS[k].n)||'AI'; }
 function loadScript(src){ return new Promise(function(res,rej){ var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
