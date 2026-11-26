@@ -87,52 +87,111 @@ html body #onlineBar .on-n,html body #onlineBar .on-c,html body #onlineBar .on-c
 }
 </style>
 <link rel="stylesheet" href="https://frenchfries777.com/ff-themes.css?v=20261126c">
-</head>
-<body data-root="https://frenchfries777.com/games/" data-hub="">
-<div class="ffx-root" style="background:#000000;color:#ffffff;min-height:2400px;display:flex;flex-wrap:wrap;align-items:stretch">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style id="hubA">
+/* hub home — design A (top text bar, pixel-title hero, 4 rails, yellow end band) */
+html,body{background:#0e0e0e!important;color:#ece6d8;overflow-x:clip}
+html{color-scheme:dark}
+.hA{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;font-size:16px;line-height:1.6;color:#ece6d8;background:#0e0e0e}
+.hA *{box-sizing:border-box}
+.hA a{color:inherit;text-decoration:none}
+.hA h1,.hA h2,.hA h3{margin:0}
+.hA-w{max-width:1200px;margin-inline:auto;padding-inline:max(20px,env(safe-area-inset-left,0px))}
+/* top bar */
+.hA-top{position:sticky;top:0;z-index:60;background:#000;border-bottom:1px solid rgba(255,213,74,.4)}
+.hA-in{display:flex;align-items:center;gap:26px;height:64px;padding-inline:clamp(16px,2.8vw,40px)}
+.hA-logo{display:flex;align-items:center;gap:10px;font:700 15px/1 'Noto Sans KR',sans-serif;letter-spacing:.02em;white-space:nowrap;color:#fff}
+.hA-logo u{width:28px;height:28px;border-radius:8px;background:#ffd54a}
+.hA-logo i{font-style:normal;color:#ffd54a;margin-left:-2px}
+.hA-top nav{display:flex;gap:26px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;margin-left:6px}
+.hA-top nav::-webkit-scrollbar{display:none}
+.hA-top nav a{color:#a9a9a9;font-size:15px;white-space:nowrap;padding:6px 0;border-bottom:2px solid transparent;font-weight:500}
+.hA-top nav a:hover{color:#fff}
+.hA-top nav a.on{color:#ffd54a;border-color:#ffd54a}
+.hA-top #ffTop{height:auto;padding:0;margin-left:auto;gap:12px;flex:none}
+.hA-top .srx-btn{width:40px;height:40px;border-radius:10px;background:rgba(14,14,14,.6);border:1px solid #262626;color:#ccc}
+.hA-top .tb{margin:0}
+.hA-top [data-ff-account] .ffa-btn{width:auto;min-width:88px;background:#ffd54a;color:#1c1405;border-radius:99px;padding:10px 20px;font-weight:700;font-size:14px;box-shadow:none}
+.hA-top .ffa-wrap{margin-left:0}
+/* hero */
+.hA-hero{position:relative;height:clamp(560px,58vw,836px);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#0b0b0b}
+.hA-cols{position:absolute;inset:-8% -5%;display:grid;grid-template-columns:repeat(6,1fr);gap:16px;transform:rotate(6deg)}
+.hA-c{display:flex;flex-direction:column;gap:16px;animation:hAup 80s linear infinite}
+.hA-c:nth-child(even){animation-name:hAdn}
+.hA-c i{display:block;aspect-ratio:3/4;border-radius:14px;flex:none;background-size:cover;background-position:center;background-color:#171717;border:1px solid rgba(217,180,95,.28)}
+@keyframes hAup{to{transform:translateY(-50%)}}@keyframes hAdn{from{transform:translateY(-50%)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.hA-c{animation:none}}
+.hA-hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,8,8,.64),rgba(8,8,8,.7) 60%,rgba(14,14,14,.92))}
+.hA-hero>*{position:relative;z-index:2}
+.hA-hero>.hA-cols{position:absolute;z-index:0}
+.hA-hero #annBar{position:absolute;top:22px;left:50%;transform:translateX(-50%);width:min(640px,calc(100% - 32px));margin:0;z-index:3;text-align:left}
+.hA-h1{font-family:'Press Start 2P',monospace;font-weight:400;font-size:clamp(20px,5.8vw,84px);line-height:1.1;letter-spacing:0;white-space:nowrap;margin-top:6%}
+.hA-h1 span{display:inline-block;transform:scaleY(1.18)}
+.hA-h1 .w{color:#fff;text-shadow:.09em .09em 0 #8d8d8d}
+.hA-h1 .y{margin-left:.45em;color:#ffd54a;text-shadow:.09em .09em 0 #b9890f}
+.hA-ico{width:clamp(110px,13.9vw,200px);height:auto;border-radius:24%;display:block;margin:clamp(20px,2.8vw,40px) auto}
+.hA-auth{display:flex;gap:clamp(16px,3.2vw,46px);justify-content:center;align-items:center;flex-wrap:wrap}
+.hA-auth[hidden]{display:none!important}
+.hA-auth button{font-family:inherit;font-weight:800;font-size:clamp(17px,1.95vw,28px);height:clamp(56px,7.9vw,114px);border-radius:clamp(14px,1.9vw,28px);cursor:pointer;padding:0 clamp(26px,3.6vw,52px)}
+.hA-auth .g{background:#ffd54a;color:#1c1405;border:0}
+.hA-auth .o{background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.32)}
+.hA #heroInstall{margin-top:18px}
+.hA-stat{display:flex;align-items:center;gap:16px;padding-block:34px;color:#9a9a9a;font-size:15px;flex-wrap:wrap}
+.hA-stat a{color:#ffd54a;font-weight:700}
+.hA-stat #onlineBar{margin-left:auto;max-width:100%}
+/* sections */
+.hA-sec{border-top:1px solid #2a2a28;padding:78px 0 64px}
+.hA-rh{display:flex;align-items:flex-end;gap:clamp(18px,4vw,56px);margin-bottom:28px;flex-wrap:wrap}
+.hA-n{font-family:'Press Start 2P',monospace;font-size:clamp(40px,5vw,72px);line-height:1;color:#8a6e2e;display:inline-block;transform:scaleY(1.4);transform-origin:bottom left;letter-spacing:-.16em;margin-right:.16em;margin-bottom:.04em}
+.hA-ht h2{font-family:'Press Start 2P',monospace;font-weight:400;font-size:clamp(22px,3.4vw,48px);line-height:1.15;color:#ece6d8;text-transform:uppercase}
+.hA-ht p{margin:10px 0 0;color:#a39c8c;font-size:15px}
+.hA-all{margin-left:auto;color:#f1c76a;font-weight:800;font-size:15px;white-space:nowrap}
+.hA-grid{display:grid;gap:18px}
+.hA-grid.r5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.hA-grid.rp{grid-template-columns:repeat(auto-fill,272px)}
+.gc{border-radius:16px;overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);background:var(--k);transition:transform .15s,border-color .15s;min-width:0}
+.gc:hover{transform:translateY(-3px);border-color:var(--tk)}
+.gc .art{height:150px;position:relative;background-size:cover;background-position:center;background-color:#161616}
+.gc .art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--k))}
+.gc .pill{position:absolute;left:12px;top:12px;z-index:2;font-size:12px;font-weight:700;padding:3px 11px;border-radius:99px;background:var(--tk);color:#0b0b0b}
+.gc .body{padding:4px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.gc h3{font-size:20px;line-height:1.15;text-transform:uppercase;letter-spacing:.01em;color:#ece6d8;font-weight:700}
+.gc p{margin:0;color:#a39c8c;font-size:14px;line-height:1.5}
+.gc .go{margin-top:auto;display:inline-flex;align-self:flex-start;padding:8px 18px;border-radius:10px;background:var(--tk);color:#0b0b0b;font-weight:800;font-size:14px}
+.k1{--k:#0f2926;--tk:#3fe0c0}.k2{--k:#101b3b;--tk:#7da0ff}.k3{--k:#2a1d0c;--tk:#f1c76a}.k4{--k:#241532;--tk:#c9a0f0}
+/* together */
+.hA-tog{border-top:1px solid #2a2a28;padding:84px 0 96px}
+.hA-t2{font-size:clamp(28px,3.4vw,46px);font-weight:900;line-height:1.2;margin-bottom:30px;color:#ece6d8}
+.tog{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #2e2b25;border-radius:20px;overflow:hidden;background:#171717}
+.tog a{display:flex;flex-direction:column;gap:12px;padding-bottom:28px;border-right:1px solid #2e2b25;min-width:0}
+.tog a:last-child{border:0}
+.tog .im{height:168px;background-size:cover;background-position:center;border-bottom:1px solid #2e2b25}
+.tog a:hover h3{color:#ffd54a}
+.tog h3{font-family:'Press Start 2P',monospace;font-weight:400;font-size:clamp(14px,1.4vw,20px);padding:12px 24px 0;color:#ece6d8;line-height:1.3}
+.tog p{margin:0;padding:0 24px;color:#a39c8c;font-size:14px}
+/* end band */
+.hA-end{background:#ffd54a;color:#1c1405;padding:clamp(70px,9vw,128px) 0;text-align:center}
+.hA-end h2{font-size:clamp(40px,5.6vw,80px);font-weight:900;line-height:1.2;margin-bottom:18px}
+.hA-end p{margin:0 auto 28px;max-width:560px;font-size:17px}
+.hA-eb{display:flex;gap:26px;justify-content:center;align-items:center;flex-wrap:wrap}
+.hA-eb[hidden]{display:none!important}
+.hA-eb button{font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;border-radius:99px;padding:15px 30px}
+.hA-eb .b{background:#0b0b0b;color:#ffd54a;border:0}
+.hA-eb .l{background:transparent;color:#1c1405;border:0;padding-inline:6px}
+/* footer */
+.hA-foot{border-top:1px solid #2a2a28}
+.hA-foot .ffx-foot{border:0;margin:0;padding:34px 0 44px;color:#9a9a9a}
+.hA-foot .ffx-foot a:hover{color:#ffd54a}
+@media(max-width:1100px){.hA-grid.r5{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-20px;padding:2px 20px 14px;scrollbar-width:thin}.hA-grid.r5 .gc{flex:none;width:250px;scroll-snap-align:start}.tog{grid-template-columns:repeat(2,minmax(0,1fr))}.tog a:nth-child(2){border-right:0}.tog a:nth-child(-n+2){border-bottom:1px solid #2e2b25}}
+@media(max-width:700px){.hA-in{gap:14px}.hA-logo i{display:none}.hA-top nav{gap:18px}.hA-top nav a{font-size:14px}.hA-hero #annBar{top:14px}.hA-sec{padding:56px 0 44px}.hA-grid.rp{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}.hA-all{margin-left:0}.tog{grid-template-columns:minmax(0,1fr)}.tog a{border-right:0;border-bottom:1px solid #2e2b25}.tog a:last-child{border:0}.hA-cols{grid-template-columns:repeat(3,1fr)}.hA-h1{margin-top:22%}}
 
-<aside style="flex:0 0 232px;box-sizing:border-box;background:#000000;border-right:1px solid #262626;padding:24px 16px;display:flex;flex-direction:column;gap:6px;min-width:0">
-<a href="/" style="display:block;padding:4px 10px 22px;font-family:'Oswald',sans-serif;font-size:21px;line-height:1;letter-spacing:.03em;white-space:nowrap"><span style="font-weight:500">FRENCH</span><span style="font-weight:700">FRIES</span><span style="font-weight:700;color:#ffd54a">777</span></a>
-
-<a href="/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:#26221a;color:#ffd54a"><span style="width:8px;height:8px;border-radius:2px;background:#ffd54a"></span>Hub</a>
-
-<a href="/games/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>Games</a>
-
-<a href="/educations/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>Educations</a>
-
-<a href="/tools/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>Tools</a>
-
-<a href="/wiki/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>위키</a>
-
-<a href="/community/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>커뮤니티</a>
-
-<a href="/lounge/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>라운지</a>
-
-<a href="/prototypes/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>Prototypes</a>
-<a href="/settings/" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;font-size:15px;font-weight:500;background:transparent;color:#e6e6e6"><span style="width:8px;height:8px;border-radius:2px;background:#333333"></span>설정</a>
-
-<div style="margin-top:auto;padding:14px 12px;border-top:1px solid #262626;display:flex;flex-direction:column;gap:3px;font-size:12px;color:#9a9a9a"><span>Made by Frenchfries777 with Claude AI</span><span>© 2026 Frenchfries777 · CC BY-NC-ND 4.0</span></div>
-</aside>
-
-<main style="position:relative;overflow:hidden;flex:1 1 640px;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;background:#000000">
-<img src="/pics/pixel-bg.png?v=20261117" alt="도트 풍경: 노을 지는 바다와 등대" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;image-rendering:pixelated">
-<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,0) 0,rgba(14,14,14,0) 420px,rgba(14,14,14,.74) 780px,rgba(14,14,14,.74) 100%)"></div>
-
-<div class="ffm-hero" style="position:relative;min-height:720px;display:flex;flex-direction:column;overflow:hidden">
-<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(14,14,14,.15) 0%,rgba(14,14,14,0) 35%,rgba(14,14,14,.82) 100%)"></div>
-<div class="ffm-pad" style="position:relative;padding:0 40px;display:flex;flex-direction:column;flex:1">
-<div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div id="onlineBar"></div><div class="tb"><span data-ff-account data-ff-nohub></span></div></div><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261126a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
+</style>
 <style>#annBar:empty{display:none}#annBar{display:flex;flex-direction:column;gap:8px;margin:14px 0 0;position:relative;z-index:2}
 .ann{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:11px 40px 11px 14px;border-radius:12px;position:relative;font-size:15px;color:#fff;border:1px solid rgba(255,213,74,.45);background:rgba(20,16,4,.82);backdrop-filter:blur(4px)}
 .ann.ev{border-color:rgba(125,255,155,.4);background:rgba(6,22,12,.82)}
 .ann .ak{font-weight:800;white-space:nowrap;color:#ffd54a}.ann.ev .ak{color:#7dff9b}.ann .ab{flex:1;min-width:160px;word-break:break-word}.ann .al{color:#ffd54a;font-weight:700;text-decoration:none;white-space:nowrap}.ann .ae{color:#9a9a9a;font-size:13px;white-space:nowrap}
 .ann .ax{position:absolute;top:6px;right:8px;background:none;border:0;color:#9a9a9a;font-size:20px;cursor:pointer;line-height:1}.ann .ax:hover{color:#fff}
 html[data-ff-theme=light] .ann .ak,html[data-ff-theme=light] .ann .al{color:#965a00}</style>
-<div id="annBar"></div>
-<div class="ffm-txt" style="margin-top:auto;padding:80px 0 52px;display:flex;flex-direction:column;gap:20px">
-<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#ffd54a">BY FRENCHFRIES777 · WITH CLAUDE AI</span>
-<h1 class="ffh1" style="margin:0;font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(56px,9vw,128px);line-height:.92;letter-spacing:.01em">Frenchfries777</h1>
-<p style="margin:0;max-width:620px;font-size:18px;line-height:1.7;color:#ffffff">Claude AI와 함께 만드는 사이트 모음이에요. 브라우저에서 바로 하는 게임, 놀면서 배우는 교육 게임, 직접 쓰려고 만든 도구가 있어요. 계정은 하나만 만들면 되고 설치는 필요 없어요.</p>
 <style>
 #heroInstall{margin-top:14px}
 #heroInstall button{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:999px;border:1px solid rgba(255,213,74,.55);background:linear-gradient(135deg,rgba(255,213,74,.22),rgba(255,160,40,.12));color:#ffd54a;font:800 16px/1 inherit;font-family:inherit;letter-spacing:.02em;cursor:pointer;box-shadow:0 0 0 0 rgba(255,213,74,.35),0 6px 22px rgba(255,170,30,.18);transition:transform .15s,box-shadow .2s,background .2s}
@@ -140,109 +199,17 @@ html[data-ff-theme=light] .ann .ak,html[data-ff-theme=light] .ann .al{color:#965
 #heroInstall button:active{transform:translateY(0)}
 #heroInstallMsg{color:#ddd}
 </style>
-<div id="heroAuth" hidden style="display:flex;flex-wrap:wrap;align-items:center;gap:12px"><button type="button" data-m="up" style="padding:15px 28px;border-radius:10px;background:#ffd54a;color:#000000;font-weight:700;font-size:16px;cursor:pointer;font-family:inherit">회원가입</button><button type="button" data-m="in" style="padding:15px 28px;border-radius:10px;border:1px solid #ffffff;font-weight:500;font-size:16px;cursor:pointer;font-family:inherit;background:transparent;color:#ffffff">로그인</button></div>
-</div>
-</div>
-</div>
-
-<div class="ffm-pad2" style="position:relative;box-sizing:border-box;padding:0 40px;display:flex;flex-direction:column">
-
-<section style="padding:56px 0 24px;display:flex;flex-direction:column;gap:26px">
-<h2 style="margin:0;font-family:'Oswald',sans-serif;font-weight:600;font-size:32px;letter-spacing:.04em;text-transform:uppercase">세 가지 공간</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px">
-
-<a href="/games/" style="display:flex;flex-direction:column;background:#0d0d0d;border:1px solid #262626;border-radius:16px;overflow:hidden;min-width:0">
-<img src="/pics/home/games.webp?v=20261117" alt="브라우저 게임 모음" style="width:100%;aspect-ratio:1200/630;object-fit:cover;display:block">
-<div style="padding:20px;display:flex;flex-direction:column;gap:8px">
-<div style="display:flex;align-items:baseline;gap:12px"><b style="font-family:'Oswald',sans-serif;font-size:24px;letter-spacing:.04em;text-transform:uppercase">Games</b><span style="font-size:14px;color:#ffd54a">8개</span></div>
-<span style="font-size:14px;line-height:1.65;color:#9a9a9a">설치 없이 링크만 열면 바로 시작해요. 친구에게 주소만 보내면 같이 할 수 있어요.</span>
-</div>
-</a>
-
-<a href="/educations/" style="display:flex;flex-direction:column;background:#0d0d0d;border:1px solid #262626;border-radius:16px;overflow:hidden;min-width:0">
-<img src="/pics/home/educations.webp?v=20261117" alt="교육 게임 모음" style="width:100%;aspect-ratio:1200/630;object-fit:cover;display:block">
-<div style="padding:20px;display:flex;flex-direction:column;gap:8px">
-<div style="display:flex;align-items:baseline;gap:12px"><b style="font-family:'Oswald',sans-serif;font-size:24px;letter-spacing:.04em;text-transform:uppercase">Educations</b><span style="font-size:14px;color:#ffd54a">6개</span></div>
-<span style="font-size:14px;line-height:1.65;color:#9a9a9a">과학, 코딩, 역사, 국어를 게임으로 배워요. 선생님이 방을 열어 반 전체가 같이 풀 수도 있어요.</span>
-</div>
-</a>
-
-<a href="/tools/" style="display:flex;flex-direction:column;background:#0d0d0d;border:1px solid #262626;border-radius:16px;overflow:hidden;min-width:0">
-<img src="/pics/home/tools.webp?v=20261117" alt="도구 모음" style="width:100%;aspect-ratio:1200/630;object-fit:cover;display:block">
-<div style="padding:20px;display:flex;flex-direction:column;gap:8px">
-<div style="display:flex;align-items:baseline;gap:12px"><b style="font-family:'Oswald',sans-serif;font-size:24px;letter-spacing:.04em;text-transform:uppercase">Tools</b><span style="font-size:14px;color:#ffd54a">9개</span></div>
-<span style="font-size:14px;line-height:1.65;color:#9a9a9a">코드, 블록 코딩, 표, 문서, 발표, 그림, 영상까지. 직접 쓰려고 만든 도구예요.</span>
-</div>
-</a>
-
-</div>
-</section>
-
-<section style="padding:36px 0 24px;display:flex;flex-direction:column;gap:22px">
-<h2 style="margin:0;font-family:'Oswald',sans-serif;font-weight:600;font-size:32px;letter-spacing:.04em;text-transform:uppercase">둘러보기</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;padding:0">
-<a href="/wiki/" style="display:flex;background:#0d0d0d;border:1px solid #262626;border-radius:16px;overflow:hidden;min-width:0"><img src="/pics/home/wiki.webp?v=20261117" alt="공략 위키" style="width:46%;object-fit:cover;display:block"><span style="padding:22px;display:flex;flex-direction:column;gap:6px;justify-content:center"><b style="font-size:20px">공략 위키</b><span style="font-size:14px;line-height:1.6;color:#9a9a9a">누구나 읽을 수 있어요. Stickseum · Crown Envoy · Beaconfall · Isleport</span></span></a>
-<a href="/community/" style="display:flex;background:#0d0d0d;border:1px solid #262626;border-radius:16px;overflow:hidden;min-width:0"><img src="/pics/home/community.webp?v=20261117" alt="커뮤니티" style="width:46%;object-fit:cover;display:block"><span style="padding:22px;display:flex;flex-direction:column;gap:6px;justify-content:center"><b style="font-size:20px">커뮤니티</b><span style="font-size:14px;line-height:1.6;color:#9a9a9a">게시판, 채팅, 친구 소식, 같이 하기, 갤러리, 피드백이 있어요.</span></span></a>
-</div>
-</section>
-
-<section style="margin:36px 0 24px;position:relative;border-radius:20px;overflow:hidden;min-height:320px;display:flex;align-items:center;background:#16210f">
-<img src="/pics/home/about.webp?v=20261117" alt="Crown Envoy 지도" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover">
-<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,rgba(14,14,14,.94) 0%,rgba(14,14,14,.78) 50%,rgba(14,14,14,.3) 100%)"></div>
-<div style="position:relative;padding:40px;max-width:600px;display:flex;flex-direction:column;gap:16px">
-<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.2em;color:#ffd54a">ABOUT</span>
-<h2 style="margin:0;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:34px;line-height:1.15">Claude AI와 같이 만든 사이트예요</h2>
-<p style="margin:0;font-size:16px;line-height:1.75;color:#d8d1c0">게임은 친구에게 링크만 보내면 같이 할 수 있고, 교육 게임은 놀면서 배우게 만들었어요. 도구는 직접 쓰려고 만들었는데 누구나 쓸 수 있어요.</p>
-<a href="/patchnotes/" style="align-self:flex-start;padding:12px 22px;border-radius:10px;border:1px solid #ffd54a;color:#ffd54a;font-weight:500;font-size:15px">패치노트 보기</a>
-</div>
-</section>
-
-<section style="padding:12px 0 72px;display:flex;flex-direction:column;gap:22px">
-<h2 style="margin:0;font-family:'Oswald','Noto Sans KR',sans-serif;font-weight:600;font-size:32px;letter-spacing:.04em">이런 점이 좋아요</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-
-<div style="display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:16px;background:rgba(23,23,23,.88);border:1px solid #262626;min-width:0">
-<span style="width:34px;height:34px;border-radius:8px;background:#26221a;border:1px solid #ffd54a;color:#ffd54a;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px">1</span>
-<b style="font-size:19px">무료예요</b>
-<span style="font-size:14px;line-height:1.7;color:#9a9a9a">게임, 교육, 도구를 돈 내지 않고 모두 쓸 수 있어요.</span>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:16px;background:rgba(23,23,23,.88);border:1px solid #262626;min-width:0">
-<span style="width:34px;height:34px;border-radius:8px;background:#26221a;border:1px solid #ffd54a;color:#ffd54a;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px">2</span>
-<b style="font-size:19px">광고가 없어요</b>
-<span style="font-size:14px;line-height:1.7;color:#9a9a9a">광고도 팝업도 없이 열자마자 바로 시작해요.</span>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:16px;background:rgba(23,23,23,.88);border:1px solid #262626;min-width:0">
-<span style="width:34px;height:34px;border-radius:8px;background:#26221a;border:1px solid #ffd54a;color:#ffd54a;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px">3</span>
-<b style="font-size:19px">계정 만들기가 쉬워요</b>
-<span style="font-size:14px;line-height:1.7;color:#9a9a9a">계정 하나로 게임, 교육, 도구에서 모두 로그인돼요.</span>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:16px;background:rgba(23,23,23,.88);border:1px solid #262626;min-width:0">
-<span style="width:34px;height:34px;border-radius:8px;background:#26221a;border:1px solid #ffd54a;color:#ffd54a;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px">4</span>
-<b style="font-size:19px">도구에서 Claude AI를 써요</b>
-<span style="font-size:14px;line-height:1.7;color:#9a9a9a">Fry Docs, Fry Sheet 같은 도구에서 Claude AI의 도움을 받아요.</span>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:16px;background:rgba(23,23,23,.88);border:1px solid #262626;min-width:0">
-<span style="width:34px;height:34px;border-radius:8px;background:#26221a;border:1px solid #ffd54a;color:#ffd54a;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px">5</span>
-<b style="font-size:19px">설치가 필요 없어요</b>
-<span style="font-size:14px;line-height:1.7;color:#9a9a9a">브라우저에서 바로 하고, 원하면 앱으로 설치할 수도 있어요.</span>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:16px;background:rgba(23,23,23,.88);border:1px solid #262626;min-width:0">
-<span style="width:34px;height:34px;border-radius:8px;background:#26221a;border:1px solid #ffd54a;color:#ffd54a;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px">6</span>
-<b style="font-size:19px">친구와 링크로 같이</b>
-<span style="font-size:14px;line-height:1.7;color:#9a9a9a">주소만 보내면 친구와 같이 게임을 할 수 있어요.</span>
-</div>
-
-</div>
-</section>
-<div class="ffx-foot"><nav class="seo-nav" data-notr aria-label="Frenchfries777 sites"><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a><a href="https://frenchfries777.com/lounge/">Lounge</a><a href="https://frenchfries777.com/wiki/">Wiki</a><a href="https://frenchfries777.com/community/">Community</a></nav> <span>Made by Frenchfries777 with Claude AI</span> <span data-notr>Created by Frenchfries777</span> · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></div>
-</div>
-</main>
-</div>
+</head>
+<body data-root="https://frenchfries777.com/games/" data-hub="">
+<div class="hA"><header class="hA-top"><div class="hA-in"><a class="hA-logo" href="/"><u></u>FRENCHFRIES<i>777</i></a><nav><a href="/" class="on">Hub</a><a href="/games/">Games</a><a href="/educations/">Educations</a><a href="/tools/">Tools</a><a href="/wiki/">Wiki</a><a href="/community/">Community</a><a href="/lounge/">Lounge</a><a href="/prototypes/">Prototypes</a><a href="/settings/">Settings</a></nav><div id="ffTop"><button type="button" class="srx-btn" id="srxBtn" aria-label="검색" title="검색">🔍</button><div class="tb"><span data-ff-account data-ff-nohub></span></div></div></div></header><script>(function(){var b=document.getElementById('srxBtn');if(!b)return;b.addEventListener('click',function f(e){if(b.onclick)return;b.removeEventListener('click',f);e.stopImmediatePropagation();e.preventDefault();var s=document.createElement('script');s.src='https://frenchfries777.com/games/hub.js?v=20261126a';s.onload=function(){setTimeout(function(){if(b.onclick)b.click();},500);};document.head.appendChild(s);},true);})();</script>
+<section class="hA-hero"><div class="hA-cols" aria-hidden="true"><div class="hA-c"><i style="background-image:url(/games/stickseum.webp)"></i><i style="background-image:url(/games/beaconfall.webp)"></i><i style="background-image:url(/educations/planetsearch.webp)"></i><i style="background-image:url(/tools/sheet.webp)"></i><i style="background-image:url(/games/stickseum.webp)"></i><i style="background-image:url(/games/beaconfall.webp)"></i><i style="background-image:url(/educations/planetsearch.webp)"></i><i style="background-image:url(/tools/sheet.webp)"></i></div><div class="hA-c"><i style="background-image:url(/games/crown-envoy.webp)"></i><i style="background-image:url(/games/isleport.webp)"></i><i style="background-image:url(/educations/speedcode.webp)"></i><i style="background-image:url(/tools/blocks.webp)"></i><i style="background-image:url(/games/crown-envoy.webp)"></i><i style="background-image:url(/games/isleport.webp)"></i><i style="background-image:url(/educations/speedcode.webp)"></i><i style="background-image:url(/tools/blocks.webp)"></i></div><div class="hA-c"><i style="background-image:url(/games/beaconfall.webp)"></i><i style="background-image:url(/educations/timeline.webp)"></i><i style="background-image:url(/games/vowkeep.webp)"></i><i style="background-image:url(/prototypes/img/ironline.jpg)"></i><i style="background-image:url(/games/beaconfall.webp)"></i><i style="background-image:url(/educations/timeline.webp)"></i><i style="background-image:url(/games/vowkeep.webp)"></i><i style="background-image:url(/prototypes/img/ironline.jpg)"></i></div><div class="hA-c"><i style="background-image:url(/games/isleport.webp)"></i><i style="background-image:url(/tools/slides.webp)"></i><i style="background-image:url(/educations/munjang.webp)"></i><i style="background-image:url(/games/stickseum.webp)"></i><i style="background-image:url(/games/isleport.webp)"></i><i style="background-image:url(/tools/slides.webp)"></i><i style="background-image:url(/educations/munjang.webp)"></i><i style="background-image:url(/games/stickseum.webp)"></i></div><div class="hA-c"><i style="background-image:url(/games/vowkeep.webp)"></i><i style="background-image:url(/educations/balance.webp)"></i><i style="background-image:url(/prototypes/img/boxtown.jpg)"></i><i style="background-image:url(/games/crown-envoy.webp)"></i><i style="background-image:url(/games/vowkeep.webp)"></i><i style="background-image:url(/educations/balance.webp)"></i><i style="background-image:url(/prototypes/img/boxtown.jpg)"></i><i style="background-image:url(/games/crown-envoy.webp)"></i></div><div class="hA-c"><i style="background-image:url(/tools/card/draw.webp)"></i><i style="background-image:url(/games/stickseum.webp)"></i><i style="background-image:url(/educations/proverb.webp)"></i><i style="background-image:url(/prototypes/img/lodestar.jpg)"></i><i style="background-image:url(/tools/card/draw.webp)"></i><i style="background-image:url(/games/stickseum.webp)"></i><i style="background-image:url(/educations/proverb.webp)"></i><i style="background-image:url(/prototypes/img/lodestar.jpg)"></i></div></div><div id="annBar"></div><h1 class="hA-h1"><span class="w">FRENCHFRIES</span><span class="y">777</span></h1><img class="hA-ico" src="/icon-512.png" alt="Frenchfries777" width="200" height="200"><div id="heroAuth" hidden class="hA-auth"><button type="button" data-m="up" class="g">회원가입</button><button type="button" data-m="in" class="o">로그인</button></div></section><div class="hA-w hA-stat"><span>17개 언어 · 148개 달성 업적 · 패치노트 <a href="/patchnotes/">보기 →</a></span><div id="onlineBar"></div></div>
+<section class="hA-sec" id="s01"><div class="hA-w"><div class="hA-rh"><span class="hA-n">01</span><div class="hA-ht"><h2>Games</h2><p>막대기 난투부터 섬 경영까지. 혼자도, 친구와도.</p></div><a class="hA-all" href="/games/">전체 보기 →</a></div></div><div class="hA-w"><div class="hA-grid r5"><a class="gc k1" href="/games/stickseum/"><div class="art" style="background-image:url(/games/stickseum.webp)"><span class="pill">실시간 액션</span></div><div class="body"><h3>Stickseum</h3><p>최대 32명이 같이 하는 막대기 난투</p><span class="go">▶ Play</span></div></a><a class="gc k2" href="/games/crownenvoy/"><div class="art" style="background-image:url(/games/crown-envoy.webp)"><span class="pill">턴제 전략</span></div><div class="body"><h3>Crown Envoy</h3><p>외교와 전쟁으로 제국을</p><span class="go">▶ Play</span></div></a><a class="gc k3" href="/games/beaconfall/"><div class="art" style="background-image:url(/games/beaconfall.webp)"><span class="pill">생존 제작</span></div><div class="body"><h3>Beaconfall</h3><p>낙선 섬에서 신호탄을</p><span class="go">▶ Play</span></div></a><a class="gc k4" href="/games/isleport/"><div class="art" style="background-image:url(/games/isleport.webp)"><span class="pill">섬 경영</span></div><div class="body"><h3>Isleport</h3><p>배를 몰고 항구를 키워요</p><span class="go">▶ Play</span></div></a><a class="gc k1" href="/games/vowkeep/"><div class="art" style="background-image:url(/games/vowkeep.webp)"><span class="pill">협동 던전</span></div><div class="body"><h3>Vowkeep</h3><p>친구와 던전을 돌파</p><span class="go">▶ Play</span></div></a></div></div></section>
+<section class="hA-sec" id="s02"><div class="hA-w"><div class="hA-rh"><span class="hA-n">02</span><div class="hA-ht"><h2>Educations</h2><p>시험 말고 게임으로. 과학, 수학, 역사를 한 판씩.</p></div><a class="hA-all" href="/educations/">전체 보기 →</a></div></div><div class="hA-w"><div class="hA-grid r5"><a class="gc k1" href="/educations/planetsearch/"><div class="art" style="background-image:url(/educations/planetsearch.webp)"><span class="pill">과학</span></div><div class="body"><h3>Planet Search</h3><p>살 수 있는 행성 찾기</p><span class="go">▶ Play</span></div></a><a class="gc k2" href="/educations/speedcode/"><div class="art" style="background-image:url(/educations/speedcode.webp)"><span class="pill">수학</span></div><div class="body"><h3>Speed Code</h3><p>2진수를 10진수로</p><span class="go">▶ Play</span></div></a><a class="gc k3" href="/educations/timeline/"><div class="art" style="background-image:url(/educations/timeline.webp)"><span class="pill">역사</span></div><div class="body"><h3>Timeline</h3><p>역사 타임라인 배틀</p><span class="go">▶ Play</span></div></a><a class="gc k4" href="/educations/munjang/"><div class="art" style="background-image:url(/educations/munjang.webp)"><span class="pill">국어</span></div><div class="body"><h3>Sentence Repair</h3><p>고장 난 문장 고치기</p><span class="go">▶ Play</span></div></a><a class="gc k1" href="/educations/balance/"><div class="art" style="background-image:url(/educations/balance.webp)"><span class="pill">경제</span></div><div class="body"><h3>Balance Blueprint</h3><p>균형을 설계해요</p><span class="go">▶ Play</span></div></a></div></div></section>
+<section class="hA-sec" id="s03"><div class="hA-w"><div class="hA-rh"><span class="hA-n">03</span><div class="hA-ht"><h2>Tools</h2><p>여러가지 편의성 도구들</p></div><a class="hA-all" href="/tools/">전체 보기 →</a></div></div><div class="hA-w"><div class="hA-grid r5"><a class="gc k1" href="/tools/sheet/"><div class="art" style="background-image:url(/tools/sheet.webp)"><span class="pill">표</span></div><div class="body"><h3>Fry Sheet</h3><p>수식·그래프·엑셀</p><span class="go">▶ Open</span></div></a><a class="gc k2" href="/tools/blocks/"><div class="art" style="background-image:url(/tools/blocks.webp)"><span class="pill">코딩</span></div><div class="body"><h3>Fry Blocks</h3><p>자바스크립트 블록</p><span class="go">▶ Open</span></div></a><a class="gc k3" href="/tools/slides/"><div class="art" style="background-image:url(/tools/slides.webp)"><span class="pill">발표</span></div><div class="body"><h3>Fry Slides</h3><p>프레젠테이션</p><span class="go">▶ Open</span></div></a><a class="gc k4" href="/tools/docs/"><div class="art" style="background-image:url(/tools/card/docs.webp)"><span class="pill">문서</span></div><div class="body"><h3>Fry Docs</h3><p>글쓰기</p><span class="go">▶ Open</span></div></a><a class="gc k1" href="/tools/draw/"><div class="art" style="background-image:url(/tools/card/draw.webp)"><span class="pill">그림</span></div><div class="body"><h3>Fry Draw</h3><p>그리기</p><span class="go">▶ Open</span></div></a></div></div></section>
+<section class="hA-sec" id="s04"><div class="hA-w"><div class="hA-rh"><span class="hA-n">04</span><div class="hA-ht"><h2>Prototypes</h2><p>아직 만드는 중이거나 규모가 애매한 것들.</p></div><a class="hA-all" href="/prototypes/">전체 보기 →</a></div></div><div class="hA-w"><div class="hA-grid rp"><a class="gc k3" href="/prototypes/#ironline"><div class="art" style="background-image:url(/prototypes/img/ironline.jpg)"><span class="pill">3D 점령전</span></div><div class="body"><h3>Ironline</h3><p>대규모 1인칭 점령전이에요.</p><span class="go">▶ Try</span></div></a><a class="gc k4" href="/prototypes/#ffscript"><div class="art" style="background-image:url(/prototypes/img/ffscript.jpg)"><span class="pill">편집기</span></div><div class="body"><h3>FF Script</h3><p>스크립트를 쓰면 바로 게임이 돌아가요.</p><span class="go">▶ Try</span></div></a><a class="gc k1" href="/prototypes/#lodestar"><div class="art" style="background-image:url(/prototypes/img/lodestar.jpg)"><span class="pill">2D 쟁탈전</span></div><div class="body"><h3>로드스타</h3><p>5대5 성석 쟁탈전이에요.</p><span class="go">▶ Try</span></div></a><a class="gc k2" href="/prototypes/#resonance"><div class="art" style="background-image:url(/prototypes/img/resonance.jpg)"><span class="pill">3D 퍼즐</span></div><div class="body"><h3>잔향의 탑</h3><p>아는 만큼만 열리는 1인칭 퍼즐 탑이에요.</p><span class="go">▶ Try</span></div></a><a class="gc k3" href="/prototypes/#kitchendefense"><div class="art" style="background-image:url(/prototypes/img/kitchendefense.jpg)"><span class="pill">2D 디펜스</span></div><div class="body"><h3>Kitchen Defense</h3><p>식재료로부터 냉장고를 지켜요.</p><span class="go">▶ Try</span></div></a><a class="gc k4" href="/prototypes/#trilantern"><div class="art" style="background-image:url(/prototypes/img/trilantern.jpg)"><span class="pill">2D 덱 빌딩</span></div><div class="body"><h3>삼원의 등불</h3><p>세 원소 덱 빌딩 로그라이크예요.</p><span class="go">▶ Try</span></div></a><a class="gc k1" href="/prototypes/#boxtown"><div class="art" style="background-image:url(/prototypes/img/boxtown.jpg)"><span class="pill">3D 오픈 월드</span></div><div class="body"><h3>Boxtown</h3><p>네모난 캐릭터의 섬마을 샌드박스예요.</p><span class="go">▶ Try</span></div></a></div></div></section>
+<section class="hA-tog"><div class="hA-w"><h2 class="hA-t2">같이 노는 곳</h2><div class="tog"><a href="/wiki/"><div class="im" style="background-image:url(/pics/home/hub.webp)"></div><h3>Wiki</h3><p>게임별 공략을 같이 써요.</p></a><a href="/community/"><div class="im" style="background-image:url(/pics/home/community.webp)"></div><h3>Community</h3><p>글, 랭킹, 뉴스가 모여요.</p></a><a href="/lounge/"><div class="im" style="background-image:url(/pics/home/about.webp)"></div><h3>Lounge</h3><p>음악 들으며 쉬어 가요.</p></a><a href="/chat/"><div class="im" style="background-image:url(/educations/timeline.webp)"></div><h3>Chat</h3><p>접속한 친구와 바로 대화.</p></a></div></div></section>
+<section class="hA-end"><div class="hA-w"><h2>들어와요.<br>자리 있어요.</h2><p>계정 하나로 모든 게임의 기록, 업적, 설정이 이어져요.</p><div class="hA-eb" id="endAuth"><button type="button" data-m="up" class="b">회원가입</button><button type="button" data-m="in" class="l">로그인</button></div></div></section>
+<footer class="hA-foot"><div class="hA-w"><div class="ffx-foot"><nav class="seo-nav" data-notr aria-label="Frenchfries777 sites"><a href="https://frenchfries777.com/games/">Games</a><a href="https://frenchfries777.com/educations/">Educations</a><a href="https://frenchfries777.com/tools/">Tools</a><a href="https://frenchfries777.com/lounge/">Lounge</a><a href="https://frenchfries777.com/wiki/">Wiki</a><a href="https://frenchfries777.com/community/">Community</a></nav> <span>Made by Frenchfries777 with Claude AI</span> <span data-notr>Created by Frenchfries777</span> · <span class="ff-copy">© 2026 Frenchfries777 · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a></span></div></div></footer></div>
 <script src="https://frenchfries777.com/games/ff-lang.js?v=20261126b"></script>
 <script id="i18n">
 /* Site translation (same 6 languages and the same saved choice as the game).
@@ -307,10 +274,9 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
 <script src="https://frenchfries777.com/games/ff-auth.js?v=20261126e"></script>
 <script src="https://frenchfries777.com/games/hub.js?v=20261126a"></script>
 <script>
-(function(){var ha=document.getElementById('heroAuth');if(!ha)return;
-function paint(){try{ha.hidden=!!(window.FFAuth&&FFAuth.user());}catch(e){ha.hidden=false;}}
-ha.hidden=true;
-[].forEach.call(ha.querySelectorAll('button'),function(b){b.onclick=function(){if(window.FFAuth)FFAuth.openLogin(b.getAttribute('data-m'));};});
+(function(){var els=['heroAuth','endAuth'].map(function(i){return document.getElementById(i);}).filter(Boolean);if(!els.length)return;
+function paint(){var on=false;try{on=!!(window.FFAuth&&FFAuth.user());}catch(e){}els.forEach(function(e){e.hidden=on;});}
+els.forEach(function(e){e.hidden=true;[].forEach.call(e.querySelectorAll('button'),function(b){b.onclick=function(){if(window.FFAuth)FFAuth.openLogin(b.getAttribute('data-m'));};});});
 function wire(){if(!window.FFAuth)return setTimeout(wire,200);FFAuth.ready.then(function(){paint();FFAuth.onChange(paint);},paint);}wire();setTimeout(paint,2500);})();
 </script>
 <script src="https://frenchfries777.com/games/ff-sidemenu.js?v=20261126d" defer></script>
