@@ -2,7 +2,9 @@
    The pages are drawn dark; light flips it with a root filter. */
 html[data-ff-theme=light]{filter:invert(1) hue-rotate(180deg);background:#fff!important}
 html[data-ff-theme=light] img,html[data-ff-theme=light] video,html[data-ff-theme=light] canvas,html[data-ff-theme=light] iframe,html[data-ff-theme=light] [data-noinv]{filter:invert(1) hue-rotate(180deg)}
-html[data-ff-theme=light] .ffx-root>main>img,html[data-ff-theme=light] .ffx-root>main>div[style*="gradient"]{display:none!important}
+/* light theme: the top picture stays visible (it used to be hidden, which left the top of every page blank). A light veil over it keeps the dark text readable. The values are the pre-filter ones: the filter turns this dark veil into a light one. */
+html[data-ff-theme=light] .ffx-root>main>div[style*="gradient"]{background:linear-gradient(180deg,rgba(14,14,14,.62) 0,rgba(14,14,14,.72) 420px,rgba(14,14,14,.9) 800px,rgba(14,14,14,.88) 100%)!important}
+html[data-ff-theme=light] .ffm-hero>div[style*="gradient"]{background:none!important}
 html[data-ff-theme=light] .ffx-root>main{background:#000!important}
 html[data-ff-theme=light] .sx-sw2{filter:invert(1) hue-rotate(180deg)}
 /* Window and button colours come from the --bg/--panel/--text/--dim/--line variables. ff-lang.js gives them light values for the light theme,
