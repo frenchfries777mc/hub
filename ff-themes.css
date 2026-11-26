@@ -5,3 +5,8 @@ html[data-ff-theme=light] img,html[data-ff-theme=light] video,html[data-ff-theme
 html[data-ff-theme=light] .ffx-root>main>img,html[data-ff-theme=light] .ffx-root>main>div[style*="gradient"]{display:none!important}
 html[data-ff-theme=light] .ffx-root>main{background:#000!important}
 html[data-ff-theme=light] .sx-sw2{filter:invert(1) hue-rotate(180deg)}
+/* Window and button colours come from the --bg/--panel/--text/--dim/--line variables. ff-lang.js gives them light values for the light theme,
+   but this file flips the whole page with a filter, so those values came out inverted again (black windows, text unreadable). Give the variables
+   their dark values here: the filter then turns them light, and every window, button and menu that reads the variables stays readable.
+   --fry (the gold) is left as it is on purpose. */
+html[data-ff-theme=light][data-ff-size]:root{--bg:#0e0e0e;--panel:#171717;--panel2:#121212;--line:#2e2b25;--text:#ece6d8;--dim:#a39c8c}
